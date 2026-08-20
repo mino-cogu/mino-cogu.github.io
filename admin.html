@@ -1261,17 +1261,14 @@ th{
 
 
 <script>
-const SUPABASE_URL =
-  "https://rxeqynitxruylvcybrca.supabase.co";
+const SUPABASE_URL = "https://rxeqynitxruylvcybrca.supabase.co";
 
-const SUPABASE_KEY =
-  "sb_publishable_DCZRB5bpOCQUGwEWWevizg_lAp2YvIm";
+const SUPABASE_KEY = "sb_publishable_DCZRB5bpOCQUGwEWWevizg_lAp2YvIm";
 
-const { createClient } =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 
 let currentUser = null;
