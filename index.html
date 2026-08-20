@@ -2,34 +2,62 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<meta name="theme-color" content="#f7f5f1">
-
-<title>Mặc Gì Đây? — Thời trang & Outfit</title>
+<title>Mi Nơ Có Gu — Thời trang & Outfit</title>
 
 <meta
   name="description"
-  content="Khám phá những món đồ thời trang và outfit được chọn lọc tại Mặc Gì Đây?"
+  content="Mi Nơ Có Gu — khám phá những sản phẩm thời trang và outfit được chọn lọc dành cho bạn."
 >
 
-<!-- =========================================================
-     FONT
-     Be Vietnam Pro hỗ trợ tiếng Việt rất tốt.
-     Có fallback để website vẫn hiển thị đẹp nếu Google Fonts lỗi.
-========================================================= -->
+<meta name="theme-color" content="#f6f2ec">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link
-  href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
   rel="stylesheet"
 >
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root{
+  --bg:#f7f4ef;
+  --paper:#fffdf9;
+  --white:#ffffff;
+
+  --black:#161616;
+  --black-soft:#252525;
+
+  --brown:#725e4c;
+  --gold:#b18b55;
+
+  --text:#191817;
+  --muted:#817a72;
+  --muted-2:#a49c93;
+
+  --line:#e5ded5;
+  --line-dark:#d5ccc1;
+
+  --radius:20px;
+
+  --container:1200px;
+
+  --shadow:
+    0 15px 45px rgba(37,28,20,.07);
+
+  --shadow-hover:
+    0 25px 65px rgba(37,28,20,.13);
+}
+
 
 /* =========================================================
    RESET
@@ -45,8 +73,16 @@ html{
 
 body{
   margin:0;
-  background:#f7f5f1;
-  color:#171717;
+
+  background:
+    radial-gradient(
+      circle at 85% 5%,
+      rgba(205,185,158,.13),
+      transparent 25%
+    ),
+    var(--bg);
+
+  color:var(--text);
 
   font-family:
     "Be Vietnam Pro",
@@ -56,11 +92,12 @@ body{
 
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
+
+  overflow-x:hidden;
 }
 
 button,
-input,
-select{
+input{
   font:inherit;
 }
 
@@ -79,63 +116,8 @@ img{
 }
 
 ::selection{
-  background:#171717;
+  background:var(--black);
   color:#fff;
-}
-
-
-/* =========================================================
-   VARIABLES
-========================================================= */
-
-:root{
-
-  --bg:#f7f5f1;
-  --surface:#ffffff;
-  --surface-soft:#f1eee8;
-
-  --text:#171717;
-  --muted:#77716a;
-  --muted-light:#9a948d;
-
-  --border:#e2ddd5;
-  --border-dark:#d5cec4;
-
-  --black:#151515;
-
-  --radius-sm:10px;
-  --radius-md:16px;
-  --radius-lg:24px;
-
-  --shadow-sm:
-    0 4px 18px rgba(0,0,0,.045);
-
-  --shadow-md:
-    0 15px 45px rgba(0,0,0,.08);
-
-  --container:1180px;
-}
-
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-::-webkit-scrollbar{
-  width:9px;
-}
-
-::-webkit-scrollbar-track{
-  background:#eeeae4;
-}
-
-::-webkit-scrollbar-thumb{
-  background:#c7c0b7;
-  border-radius:20px;
-}
-
-::-webkit-scrollbar-thumb:hover{
-  background:#a9a197;
 }
 
 
@@ -146,7 +128,7 @@ img{
 .container{
   width:min(
     var(--container),
-    calc(100% - 40px)
+    calc(100% - 48px)
   );
 
   margin:0 auto;
@@ -157,27 +139,22 @@ img{
    HEADER
 ========================================================= */
 
-.site-header{
-
+.header{
   position:sticky;
   top:0;
-  z-index:100;
+  z-index:1000;
 
   background:
-    rgba(247,245,241,.92);
+    rgba(247,244,239,.86);
 
-  backdrop-filter:
-    blur(18px);
-
-  -webkit-backdrop-filter:
-    blur(18px);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
 
   border-bottom:
-    1px solid rgba(226,221,213,.75);
+    1px solid rgba(229,222,213,.75);
 }
 
 .header-inner{
-
   min-height:78px;
 
   display:flex;
@@ -187,8 +164,7 @@ img{
   gap:30px;
 }
 
-.logo{
-
+.brand{
   display:flex;
   align-items:center;
   gap:12px;
@@ -196,19 +172,18 @@ img{
   flex-shrink:0;
 }
 
-.logo-mark{
-
-  width:42px;
-  height:42px;
-
-  border-radius:50%;
-
-  background:#171717;
-  color:#fff;
+.brand-mark{
+  width:43px;
+  height:43px;
 
   display:flex;
   align-items:center;
   justify-content:center;
+
+  border-radius:50%;
+
+  background:var(--black);
+  color:white;
 
   font-family:
     "Playfair Display",
@@ -217,10 +192,12 @@ img{
 
   font-size:20px;
   font-weight:700;
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,.12);
 }
 
-.logo-text{
-
+.brand-name{
   font-family:
     "Playfair Display",
     Georgia,
@@ -229,89 +206,116 @@ img{
   font-size:23px;
   font-weight:700;
 
-  letter-spacing:-.4px;
+  letter-spacing:-.5px;
 }
 
-.header-nav{
+.brand-name span{
+  font-family:
+    "Be Vietnam Pro",
+    Arial,
+    sans-serif;
 
+  font-size:8px;
+  font-weight:700;
+
+  letter-spacing:.18em;
+
+  display:block;
+
+  margin-top:1px;
+
+  color:var(--muted);
+
+  text-transform:uppercase;
+}
+
+.nav{
   display:flex;
   align-items:center;
-  gap:28px;
+  gap:30px;
 
-  color:#5f5952;
-
-  font-size:14px;
+  font-size:13px;
   font-weight:600;
+
+  color:#625b54;
 }
 
-.header-nav a{
-
+.nav a{
   position:relative;
 
   padding:8px 0;
-
-  transition:
-    color .2s ease;
 }
 
-.header-nav a::after{
-
+.nav a::after{
   content:"";
 
   position:absolute;
 
   left:0;
-  bottom:2px;
+  bottom:1px;
 
   width:0;
-  height:1.5px;
+  height:2px;
 
-  background:#171717;
+  background:var(--black);
 
   transition:
     width .25s ease;
 }
 
-.header-nav a:hover{
-  color:#171717;
-}
-
-.header-nav a:hover::after{
+.nav a:hover::after{
   width:100%;
 }
 
-.header-badge{
-
+.header-action{
   display:flex;
   align-items:center;
-  gap:7px;
+  gap:8px;
 
-  padding:9px 13px;
+  padding:10px 15px;
 
   border:
-    1px solid var(--border);
+    1px solid var(--line);
 
   border-radius:999px;
 
   background:#fff;
 
-  color:#57514a;
-
-  font-size:12px;
-  font-weight:600;
+  font-size:11px;
+  font-weight:700;
 }
 
-.header-badge-dot{
-
+.header-dot{
   width:7px;
   height:7px;
 
   border-radius:50%;
 
-  background:#38a169;
+  background:#48a868;
+}
 
-  box-shadow:
-    0 0 0 4px rgba(56,161,105,.10);
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.mobile-menu{
+  display:none;
+
+  width:42px;
+  height:42px;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:50%;
+
+  background:#fff;
+}
+
+.mobile-menu svg{
+  width:18px;
+  height:18px;
 }
 
 
@@ -320,60 +324,81 @@ img{
 ========================================================= */
 
 .hero{
+  position:relative;
 
   padding:
-    72px 0
-    48px;
+    65px 0
+    70px;
+}
+
+.hero::before{
+  content:"";
+
+  position:absolute;
+
+  width:420px;
+  height:420px;
+
+  right:-180px;
+  top:-150px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(190,160,120,.15),
+      transparent 70%
+    );
+
+  pointer-events:none;
 }
 
 .hero-grid{
-
   display:grid;
 
   grid-template-columns:
-    minmax(0,1.2fr)
-    minmax(300px,.8fr);
+    minmax(0,1fr)
+    minmax(350px,.75fr);
 
-  gap:50px;
+  gap:65px;
 
-  align-items:end;
-}
-
-.hero-eyebrow{
-
-  display:inline-flex;
   align-items:center;
-  gap:9px;
-
-  margin-bottom:18px;
-
-  color:#756e66;
-
-  font-size:12px;
-  font-weight:700;
-
-  letter-spacing:
-    .12em;
-
-  text-transform:
-    uppercase;
 }
 
-.hero-eyebrow::before{
+.hero-copy{
+  position:relative;
+  z-index:2;
+}
 
+.eyebrow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin-bottom:20px;
+
+  color:#766b60;
+
+  font-size:11px;
+  font-weight:800;
+
+  letter-spacing:.18em;
+
+  text-transform:uppercase;
+}
+
+.eyebrow::before{
   content:"";
 
-  width:28px;
+  width:30px;
   height:1px;
 
   background:#171717;
 }
 
 .hero-title{
-
   margin:0;
-
-  max-width:720px;
 
   font-family:
     "Playfair Display",
@@ -381,85 +406,256 @@ img{
     serif;
 
   font-size:
-    clamp(42px,6vw,76px);
+    clamp(48px,6vw,82px);
 
-  line-height:
-    .98;
+  line-height:.98;
 
-  letter-spacing:
-    -2.5px;
+  letter-spacing:-3px;
 }
 
-.hero-title span{
-  color:#8c857d;
+.hero-title em{
+  color:#846e59;
+  font-style:italic;
 }
 
 .hero-description{
-
-  max-width:600px;
+  max-width:570px;
 
   margin:
-    24px 0 0;
+    25px 0 0;
 
-  color:#756f68;
+  color:#777069;
 
-  font-size:15px;
+  font-size:14px;
 
-  line-height:1.8;
+  line-height:1.9;
 }
 
-.hero-side{
+.hero-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
 
-  padding-bottom:5px;
+  margin-top:30px;
 }
 
-.hero-card{
+.primary-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
 
-  padding:25px;
+  min-height:48px;
 
-  background:#fff;
+  padding:
+    0 20px;
 
-  border:
-    1px solid var(--border);
+  border:0;
 
-  border-radius:
-    var(--radius-lg);
+  border-radius:12px;
+
+  background:var(--black);
+  color:#fff;
+
+  font-size:12px;
+  font-weight:700;
 
   box-shadow:
-    var(--shadow-sm);
+    0 9px 25px rgba(0,0,0,.15);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
 }
 
-.hero-card-title{
+.primary-btn:hover{
+  transform:translateY(-2px);
 
-  margin-bottom:9px;
+  box-shadow:
+    0 14px 32px rgba(0,0,0,.2);
+}
 
-  font-size:15px;
+.secondary-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-height:48px;
+
+  padding:
+    0 19px;
+
+  border:
+    1px solid var(--line-dark);
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,.65);
+
+  font-size:12px;
   font-weight:700;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
 }
 
-.hero-card-text{
+.secondary-btn:hover{
+  background:#fff;
 
-  color:#7b746d;
-
-  font-size:13px;
-
-  line-height:1.7;
+  transform:
+    translateY(-2px);
 }
 
 
 /* =========================================================
-   SHOP TOOLBAR
+   HERO VISUAL
 ========================================================= */
 
-.shop{
+.hero-visual{
+  position:relative;
 
-  padding:
-    25px 0
-    90px;
+  min-height:440px;
 }
 
-.shop-top{
+.hero-frame{
+  position:absolute;
 
+  right:0;
+  top:0;
+
+  width:min(100%,390px);
+
+  height:440px;
+
+  overflow:hidden;
+
+  border-radius:
+    190px 190px 25px 25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ddd4c8,
+      #a99581
+    );
+
+  box-shadow:
+    var(--shadow);
+}
+
+.hero-frame::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 50%,
+      rgba(0,0,0,.25)
+    );
+}
+
+.hero-fashion-shape{
+  position:absolute;
+
+  width:240px;
+  height:300px;
+
+  left:50%;
+  bottom:-55px;
+
+  transform:
+    translateX(-50%);
+
+  border-radius:
+    130px 130px 35px 35px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d9c5ad,
+      #8d7760
+    );
+
+  box-shadow:
+    inset 20px 0 50px rgba(255,255,255,.18),
+    0 20px 40px rgba(0,0,0,.15);
+}
+
+.hero-card{
+  position:absolute;
+
+  z-index:5;
+
+  left:-35px;
+  bottom:32px;
+
+  width:220px;
+
+  padding:19px;
+
+  border:
+    1px solid rgba(255,255,255,.65);
+
+  border-radius:17px;
+
+  background:
+    rgba(255,255,255,.91);
+
+  backdrop-filter:
+    blur(15px);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.12);
+}
+
+.hero-card-label{
+  color:#94877a;
+
+  font-size:9px;
+  font-weight:800;
+
+  letter-spacing:.12em;
+
+  text-transform:uppercase;
+}
+
+.hero-card-title{
+  margin-top:7px;
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size:22px;
+  line-height:1.1;
+}
+
+.hero-card-text{
+  margin-top:8px;
+
+  color:#817970;
+
+  font-size:10px;
+
+  line-height:1.6;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section{
+  padding:
+    80px 0;
+}
+
+.section-head{
   display:flex;
 
   align-items:end;
@@ -467,11 +663,23 @@ img{
 
   gap:25px;
 
-  margin-bottom:24px;
+  margin-bottom:28px;
 }
 
-.section-heading{
+.section-kicker{
+  margin-bottom:8px;
 
+  color:#a18d78;
+
+  font-size:10px;
+  font-weight:800;
+
+  letter-spacing:.16em;
+
+  text-transform:uppercase;
+}
+
+.section-title{
   margin:0;
 
   font-family:
@@ -479,104 +687,279 @@ img{
     Georgia,
     serif;
 
-  font-size:34px;
+  font-size:38px;
 
-  letter-spacing:-.7px;
+  line-height:1.1;
+
+  letter-spacing:-1px;
 }
 
-.section-subtitle{
+.section-description{
+  max-width:390px;
 
-  margin:
-    7px 0 0;
+  margin:0;
 
-  color:#8a837b;
+  color:#8a8279;
 
-  font-size:13px;
-}
+  font-size:12px;
 
-.result-count{
-
-  color:#8b847d;
-
-  font-size:13px;
-  font-weight:500;
-
-  white-space:nowrap;
+  line-height:1.7;
 }
 
 
 /* =========================================================
-   SEARCH
+   OUTFIT SECTION
 ========================================================= */
 
-.search-wrap{
-
+.outfit-section{
   position:relative;
 
-  margin-bottom:20px;
+  padding:
+    85px 0;
+
+  background:
+    #eee8df;
 }
 
-.search-icon{
+.outfit-section::before{
+  content:"";
 
   position:absolute;
 
-  left:17px;
+  width:320px;
+  height:320px;
+
+  right:-120px;
+  bottom:-100px;
+
+  border-radius:50%;
+
+  background:
+    rgba(184,154,119,.12);
+}
+
+.outfit-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:18px;
+}
+
+.outfit-card{
+  position:relative;
+
+  min-width:0;
+
+  overflow:hidden;
+
+  border-radius:20px;
+
+  background:#fff;
+
+  box-shadow:
+    0 8px 30px rgba(47,38,29,.06);
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+.outfit-card:hover{
+  transform:
+    translateY(-7px);
+
+  box-shadow:
+    var(--shadow-hover);
+}
+
+.outfit-image{
+  position:relative;
+
+  aspect-ratio:4/5;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ddd6ce,
+      #c4b5a4
+    );
+}
+
+.outfit-image img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  transition:
+    transform .55s ease;
+}
+
+.outfit-card:hover
+.outfit-image img{
+  transform:
+    scale(1.045);
+}
+
+.outfit-overlay{
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 45%,
+      rgba(0,0,0,.52)
+    );
+}
+
+.outfit-content{
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:0;
+
+  z-index:2;
+
+  padding:22px;
+
+  color:white;
+}
+
+.outfit-label{
+  font-size:9px;
+  font-weight:800;
+
+  letter-spacing:.14em;
+
+  opacity:.78;
+
+  text-transform:uppercase;
+}
+
+.outfit-name{
+  margin:
+    5px 0 0;
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size:25px;
+
+  line-height:1.1;
+}
+
+.outfit-description{
+  margin-top:7px;
+
+  display:
+    -webkit-box;
+
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+
+  overflow:hidden;
+
+  color:rgba(255,255,255,.8);
+
+  font-size:10px;
+
+  line-height:1.6;
+}
+
+.outfit-empty{
+  grid-column:1/-1;
+
+  padding:70px 20px;
+
+  text-align:center;
+
+  border:
+    1px dashed #d2c7ba;
+
+  border-radius:20px;
+
+  color:#8c8176;
+
+  background:
+    rgba(255,255,255,.35);
+}
+
+
+/* =========================================================
+   PRODUCT SECTION
+========================================================= */
+
+.products-section{
+  padding:
+    90px 0;
+}
+
+.search-box{
+  position:relative;
+
+  margin-bottom:18px;
+}
+
+.search-icon{
+  position:absolute;
+
+  left:18px;
   top:50%;
 
   transform:
     translateY(-50%);
 
-  width:19px;
-  height:19px;
-
-  color:#8c857d;
+  color:#938a81;
 
   pointer-events:none;
 }
 
 .search-input{
-
   width:100%;
-
-  height:58px;
+  height:57px;
 
   padding:
-    0 50px;
+    0 52px;
 
   border:
-    1px solid var(--border);
+    1px solid var(--line);
 
-  border-radius:
-    16px;
-
-  background:#fff;
-
-  color:#171717;
+  border-radius:15px;
 
   outline:none;
 
+  background:#fff;
+
+  color:var(--text);
+
   box-shadow:
-    0 5px 20px rgba(0,0,0,.025);
+    0 6px 22px rgba(0,0,0,.025);
 
   transition:
     border .2s ease,
     box-shadow .2s ease;
 }
 
-.search-input::placeholder{
-  color:#aaa39b;
-}
-
 .search-input:focus{
-
-  border-color:#bcb4aa;
+  border-color:#b9aea2;
 
   box-shadow:
-    0 8px 28px rgba(0,0,0,.055);
+    0 8px 28px rgba(0,0,0,.06);
 }
 
-.search-clear{
+.search-input::placeholder{
+  color:#aaa29a;
+}
 
+.clear-search{
   position:absolute;
 
   right:12px;
@@ -597,29 +980,26 @@ img{
 
   border-radius:50%;
 
-  background:#eeeae4;
-
-  color:#55504a;
+  background:#eee9e3;
 }
 
-.search-clear.show{
+.clear-search.show{
   display:flex;
 }
 
 
 /* =========================================================
-   CATEGORY FILTER
+   CATEGORY
 ========================================================= */
 
 .category-scroll{
-
   overflow-x:auto;
+
+  scrollbar-width:none;
 
   padding:
     2px 1px
-    7px;
-
-  scrollbar-width:none;
+    8px;
 }
 
 .category-scroll::-webkit-scrollbar{
@@ -627,55 +1007,46 @@ img{
 }
 
 .categories{
-
   display:flex;
 
-  gap:9px;
+  gap:8px;
 
   min-width:max-content;
 }
 
 .category-btn{
-
   border:
-    1px solid var(--border);
+    1px solid var(--line);
 
   background:#fff;
 
-  color:#4e4943;
+  color:#5c554d;
 
   padding:
-    11px 18px;
+    10px 17px;
 
   border-radius:999px;
 
-  font-size:13px;
-  font-weight:600;
+  font-size:11px;
+  font-weight:700;
 
   transition:
-    background .2s ease,
-    color .2s ease,
-    border .2s ease,
-    transform .2s ease;
+    .2s ease;
 }
 
 .category-btn:hover{
-
-  transform:
-    translateY(-1px);
-
-  border-color:#bdb5ab;
+  border-color:#bdb2a6;
 }
 
 .category-btn.active{
-
-  background:#171717;
   color:#fff;
 
-  border-color:#171717;
+  border-color:var(--black);
+
+  background:var(--black);
 
   box-shadow:
-    0 5px 15px rgba(0,0,0,.12);
+    0 5px 14px rgba(0,0,0,.12);
 }
 
 
@@ -684,145 +1055,76 @@ img{
 ========================================================= */
 
 .product-grid{
-
   display:grid;
 
   grid-template-columns:
     repeat(4,minmax(0,1fr));
 
   gap:
-    24px 18px;
+    22px 17px;
 
-  margin-top:30px;
+  margin-top:28px;
 }
 
-
-/* =========================================================
-   PRODUCT CARD
-========================================================= */
-
 .product-card{
+  overflow:hidden;
 
-  position:relative;
+  border:
+    1px solid var(--line);
 
-  min-width:0;
+  border-radius:18px;
 
   background:#fff;
 
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    18px;
-
-  overflow:hidden;
-
-  box-shadow:
-    0 4px 18px rgba(0,0,0,.025);
-
   transition:
-    transform .28s ease,
-    box-shadow .28s ease,
-    border-color .28s ease;
+    transform .3s ease,
+    box-shadow .3s ease,
+    border .3s ease;
 }
 
 .product-card:hover{
-
   transform:
     translateY(-6px);
 
-  border-color:#d5cec5;
+  border-color:#d2c8bd;
 
   box-shadow:
-    0 18px 45px rgba(0,0,0,.10);
+    var(--shadow-hover);
 }
 
-
-/* =========================================================
-   PRODUCT IMAGE
-========================================================= */
-
 .product-image-wrap{
-
   position:relative;
 
   aspect-ratio:
-    4 / 5;
+    4/5;
 
   overflow:hidden;
 
   background:
-    linear-gradient(
-      135deg,
-      #f0ede8,
-      #e8e3dc
-    );
+    #eee9e2;
 }
 
 .product-image{
-
   width:100%;
   height:100%;
 
   object-fit:cover;
 
   transition:
-    transform .55s cubic-bezier(.2,.7,.2,1);
+    transform .55s ease;
 }
 
 .product-card:hover
 .product-image{
-
   transform:
     scale(1.045);
 }
 
-.image-fallback{
-
-  position:absolute;
-  inset:0;
-
-  display:none;
-
-  align-items:center;
-  justify-content:center;
-
-  flex-direction:column;
-
-  gap:8px;
-
-  color:#a39c94;
-
-  font-size:12px;
-}
-
-.image-fallback-icon{
-  font-size:30px;
-}
-
-.product-image-wrap.image-error
-.product-image{
-  display:none;
-}
-
-.product-image-wrap.image-error
-.image-fallback{
-  display:flex;
-}
-
-
-/* =========================================================
-   PRODUCT BADGE
-========================================================= */
-
 .product-badge{
-
   position:absolute;
 
-  top:12px;
-  left:12px;
-
-  z-index:2;
+  left:11px;
+  top:11px;
 
   padding:
     7px 10px;
@@ -830,298 +1132,162 @@ img{
   border-radius:999px;
 
   background:
-    rgba(255,255,255,.92);
+    rgba(255,255,255,.93);
 
   backdrop-filter:
-    blur(8px);
+    blur(10px);
 
-  color:#403b36;
+  color:#48413a;
 
-  font-size:10px;
-  font-weight:700;
+  font-size:9px;
+  font-weight:800;
 
-  letter-spacing:.04em;
+  letter-spacing:.06em;
+
+  text-transform:uppercase;
 
   box-shadow:
     0 3px 12px rgba(0,0,0,.08);
 }
 
-
-/* =========================================================
-   CARD CONTENT
-========================================================= */
-
-.product-content{
-
+.product-info{
   padding:
-    17px 16px
-    16px;
+    16px 15px
+    15px;
 }
 
 .product-category{
-
   margin-bottom:7px;
 
-  color:#968f87;
+  color:#a08f7d;
 
-  font-size:10px;
-  font-weight:700;
+  font-size:9px;
+  font-weight:800;
 
-  text-transform:
-    uppercase;
+  letter-spacing:.1em;
 
-  letter-spacing:
-    .09em;
+  text-transform:uppercase;
 }
 
 .product-name{
-
-  display:
-    -webkit-box;
-
-  -webkit-box-orient:
-    vertical;
-
-  -webkit-line-clamp:2;
-
-  overflow:hidden;
-
-  min-height:
-    42px;
-
   margin:0;
 
-  color:#1c1a18;
-
-  font-size:14px;
-  font-weight:700;
-
-  line-height:1.5;
-}
-
-.product-description{
+  min-height:43px;
 
   display:
     -webkit-box;
 
-  -webkit-box-orient:
-    vertical;
-
   -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
 
   overflow:hidden;
 
-  min-height:36px;
+  color:#191817;
 
-  margin:
-    8px 0 0;
+  font-size:13px;
+  font-weight:700;
 
-  color:#8a837b;
-
-  font-size:11px;
-
-  line-height:1.65;
+  line-height:1.55;
 }
 
 .product-bottom{
-
   display:flex;
 
-  align-items:end;
+  align-items:center;
   justify-content:space-between;
 
   gap:10px;
 
-  margin-top:15px;
+  margin-top:14px;
 }
 
 .product-price{
-
   color:#171717;
 
-  font-size:17px;
+  font-size:16px;
   font-weight:800;
-
-  white-space:nowrap;
 }
 
 .product-price.empty{
+  color:#aaa19a;
 
-  color:#aaa39c;
-
-  font-size:12px;
+  font-size:11px;
   font-weight:500;
 }
 
-.product-button{
+.product-link{
+  display:inline-flex;
 
-  display:flex;
   align-items:center;
   justify-content:center;
 
   gap:5px;
 
-  min-height:38px;
+  min-height:36px;
 
   padding:
-    9px 13px;
+    0 12px;
 
-  border-radius:
-    10px;
+  border-radius:9px;
 
-  background:#171717;
-  color:#fff;
+  background:var(--black);
 
-  font-size:11px;
+  color:white;
+
+  font-size:10px;
   font-weight:700;
 
   transition:
-    background .2s ease,
-    transform .2s ease;
+    transform .2s ease,
+    background .2s ease;
 }
 
-.product-button:hover{
-
-  background:#303030;
+.product-link:hover{
+  background:#333;
 
   transform:
     translateY(-1px);
 }
 
-.product-button svg{
-
-  width:13px;
-  height:13px;
-}
-
 
 /* =========================================================
-   LOADING SKELETON
+   EMPTY
 ========================================================= */
 
-.skeleton-card{
-
-  background:#fff;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    18px;
-
-  overflow:hidden;
-}
-
-.skeleton{
-
-  background:
-    linear-gradient(
-      90deg,
-      #eeeae5 25%,
-      #f7f5f1 37%,
-      #eeeae5 63%
-    );
-
-  background-size:
-    400% 100%;
-
-  animation:
-    skeletonLoading 1.4s ease infinite;
-}
-
-.skeleton-image{
-
-  aspect-ratio:
-    4 / 5;
-}
-
-.skeleton-line{
-
-  height:12px;
-
-  margin:14px 16px 0;
-
-  border-radius:6px;
-}
-
-.skeleton-line.short{
-  width:45%;
-}
-
-.skeleton-line.medium{
-  width:75%;
-}
-
-.skeleton-button{
-
-  height:38px;
-
-  margin:
-    16px;
-
-  border-radius:10px;
-}
-
-@keyframes skeletonLoading{
-
-  0%{
-    background-position:
-      100% 0;
-  }
-
-  100%{
-    background-position:
-      -100% 0;
-  }
-}
-
-
-/* =========================================================
-   EMPTY STATE
-========================================================= */
-
-.empty-state{
-
-  grid-column:
-    1 / -1;
+.empty{
+  grid-column:1/-1;
 
   padding:
-    80px 25px;
+    75px 20px;
 
-  text-align:center;
+  border:
+    1px solid var(--line);
+
+  border-radius:20px;
 
   background:#fff;
 
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    20px;
+  text-align:center;
 }
 
 .empty-icon{
-
   width:58px;
   height:58px;
 
-  margin:
-    0 auto 17px;
-
-  border-radius:50%;
-
-  background:#f0ece6;
+  margin:0 auto 15px;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  color:#777069;
+  border-radius:50%;
 
-  font-size:24px;
+  background:#f0ebe4;
+
+  font-size:23px;
 }
 
 .empty-title{
-
   margin:0;
 
   font-family:
@@ -1129,19 +1295,18 @@ img{
     Georgia,
     serif;
 
-  font-size:24px;
+  font-size:25px;
 }
 
 .empty-text{
-
   max-width:420px;
 
   margin:
-    9px auto 0;
+    8px auto 0;
 
-  color:#8d867f;
+  color:#8c847c;
 
-  font-size:13px;
+  font-size:12px;
 
   line-height:1.7;
 }
@@ -1151,53 +1316,74 @@ img{
    FOOTER
 ========================================================= */
 
-.site-footer{
-
-  border-top:
-    1px solid var(--border);
-
+.footer{
   padding:
-    45px 0
+    55px 0
     35px;
 
-  background:#f2efe9;
+  background:#191817;
+
+  color:white;
 }
 
-.footer-inner{
-
+.footer-top{
   display:flex;
 
-  align-items:center;
+  align-items:start;
   justify-content:space-between;
 
-  gap:25px;
+  gap:40px;
+
+  padding-bottom:40px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.1);
 }
 
 .footer-brand{
-
   font-family:
     "Playfair Display",
     Georgia,
     serif;
 
-  font-size:22px;
-  font-weight:700;
+  font-size:28px;
 }
 
-.footer-text{
+.footer-description{
+  max-width:360px;
 
-  margin-top:5px;
+  margin-top:8px;
 
-  color:#8c857d;
-
-  font-size:12px;
-}
-
-.footer-right{
-
-  color:#8c857d;
+  color:#aaa39c;
 
   font-size:11px;
+
+  line-height:1.7;
+}
+
+.footer-links{
+  display:flex;
+
+  gap:25px;
+
+  color:#c6bfb7;
+
+  font-size:11px;
+  font-weight:600;
+}
+
+.footer-bottom{
+  display:flex;
+
+  justify-content:space-between;
+
+  gap:20px;
+
+  padding-top:22px;
+
+  color:#77716a;
+
+  font-size:10px;
 }
 
 
@@ -1206,7 +1392,6 @@ img{
 ========================================================= */
 
 .back-top{
-
   position:fixed;
 
   right:22px;
@@ -1215,19 +1400,19 @@ img{
   width:45px;
   height:45px;
 
-  border:0;
-
-  border-radius:50%;
-
-  background:#171717;
-  color:#fff;
-
   display:flex;
   align-items:center;
   justify-content:center;
 
+  border:0;
+
+  border-radius:50%;
+
+  background:var(--black);
+  color:white;
+
   box-shadow:
-    0 10px 30px rgba(0,0,0,.18);
+    0 12px 30px rgba(0,0,0,.2);
 
   opacity:0;
   visibility:hidden;
@@ -1236,15 +1421,12 @@ img{
     translateY(10px);
 
   transition:
-    opacity .25s ease,
-    visibility .25s ease,
-    transform .25s ease;
+    .25s ease;
 
-  z-index:90;
+  z-index:900;
 }
 
 .back-top.show{
-
   opacity:1;
   visibility:visible;
 
@@ -1252,289 +1434,524 @@ img{
     translateY(0);
 }
 
-.back-top svg{
 
-  width:18px;
-  height:18px;
+/* =========================================================
+   SKELETON
+========================================================= */
+
+.skeleton{
+  background:
+    linear-gradient(
+      90deg,
+      #eee9e3 25%,
+      #f8f5f1 38%,
+      #eee9e3 63%
+    );
+
+  background-size:
+    400% 100%;
+
+  animation:
+    loading 1.35s ease infinite;
+}
+
+@keyframes loading{
+  from{
+    background-position:
+      100% 0;
+  }
+
+  to{
+    background-position:
+      -100% 0;
+  }
+}
+
+.skeleton-card{
+  overflow:hidden;
+
+  border:
+    1px solid var(--line);
+
+  border-radius:18px;
+
+  background:#fff;
+}
+
+.skeleton-image{
+  aspect-ratio:4/5;
+}
+
+.skeleton-line{
+  height:12px;
+
+  margin:
+    14px 15px 0;
+
+  border-radius:8px;
+}
+
+.skeleton-line.short{
+  width:40%;
+}
+
+.skeleton-line.long{
+  width:75%;
+}
+
+.skeleton-button{
+  height:36px;
+
+  margin:15px;
+
+  border-radius:9px;
 }
 
 
 /* =========================================================
-   RESPONSIVE — LARGE TABLET
+   RESPONSIVE
 ========================================================= */
 
 @media(max-width:1050px){
 
-  .product-grid{
+  .hero-grid{
+    grid-template-columns:
+      1fr .8fr;
 
+    gap:35px;
+  }
+
+  .hero-title{
+    font-size:
+      clamp(48px,6vw,68px);
+  }
+
+  .product-grid{
     grid-template-columns:
       repeat(3,minmax(0,1fr));
   }
 
-  .hero-grid{
-
+  .outfit-grid{
     grid-template-columns:
-      1fr;
-  }
-
-  .hero-side{
-
-    max-width:600px;
+      repeat(3,minmax(0,1fr));
   }
 
 }
 
 
 /* =========================================================
-   RESPONSIVE — TABLET
+   TABLET
 ========================================================= */
 
-@media(max-width:760px){
+@media(max-width:780px){
 
   .container{
-
     width:
-      min(
-        100% - 28px,
-        var(--container)
-      );
+      calc(100% - 30px);
   }
 
   .header-inner{
-
     min-height:68px;
   }
 
-  .header-nav{
+  .nav,
+  .header-action{
     display:none;
   }
 
-  .logo-text{
-    font-size:20px;
+  .mobile-menu{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
   }
 
-  .logo-mark{
+  .hero{
+    padding:
+      48px 0
+      40px;
+  }
 
+  .hero-grid{
+    grid-template-columns:1fr;
+
+    gap:35px;
+  }
+
+  .hero-title{
+    font-size:
+      clamp(45px,12vw,65px);
+
+    letter-spacing:
+      -2px;
+  }
+
+  .hero-description{
+    font-size:13px;
+  }
+
+  .hero-visual{
+    min-height:
+      380px;
+  }
+
+  .hero-frame{
+    position:relative;
+
+    width:
+      calc(100% - 30px);
+
+    height:370px;
+
+    margin-left:auto;
+  }
+
+  .hero-card{
+    left:0;
+    bottom:20px;
+  }
+
+  .section{
+    padding:
+      60px 0;
+  }
+
+  .section-head{
+    align-items:start;
+
+    flex-direction:column;
+
+    gap:5px;
+  }
+
+  .section-title{
+    font-size:32px;
+  }
+
+  .outfit-section{
+    padding:
+      60px 0;
+  }
+
+  .outfit-grid{
+    display:flex;
+
+    overflow-x:auto;
+
+    gap:12px;
+
+    padding:
+      3px 1px
+      12px;
+
+    scroll-snap-type:
+      x mandatory;
+
+    scrollbar-width:none;
+  }
+
+  .outfit-grid::-webkit-scrollbar{
+    display:none;
+  }
+
+  .outfit-card{
+    flex:
+      0 0 76%;
+
+    scroll-snap-align:start;
+  }
+
+  .product-grid{
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+
+    gap:
+      15px 10px;
+  }
+
+  .products-section{
+    padding:
+      65px 0;
+  }
+
+  .product-info{
+    padding:
+      13px 11px
+      12px;
+  }
+
+  .product-name{
+    font-size:11px;
+
+    min-height:35px;
+  }
+
+  .product-price{
+    font-size:14px;
+  }
+
+  .product-link{
+    min-height:34px;
+
+    padding:
+      0 9px;
+
+    font-size:9px;
+  }
+
+  .footer-top{
+    flex-direction:column;
+
+    gap:25px;
+  }
+
+  .footer-links{
+    flex-wrap:wrap;
+  }
+
+}
+
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+@media(max-width:480px){
+
+  body{
+    font-size:14px;
+  }
+
+  .container{
+    width:
+      calc(100% - 22px);
+  }
+
+  .brand-mark{
     width:38px;
     height:38px;
 
     font-size:18px;
   }
 
-  .header-badge{
+  .brand-name{
+    font-size:19px;
+  }
 
-    padding:
-      8px 10px;
-
-    font-size:10px;
+  .brand-name span{
+    font-size:6px;
   }
 
   .hero{
+    padding-top:
+      35px;
+  }
 
-    padding:
-      48px 0
-      30px;
+  .eyebrow{
+    margin-bottom:15px;
+
+    font-size:9px;
   }
 
   .hero-title{
-
     font-size:
-      clamp(40px,12vw,58px);
+      43px;
+
+    line-height:
+      1.02;
 
     letter-spacing:
-      -1.8px;
+      -1.5px;
   }
 
   .hero-description{
+    margin-top:18px;
 
-    font-size:13px;
+    font-size:12px;
 
     line-height:1.75;
   }
 
-  .shop{
+  .hero-actions{
+    width:100%;
 
-    padding-bottom:
-      60px;
+    margin-top:22px;
   }
 
-  .shop-top{
+  .primary-btn,
+  .secondary-btn{
+    flex:1;
 
-    align-items:start;
+    min-height:44px;
 
+    padding:
+      0 12px;
+
+    font-size:10px;
+  }
+
+  .hero-visual{
+    min-height:
+      320px;
+  }
+
+  .hero-frame{
+    width:
+      calc(100% - 20px);
+
+    height:315px;
+
+    border-radius:
+      150px 150px 20px 20px;
+  }
+
+  .hero-card{
+    width:185px;
+
+    left:0;
+    bottom:12px;
+
+    padding:15px;
+  }
+
+  .hero-card-title{
+    font-size:18px;
+  }
+
+  .hero-card-text{
+    font-size:9px;
+  }
+
+  .section{
+    padding:
+      48px 0;
+  }
+
+  .section-kicker{
+    font-size:8px;
+  }
+
+  .section-title{
+    font-size:29px;
+  }
+
+  .section-description{
+    font-size:10px;
+  }
+
+  .outfit-section{
+    padding:
+      50px 0;
+  }
+
+  .outfit-card{
+    flex-basis:
+      82%;
+  }
+
+  .outfit-name{
+    font-size:22px;
+  }
+
+  .products-section{
+    padding:
+      50px 0;
+  }
+
+  .search-input{
+    height:52px;
+
+    font-size:12px;
+  }
+
+  .category-btn{
+    padding:
+      9px 14px;
+
+    font-size:10px;
+  }
+
+  .product-grid{
+    gap:
+      12px 8px;
+  }
+
+  .product-image-wrap{
+    aspect-ratio:
+      3/4;
+  }
+
+  .product-badge{
+    left:7px;
+    top:7px;
+
+    padding:
+      5px 7px;
+
+    font-size:7px;
+  }
+
+  .product-bottom{
+    align-items:stretch;
+
+    flex-direction:column;
+
+    gap:8px;
+  }
+
+  .product-link{
+    width:100%;
+  }
+
+  .product-price{
+    font-size:13px;
+  }
+
+  .footer{
+    padding:
+      45px 0
+      25px;
+  }
+
+  .footer-brand{
+    font-size:24px;
+  }
+
+  .footer-bottom{
     flex-direction:column;
 
     gap:7px;
   }
 
-  .section-heading{
-    font-size:30px;
-  }
-
-  .product-grid{
-
-    grid-template-columns:
-      repeat(2,minmax(0,1fr));
-
-    gap:
-      17px 12px;
-  }
-
-  .product-content{
-
-    padding:
-      14px 12px
-      13px;
-  }
-
-  .product-name{
-
-    font-size:12px;
-
-    min-height:
-      36px;
-  }
-
-  .product-description{
-    font-size:10px;
-  }
-
-  .product-price{
-    font-size:14px;
-  }
-
-  .product-button{
-
-    padding:
-      8px 9px;
-
-    font-size:10px;
-  }
-
-  .footer-inner{
-
-    align-items:start;
-
-    flex-direction:column;
+  .back-top{
+    right:15px;
+    bottom:
+      calc(15px + env(safe-area-inset-bottom));
   }
 
 }
 
 
 /* =========================================================
-   RESPONSIVE — MOBILE
+   VERY SMALL PHONE
 ========================================================= */
 
-@media(max-width:430px){
-
-  .container{
-
-    width:
-      calc(100% - 22px);
-  }
-
-  .header-badge{
-    display:none;
-  }
-
-  .hero{
-
-    padding-top:
-      38px;
-  }
-
-  .hero-eyebrow{
-
-    font-size:10px;
-  }
-
-  .hero-title{
-
-    font-size:42px;
-
-    letter-spacing:
-      -1.3px;
-  }
-
-  .hero-card{
-
-    padding:19px;
-  }
-
-  .search-input{
-
-    height:53px;
-
-    border-radius:
-      14px;
-  }
-
-  .category-btn{
-
-    padding:
-      10px 15px;
-
-    font-size:12px;
-  }
+@media(max-width:350px){
 
   .product-grid{
-
-    gap:
-      14px 9px;
+    grid-template-columns:
+      1fr;
   }
 
   .product-image-wrap{
-
     aspect-ratio:
-      3 / 4;
+      4/5;
   }
 
-  .product-badge{
-
-    top:8px;
-    left:8px;
-
-    padding:
-      6px 8px;
-
-    font-size:8px;
+  .hero-title{
+    font-size:39px;
   }
 
-  .product-bottom{
-
-    align-items:stretch;
-
-    flex-direction:column;
-
-    gap:9px;
-  }
-
-  .product-button{
-
-    width:100%;
-  }
-
-  .product-price{
-
-    font-size:14px;
-  }
-
-}
-
-
-/* =========================================================
-   ACCESSIBILITY
-========================================================= */
-
-button:focus-visible,
-a:focus-visible,
-input:focus-visible{
-
-  outline:
-    3px solid rgba(0,0,0,.15);
-
-  outline-offset:
-    3px;
 }
 
 </style>
@@ -1548,28 +1965,38 @@ input:focus-visible{
      HEADER
 ========================================================= -->
 
-<header class="site-header">
+<header class="header">
 
   <div class="container header-inner">
 
     <a
       href="#top"
-      class="logo"
-      aria-label="Mặc Gì Đây?"
+      class="brand"
+      aria-label="Mi Nơ Có Gu"
     >
 
-      <div class="logo-mark">
+      <div class="brand-mark">
         M
       </div>
 
-      <div class="logo-text">
-        Mặc Gì Đây?
+      <div class="brand-name">
+
+        Mi Nơ Có Gu
+
+        <span>
+          Fashion · Outfit · Inspiration
+        </span>
+
       </div>
 
     </a>
 
 
-    <nav class="header-nav">
+    <nav class="nav">
+
+      <a href="#outfits">
+        Outfit
+      </a>
 
       <a href="#products">
         Sản phẩm
@@ -1582,13 +2009,44 @@ input:focus-visible{
     </nav>
 
 
-    <div class="header-badge">
+    <div class="header-action">
 
-      <span class="header-badge-dot"></span>
+      <span class="header-dot"></span>
 
-      Đang cập nhật sản phẩm
+      New picks
 
     </div>
+
+
+    <button
+      class="mobile-menu"
+      id="mobileMenu"
+      aria-label="Mở menu"
+      type="button"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+
+        <path
+          d="M4 7h16"
+        />
+
+        <path
+          d="M4 12h16"
+        />
+
+        <path
+          d="M4 17h16"
+        />
+
+      </svg>
+
+    </button>
 
   </div>
 
@@ -1601,52 +2059,89 @@ input:focus-visible{
 
 <main id="top">
 
-  <section class="hero">
+<section class="hero">
 
-    <div class="container hero-grid">
+  <div class="container hero-grid">
 
-      <div>
 
-        <div class="hero-eyebrow">
-          Fashion picks
-        </div>
+    <div class="hero-copy">
 
-        <h1 class="hero-title">
+      <div class="eyebrow">
+        Mi Nơ Có Gu
+      </div>
 
-          Mặc đẹp hơn.
-          <br>
 
-          <span>Đơn giản hơn.</span>
+      <h1 class="hero-title">
 
-        </h1>
+        Mặc gì hôm nay?
+        <br>
 
-        <p class="hero-description">
+        <em>Cứ để Mi Nơ chọn.</em>
 
-          Những món đồ thời trang được chọn lọc
-          để bạn dễ dàng tìm kiếm, tham khảo
-          và chọn được món phù hợp với phong cách
-          của mình.
+      </h1>
 
-        </p>
+
+      <p class="hero-description">
+
+        Một góc nhỏ dành cho những người thích
+        mặc đẹp nhưng không muốn mất quá nhiều
+        thời gian để tìm kiếm. Khám phá outfit,
+        sản phẩm và những món đồ có gu được
+        chọn lọc dành cho bạn.
+
+      </p>
+
+
+      <div class="hero-actions">
+
+        <a
+          href="#outfits"
+          class="primary-btn"
+        >
+          Khám phá outfit
+          →
+        </a>
+
+        <a
+          href="#products"
+          class="secondary-btn"
+        >
+          Xem sản phẩm
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="hero-visual">
+
+      <div class="hero-frame">
+
+        <div
+          class="hero-fashion-shape"
+        ></div>
 
       </div>
 
 
-      <div class="hero-side">
+      <div class="hero-card">
 
-        <div class="hero-card">
+        <div class="hero-card-label">
+          Today's mood
+        </div>
 
-          <div class="hero-card-title">
-            ✦ Khám phá bộ sưu tập
-          </div>
+        <div class="hero-card-title">
+          Có gu,
+          <br>
+          không cần cố.
+        </div>
 
-          <div class="hero-card-text">
+        <div class="hero-card-text">
 
-            Tìm kiếm sản phẩm theo tên hoặc
-            danh mục. Bấm vào sản phẩm để xem
-            nguồn mua và lựa chọn phù hợp.
-
-          </div>
+          Những lựa chọn đơn giản
+          nhưng đủ để outfit của bạn
+          trở nên khác biệt.
 
         </div>
 
@@ -1654,133 +2149,182 @@ input:focus-visible{
 
     </div>
 
-  </section>
+  </div>
+
+</section>
 
 
-  <!-- =====================================================
-       SHOP
-  ====================================================== -->
+<!-- =========================================================
+     OUTFIT
+========================================================= -->
 
-  <section
-    id="products"
-    class="shop"
-  >
+<section
+  id="outfits"
+  class="outfit-section"
+>
 
-    <div class="container">
+  <div class="container">
 
+    <div class="section-head">
 
-      <!-- TOP -->
+      <div>
 
-      <div class="shop-top">
-
-        <div>
-
-          <h2 class="section-heading">
-            Sản phẩm
-          </h2>
-
-          <p class="section-subtitle">
-            Những món đồ đang được chọn lọc
-          </p>
-
+        <div class="section-kicker">
+          Style inspiration
         </div>
 
-        <div
-          id="resultCount"
-          class="result-count"
-        >
-          Đang tải...
-        </div>
+        <h2 class="section-title">
+          Hôm nay mặc gì?
+        </h2>
 
       </div>
 
+      <p class="section-description">
 
-      <!-- SEARCH -->
+        Một vài outfit được phối sẵn
+        để bạn không phải suy nghĩ quá nhiều.
 
-      <div class="search-wrap">
+      </p>
 
-        <svg
-          class="search-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          aria-hidden="true"
-        >
-          <circle
-            cx="11"
-            cy="11"
-            r="7"
-          ></circle>
-
-          <path
-            d="m20 20-4-4"
-          ></path>
-
-        </svg>
+    </div>
 
 
-        <input
-          id="searchInput"
-          class="search-input"
-          type="search"
-          autocomplete="off"
-          placeholder="Tìm sản phẩm..."
-          aria-label="Tìm sản phẩm"
-        >
+    <div
+      id="outfitGrid"
+      class="outfit-grid"
+    >
 
+      <div class="outfit-empty">
+        Đang tải outfit...
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     PRODUCTS
+========================================================= -->
+
+<section
+  id="products"
+  class="products-section"
+>
+
+  <div class="container">
+
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="section-kicker">
+          Shop the look
+        </div>
+
+        <h2 class="section-title">
+          Những món đồ có gu
+        </h2>
+
+      </div>
+
+      <p
+        id="resultCount"
+        class="section-description"
+      >
+        Đang tải sản phẩm...
+      </p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+      <svg
+        class="search-icon"
+        width="19"
+        height="19"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+
+        <circle
+          cx="11"
+          cy="11"
+          r="7"
+        />
+
+        <path
+          d="m20 20-4-4"
+        />
+
+      </svg>
+
+
+      <input
+        id="searchInput"
+        class="search-input"
+        type="search"
+        autocomplete="off"
+        placeholder="Tìm kiếm áo, quần, giày, túi..."
+        aria-label="Tìm kiếm sản phẩm"
+      >
+
+
+      <button
+        id="searchClear"
+        class="clear-search"
+        type="button"
+        aria-label="Xoá tìm kiếm"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- CATEGORY -->
+
+    <div
+      id="categories"
+      class="category-scroll"
+    >
+
+      <div
+        id="categoryList"
+        class="categories"
+      >
 
         <button
-          id="searchClear"
-          class="search-clear"
+          class="category-btn active"
+          data-category="all"
           type="button"
-          aria-label="Xoá tìm kiếm"
         >
-          ×
+          Tất cả
         </button>
 
       </div>
 
-
-      <!-- CATEGORIES -->
-
-      <div
-        id="categories"
-        class="category-scroll"
-      >
-
-        <div
-          id="categoryList"
-          class="categories"
-        >
-
-          <button
-            class="category-btn active"
-            data-category="all"
-            type="button"
-          >
-            Tất cả
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- PRODUCTS -->
-
-      <div
-        id="productGrid"
-        class="product-grid"
-      >
-
-        <!-- Skeletons được JS thay thế -->
-
-      </div>
-
     </div>
 
-  </section>
+
+    <!-- PRODUCTS -->
+
+    <div
+      id="productGrid"
+      class="product-grid"
+    ></div>
+
+  </div>
+
+</section>
 
 </main>
 
@@ -1789,24 +2333,58 @@ input:focus-visible{
      FOOTER
 ========================================================= -->
 
-<footer class="site-footer">
+<footer class="footer">
 
-  <div class="container footer-inner">
+  <div class="container">
 
-    <div>
+    <div class="footer-top">
 
-      <div class="footer-brand">
-        Mặc Gì Đây?
+      <div>
+
+        <div class="footer-brand">
+          Mi Nơ Có Gu
+        </div>
+
+        <div class="footer-description">
+
+          Nơi những món đồ thời trang,
+          outfit và cảm hứng mặc đẹp
+          được chọn lọc dành cho bạn.
+
+        </div>
+
       </div>
 
-      <div class="footer-text">
-        Fashion picks dành cho bạn.
+
+      <div class="footer-links">
+
+        <a href="#outfits">
+          Outfit
+        </a>
+
+        <a href="#products">
+          Sản phẩm
+        </a>
+
+        <a href="#categories">
+          Danh mục
+        </a>
+
       </div>
 
     </div>
 
-    <div class="footer-right">
-      © 2026 Mặc Gì Đây?
+
+    <div class="footer-bottom">
+
+      <div>
+        © 2026 Mi Nơ Có Gu
+      </div>
+
+      <div>
+        Fashion · Outfit · Inspiration
+      </div>
+
     </div>
 
   </div>
@@ -1815,7 +2393,7 @@ input:focus-visible{
 
 
 <!-- =========================================================
-     BACK TO TOP
+     BACK TOP
 ========================================================= -->
 
 <button
@@ -1825,16 +2403,7 @@ input:focus-visible{
   aria-label="Lên đầu trang"
 >
 
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-  >
-    <path
-      d="M18 15l-6-6-6 6"
-    ></path>
-  </svg>
+  ↑
 
 </button>
 
@@ -1865,6 +2434,8 @@ const db =
 let products = [];
 
 let categories = [];
+
+let outfits = [];
 
 let activeCategory = "all";
 
@@ -1913,48 +2484,12 @@ function normalizeText(value){
 }
 
 
-function formatPrice(value){
-
-  if(
-    value === null ||
-    value === undefined ||
-    value === ""
-  ){
-    return "";
-  }
-
-  return String(value);
-
-}
-
-
-function getProductLink(product){
+function getLink(product){
 
   return (
     product.affiliate_url ||
     product.tiktok_url ||
     ""
-  );
-
-}
-
-
-/* =========================================================
-   IMAGE FALLBACK
-========================================================= */
-
-function handleImageError(image){
-
-  const wrap =
-    image.closest(
-      ".product-image-wrap"
-    );
-
-  if(!wrap)
-    return;
-
-  wrap.classList.add(
-    "image-error"
   );
 
 }
@@ -1968,44 +2503,41 @@ function renderSkeleton(){
 
   $("productGrid").innerHTML =
 
-    Array
-      .from(
-        {
-          length:8
-        }
-      )
-      .map(
-        () => `
+    Array.from(
+      {length:8}
+    )
+    .map(
+      () => `
 
-          <div class="skeleton-card">
+        <div class="skeleton-card">
 
-            <div
-              class="skeleton skeleton-image"
-            ></div>
+          <div
+            class="skeleton skeleton-image"
+          ></div>
 
-            <div
-              class="skeleton skeleton-line medium"
-            ></div>
+          <div
+            class="skeleton skeleton-line long"
+          ></div>
 
-            <div
-              class="skeleton skeleton-line short"
-            ></div>
+          <div
+            class="skeleton skeleton-line short"
+          ></div>
 
-            <div
-              class="skeleton skeleton-button"
-            ></div>
+          <div
+            class="skeleton skeleton-button"
+          ></div>
 
-          </div>
+        </div>
 
-        `
-      )
-      .join("");
+      `
+    )
+    .join("");
 
 }
 
 
 /* =========================================================
-   LOAD DATA
+   LOAD ALL DATA
 ========================================================= */
 
 async function loadData(){
@@ -2015,90 +2547,108 @@ async function loadData(){
   try{
 
     const [
-      categoriesResult,
-      productsResult
-    ] =
-      await Promise.all([
+      categoryResult,
+      productResult,
+      outfitResult
+    ] = await Promise.all([
 
-        db
-          .from("categories")
-          .select("*")
-          .order(
-            "created_at",
-            {
-              ascending:true
-            }
-          ),
+      db
+        .from("categories")
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:true
+          }
+        ),
 
-        db
-          .from("products")
-          .select(
-            "*,categories(name,slug)"
-          )
-          .eq(
-            "is_active",
-            true
-          )
-          .order(
-            "created_at",
-            {
-              ascending:false
-            }
-          )
+      db
+        .from("products")
+        .select(
+          "*, categories(name,slug)"
+        )
+        .eq(
+          "is_active",
+          true
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        ),
 
-      ]);
+      db
+        .from("outfits")
+        .select(
+          "*"
+        )
+        .eq(
+          "is_active",
+          true
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+
+    ]);
 
 
-    if(
-      categoriesResult.error
-    ){
-      throw categoriesResult.error;
-    }
+    if(categoryResult.error)
+      throw categoryResult.error;
 
 
-    if(
-      productsResult.error
-    ){
-      throw productsResult.error;
-    }
+    if(productResult.error)
+      throw productResult.error;
+
+
+    if(outfitResult.error)
+      throw outfitResult.error;
 
 
     categories =
-      categoriesResult.data ||
-      [];
+      categoryResult.data || [];
+
 
     products =
-      productsResult.data ||
-      [];
+      productResult.data || [];
+
+
+    outfits =
+      outfitResult.data || [];
 
 
     renderCategories();
 
     renderProducts();
 
+    renderOutfits();
+
 
   }catch(error){
 
     console.error(
-      "LOAD WEBSITE ERROR:",
+      "LOAD ERROR:",
       error
     );
 
 
     $("productGrid").innerHTML = `
 
-      <div class="empty-state">
+      <div class="empty">
 
         <div class="empty-icon">
           !
         </div>
 
         <h3 class="empty-title">
-          Không thể tải sản phẩm
+          Không thể tải dữ liệu
         </h3>
 
         <p class="empty-text">
-          Có lỗi khi kết nối tới hệ thống.
           Vui lòng tải lại trang sau ít phút.
         </p>
 
@@ -2106,8 +2656,14 @@ async function loadData(){
 
     `;
 
-    $("resultCount").textContent =
-      "Không thể tải dữ liệu";
+
+    $("outfitGrid").innerHTML = `
+
+      <div class="outfit-empty">
+        Chưa thể tải outfit.
+      </div>
+
+    `;
 
   }
 
@@ -2115,13 +2671,14 @@ async function loadData(){
 
 
 /* =========================================================
-   RENDER CATEGORIES
+   CATEGORIES
 ========================================================= */
 
 function renderCategories(){
 
   const list =
     $("categoryList");
+
 
   list.innerHTML = `
 
@@ -2151,27 +2708,34 @@ function renderCategories(){
           "button"
         );
 
+
       button.type =
         "button";
 
+
       button.className =
-        "category-btn" +
-        (
-          String(
-            activeCategory
-          ) ===
-          String(
-            category.id
-          )
-            ? " active"
-            : ""
+        "category-btn";
+
+
+      if(
+        String(activeCategory) ===
+        String(category.id)
+      ){
+
+        button.classList.add(
+          "active"
         );
+
+      }
+
 
       button.dataset.category =
         category.id;
 
+
       button.textContent =
         category.name;
+
 
       list.appendChild(
         button
@@ -2184,7 +2748,7 @@ function renderCategories(){
 
 
 /* =========================================================
-   FILTER PRODUCTS
+   FILTER
 ========================================================= */
 
 function getFilteredProducts(){
@@ -2227,10 +2791,10 @@ function getFilteredProducts(){
         product.categories?.name
 
       ]
-        .map(
-          normalizeText
-        )
-        .join(" ");
+      .map(
+        normalizeText
+      )
+      .join(" ");
 
 
       return searchable.includes(
@@ -2244,7 +2808,7 @@ function getFilteredProducts(){
 
 
 /* =========================================================
-   RENDER PRODUCTS
+   PRODUCT RENDER
 ========================================================= */
 
 function renderProducts(){
@@ -2262,19 +2826,19 @@ function renderProducts(){
 
     $("productGrid").innerHTML = `
 
-      <div class="empty-state">
+      <div class="empty">
 
         <div class="empty-icon">
           ⌕
         </div>
 
         <h3 class="empty-title">
-          Không tìm thấy sản phẩm
+          Không tìm thấy món đồ này
         </h3>
 
         <p class="empty-text">
-          Thử tìm với từ khoá khác hoặc
-          chọn một danh mục khác.
+          Thử tìm bằng một từ khoá khác
+          hoặc chọn danh mục khác nhé.
         </p>
 
       </div>
@@ -2300,35 +2864,28 @@ function renderProducts(){
    PRODUCT CARD
 ========================================================= */
 
-function productCard(
-  product
-){
+function productCard(product){
 
   const image =
-    product.image_url ||
-    "";
+    product.image_url || "";
+
 
   const name =
     product.name ||
     "Sản phẩm";
 
-  const price =
-    formatPrice(
-      product.price
-    );
 
   const category =
     product.categories?.name ||
     "Thời trang";
 
-  const description =
-    product.description ||
-    "";
+
+  const price =
+    product.price || "";
+
 
   const link =
-    getProductLink(
-      product
-    );
+    getLink(product);
 
 
   return `
@@ -2337,69 +2894,56 @@ function productCard(
       class="product-card"
     >
 
-
       <div
         class="product-image-wrap"
       >
 
         ${
           image
-            ?
 
-            `
-              <img
-                class="product-image"
-                src="${escapeHtml(image)}"
-                alt="${escapeHtml(name)}"
-                loading="lazy"
-                decoding="async"
-                onerror="handleImageError(this)"
-              >
-            `
+          ?
 
-            :
+          `
+            <img
+              class="product-image"
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(name)}"
+              loading="lazy"
+              decoding="async"
+              onerror="this.style.display='none'"
+            >
+          `
 
-            ""
+          :
+
+          `
+            <div
+              style="
+                width:100%;
+                height:100%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:#aaa;
+              "
+            >
+              Ảnh sản phẩm
+            </div>
+          `
         }
 
 
         <div
-          class="image-fallback"
+          class="product-badge"
         >
-
-          <div class="image-fallback-icon">
-            🖼
-          </div>
-
-          <div>
-            Chưa có ảnh
-          </div>
-
+          ${escapeHtml(category)}
         </div>
-
-
-        ${
-          category
-            ?
-
-            `
-              <div
-                class="product-badge"
-              >
-                ${escapeHtml(category)}
-              </div>
-            `
-
-            :
-
-            ""
-        }
 
       </div>
 
 
       <div
-        class="product-content"
+        class="product-info"
       >
 
         <div
@@ -2417,29 +2961,6 @@ function productCard(
         </h3>
 
 
-        ${
-          description
-
-            ?
-
-            `
-              <div
-                class="product-description"
-              >
-                ${escapeHtml(description)}
-              </div>
-            `
-
-            :
-
-            `
-              <div
-                class="product-description"
-              ></div>
-            `
-        }
-
-
         <div
           class="product-bottom"
         >
@@ -2447,78 +2968,205 @@ function productCard(
           ${
             price
 
-              ?
+            ?
 
-              `
-                <div
-                  class="product-price"
-                >
-                  ${escapeHtml(price)}
-                </div>
-              `
+            `
+              <div
+                class="product-price"
+              >
+                ${escapeHtml(price)}
+              </div>
+            `
 
-              :
+            :
 
-              `
-                <div
-                  class="
-                    product-price
-                    empty
-                  "
-                >
-                  Xem giá
-                </div>
-              `
+            `
+              <div
+                class="
+                  product-price
+                  empty
+                "
+              >
+                Xem giá
+              </div>
+            `
           }
 
 
           ${
             link
 
-              ?
+            ?
 
-              `
-                <a
-                  class="product-button"
-                  href="${escapeHtml(link)}"
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
-                >
+            `
+              <a
+                class="product-link"
+                href="${escapeHtml(link)}"
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+              >
+                Xem →
+              </a>
+            `
 
-                  Xem sản phẩm
+            :
 
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      d="M5 12h13"
-                    ></path>
-
-                    <path
-                      d="m13 6 6 6-6 6"
-                    ></path>
-                  </svg>
-
-                </a>
-              `
-
-              :
-
-              `
-                <span
-                  class="product-button"
-                  style="
-                    opacity:.5;
-                    cursor:default;
-                  "
-                >
-                  Chưa có link
-                </span>
-              `
+            `
+              <span
+                class="product-link"
+                style="
+                  opacity:.4;
+                  cursor:default;
+                "
+              >
+                Chưa có link
+              </span>
+            `
           }
+
+        </div>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================================
+   OUTFITS
+========================================================= */
+
+function renderOutfits(){
+
+  const grid =
+    $("outfitGrid");
+
+
+  if(!outfits.length){
+
+    grid.innerHTML = `
+
+      <div class="outfit-empty">
+
+        Chưa có outfit nào.
+        <br>
+
+        Bạn có thể tạo outfit trong Admin.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    outfits
+      .map(
+        outfitCard
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   OUTFIT CARD
+========================================================= */
+
+function outfitCard(outfit){
+
+  const image =
+    outfit.image_url || "";
+
+
+  const name =
+    outfit.name ||
+    "Outfit";
+
+
+  const description =
+    outfit.description ||
+    "Một set đồ được chọn sẵn cho bạn.";
+
+
+  return `
+
+    <article
+      class="outfit-card"
+    >
+
+      <div
+        class="outfit-image"
+      >
+
+        ${
+          image
+
+          ?
+
+          `
+            <img
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(name)}"
+              loading="lazy"
+              decoding="async"
+              onerror="this.style.display='none'"
+            >
+          `
+
+          :
+
+          `
+            <div
+              style="
+                width:100%;
+                height:100%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:#81766a;
+              "
+            >
+              Outfit
+            </div>
+          `
+        }
+
+
+        <div
+          class="outfit-overlay"
+        ></div>
+
+
+        <div
+          class="outfit-content"
+        >
+
+          <div
+            class="outfit-label"
+          >
+            Mi Nơ gợi ý
+          </div>
+
+
+          <div
+            class="outfit-name"
+          >
+            ${escapeHtml(name)}
+          </div>
+
+
+          <div
+            class="outfit-description"
+          >
+            ${escapeHtml(description)}
+          </div>
 
         </div>
 
@@ -2536,43 +3184,44 @@ function productCard(
 ========================================================= */
 
 $("categoryList")
-  .addEventListener(
-    "click",
-    event => {
+.addEventListener(
+  "click",
+  event => {
 
-      const button =
-        event.target.closest(
-          ".category-btn"
-        );
-
-      if(!button)
-        return;
+    const button =
+      event.target.closest(
+        ".category-btn"
+      );
 
 
-      activeCategory =
-        button.dataset.category;
+    if(!button)
+      return;
 
 
-      document
-        .querySelectorAll(
-          ".category-btn"
-        )
-        .forEach(
-          item => {
-
-            item.classList.toggle(
-              "active",
-              item === button
-            );
-
-          }
-        );
+    activeCategory =
+      button.dataset.category;
 
 
-      renderProducts();
+    document
+      .querySelectorAll(
+        ".category-btn"
+      )
+      .forEach(
+        item => {
 
-    }
-  );
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+
+        }
+      );
+
+
+    renderProducts();
+
+  }
+);
 
 
 /* =========================================================
@@ -2580,56 +3229,58 @@ $("categoryList")
 ========================================================= */
 
 $("searchInput")
-  .addEventListener(
-    "input",
-    event => {
+.addEventListener(
+  "input",
+  event => {
 
-      searchQuery =
-        event.target.value;
+    searchQuery =
+      event.target.value;
 
-      $("searchClear")
-        .classList.toggle(
-          "show",
-          Boolean(
-            searchQuery
-          )
-        );
 
-      renderProducts();
+    $("searchClear")
+      .classList.toggle(
+        "show",
+        Boolean(
+          searchQuery
+        )
+      );
 
-    }
-  );
+
+    renderProducts();
+
+  }
+);
 
 
 /* =========================================================
-   SEARCH CLEAR
+   CLEAR SEARCH
 ========================================================= */
 
 $("searchClear")
-  .addEventListener(
-    "click",
-    () => {
+.addEventListener(
+  "click",
+  () => {
 
-      searchQuery = "";
+    searchQuery = "";
 
-      $("searchInput")
-        .value = "";
+    $("searchInput")
+      .value = "";
 
-      $("searchClear")
-        .classList
-        .remove("show");
+    $("searchClear")
+      .classList
+      .remove("show");
 
-      renderProducts();
+    renderProducts();
 
-      $("searchInput")
-        .focus();
+    $("searchInput")
+      .focus();
 
-    }
-  );
+  }
+);
 
 
 /* =========================================================
-   BACK TO TOP
+   BACK TOP
 ========================================================= */
 
 const backTop =
@@ -2666,7 +3317,28 @@ backTop.addEventListener(
 
 
 /* =========================================================
-   LOAD
+   MOBILE MENU
+========================================================= */
+
+$("mobileMenu")
+.addEventListener(
+  "click",
+  () => {
+
+    const target =
+      $("products");
+
+
+    target.scrollIntoView({
+      behavior:"smooth"
+    });
+
+  }
+);
+
+
+/* =========================================================
+   START
 ========================================================= */
 
 loadData();
