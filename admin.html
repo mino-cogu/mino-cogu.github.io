@@ -9,14 +9,10 @@
 
 <style>
 *{box-sizing:border-box}
-
 html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;background:#f7f5f1;color:#171717}
-
 button,input,textarea,select{font:inherit}
 button{border:0;cursor:pointer}
-a{color:inherit}
 .hidden{display:none!important}
-.muted{color:#817b73}
 
 .login-page{
   min-height:100vh;
@@ -40,8 +36,9 @@ a{color:inherit}
   font-family:Georgia,serif;
   font-size:38px;
   font-weight:700;
-  margin-bottom:6px;
 }
+
+.muted{color:#817b73}
 
 .form-group{margin-top:18px}
 .form-group label{
@@ -65,7 +62,10 @@ a{color:inherit}
   box-shadow:0 0 0 3px #1111110d;
 }
 
-.textarea{min-height:100px;resize:vertical}
+.textarea{
+  min-height:100px;
+  resize:vertical;
+}
 
 .primary{
   background:#171717;
@@ -93,8 +93,6 @@ a{color:inherit}
   padding:10px 13px;
   border-radius:9px;
 }
-
-.danger:hover{background:#f2d0cd}
 
 .success{
   background:#dff3e6;
@@ -191,8 +189,6 @@ a{color:inherit}
   border-radius:9px;
 }
 
-.logout:hover{background:#3a3a3a}
-
 .content{
   margin-left:245px;
   width:calc(100% - 245px);
@@ -212,7 +208,10 @@ a{color:inherit}
   font-weight:bold;
 }
 
-.user-email{color:#777;font-size:13px}
+.user-email{
+  color:#777;
+  font-size:13px;
+}
 
 .stats{
   display:grid;
@@ -228,8 +227,16 @@ a{color:inherit}
   padding:20px;
 }
 
-.stat-label{font-size:13px;color:#888}
-.stat-number{font-size:29px;font-weight:bold;margin-top:10px}
+.stat-label{
+  font-size:13px;
+  color:#888;
+}
+
+.stat-number{
+  font-size:29px;
+  font-weight:bold;
+  margin-top:10px;
+}
 
 .panel{
   background:#fff;
@@ -267,12 +274,6 @@ a{color:inherit}
   gap:16px;
 }
 
-.grid3{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-}
-
 .mt{margin-top:15px}
 .mb{margin-bottom:15px}
 
@@ -295,7 +296,6 @@ a{color:inherit}
   font-size:12px;
   color:#777;
   text-transform:uppercase;
-  letter-spacing:.3px;
 }
 
 .thumb{
@@ -304,7 +304,6 @@ a{color:inherit}
   border-radius:8px;
   object-fit:cover;
   background:#eee;
-  display:block;
 }
 
 .actions{
@@ -315,7 +314,6 @@ a{color:inherit}
 
 .badge{
   display:inline-flex;
-  align-items:center;
   padding:6px 9px;
   border-radius:999px;
   font-size:12px;
@@ -357,7 +355,6 @@ code{
   margin-left:4px;
   cursor:help;
   position:relative;
-  vertical-align:middle;
 }
 
 .info:hover:after{
@@ -374,8 +371,6 @@ code{
   line-height:1.5;
   font-weight:normal;
   z-index:1000;
-  white-space:normal;
-  box-shadow:0 10px 25px #0004;
 }
 
 .section{display:none}
@@ -408,7 +403,6 @@ code{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:20px;
   margin-bottom:20px;
 }
 
@@ -418,10 +412,7 @@ code{
   border-radius:50%;
   background:#eee;
   font-size:23px;
-  line-height:1;
 }
-
-.close:hover{background:#ddd}
 
 .image-upload-box{
   width:100%;
@@ -435,16 +426,16 @@ code{
   text-align:center;
   position:relative;
   overflow:hidden;
-  transition:.2s;
 }
 
-.image-upload-box:hover,
 .image-upload-box.dragover{
   border-color:#171717;
   background:#f1eee9;
 }
 
-.image-placeholder{padding:30px}
+.image-placeholder{
+  padding:30px;
+}
 
 .image-icon{
   font-size:42px;
@@ -465,7 +456,6 @@ code{
 
 .image-preview-wrap{
   width:100%;
-  height:100%;
   min-height:260px;
   display:flex;
   align-items:center;
@@ -491,10 +481,7 @@ code{
   background:#333;
   color:#fff;
   font-size:18px;
-  z-index:5;
 }
-
-.remove-image:hover{background:#000}
 
 .image-source-label{
   margin-top:8px;
@@ -515,10 +502,7 @@ code{
   border-radius:10px;
   padding:10px;
   cursor:pointer;
-  transition:.15s;
 }
-
-.product-option:hover{background:#fafafa}
 
 .product-option.selected{
   border:2px solid #111;
@@ -531,12 +515,6 @@ code{
   object-fit:cover;
   border-radius:7px;
   background:#eee;
-}
-
-.product-option-name{
-  font-size:13px;
-  margin-top:7px;
-  line-height:1.4;
 }
 
 .outfit-item{
@@ -565,12 +543,11 @@ code{
   display:flex;
   flex-direction:column;
   gap:10px;
-  max-width:calc(100vw - 40px);
 }
 
 .toast{
   min-width:280px;
-  max-width:420px;
+  max-width:460px;
   background:#171717;
   color:#fff;
   padding:14px 16px;
@@ -595,18 +572,7 @@ code{
 }
 
 @media(max-width:850px){
-  .grid2,.grid3{grid-template-columns:1fr}
-  .panel-head{
-    flex-direction:column;
-    align-items:stretch;
-  }
-  .row{
-    flex-wrap:wrap;
-  }
-  .search{
-    max-width:none;
-    flex:1;
-  }
+  .grid2{grid-template-columns:1fr}
 }
 
 @media(max-width:700px){
@@ -614,21 +580,14 @@ code{
     position:static;
     width:100%;
     height:auto;
-    padding:15px;
   }
 
-  .admin{
-    display:block;
-  }
+  .admin{display:block}
 
   .content{
     margin-left:0;
     width:100%;
     padding:18px;
-  }
-
-  .sidebar-brand{
-    padding-bottom:15px;
   }
 
   .logout{
@@ -637,16 +596,14 @@ code{
     width:100%;
   }
 
-  .stats{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .topbar{
-    display:block;
-  }
+  .topbar{display:block}
 
   .user-email{
     margin-top:5px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
   }
 
   .row{
@@ -660,7 +617,6 @@ code{
 
   .search{
     max-width:none;
-    width:100%;
   }
 
   .product-select{
@@ -674,47 +630,24 @@ code{
 
   .modal-box{
     padding:20px;
-    margin-top:10px;
   }
 }
 
 @media(max-width:480px){
-  .stats{
-    grid-template-columns:1fr;
-  }
-
-  .product-select{
-    grid-template-columns:1fr;
-  }
-
-  .login-box{
-    padding:25px;
-  }
-
-  .brand{
-    font-size:31px;
-  }
-
-  .page-title{
-    font-size:30px;
-  }
+  .stats{grid-template-columns:1fr}
+  .product-select{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================================================
-     LOGIN
-========================================================= -->
-
+<!-- LOGIN -->
 <div id="loginPage" class="login-page">
 
   <div class="login-box">
 
-    <div class="brand">
-      Mặc Gì Đây?
-    </div>
+    <div class="brand">Mặc Gì Đây?</div>
 
     <div class="muted">
       Admin Dashboard
@@ -728,8 +661,8 @@ code{
         id="loginEmail"
         class="input"
         type="email"
-        placeholder="Email"
         autocomplete="email"
+        placeholder="Email"
       >
     </div>
 
@@ -739,8 +672,8 @@ code{
         id="loginPassword"
         class="input"
         type="password"
-        placeholder="Mật khẩu"
         autocomplete="current-password"
+        placeholder="Mật khẩu"
       >
     </div>
 
@@ -757,10 +690,7 @@ code{
 </div>
 
 
-<!-- =========================================================
-     ADMIN APP
-========================================================= -->
-
+<!-- ADMIN -->
 <div id="adminApp" class="admin hidden">
 
   <aside class="sidebar">
@@ -816,24 +746,21 @@ code{
     <div class="topbar">
 
       <div
-        class="page-title"
         id="pageTitle"
+        class="page-title"
       >
         Dashboard
       </div>
 
       <div
-        class="user-email"
         id="userEmail"
+        class="user-email"
       ></div>
 
     </div>
 
 
-    <!-- =====================================================
-         DASHBOARD
-    ====================================================== -->
-
+    <!-- DASHBOARD -->
     <section
       id="dashboard"
       class="section active"
@@ -842,7 +769,10 @@ code{
       <div class="stats">
 
         <div class="stat">
-          <div class="stat-label">Sản phẩm</div>
+          <div class="stat-label">
+            Sản phẩm
+          </div>
+
           <div
             id="statProducts"
             class="stat-number"
@@ -850,7 +780,10 @@ code{
         </div>
 
         <div class="stat">
-          <div class="stat-label">Danh mục</div>
+          <div class="stat-label">
+            Danh mục
+          </div>
+
           <div
             id="statCategories"
             class="stat-number"
@@ -858,7 +791,10 @@ code{
         </div>
 
         <div class="stat">
-          <div class="stat-label">Outfit</div>
+          <div class="stat-label">
+            Outfit
+          </div>
+
           <div
             id="statOutfits"
             class="stat-number"
@@ -866,8 +802,13 @@ code{
         </div>
 
         <div class="stat">
-          <div class="stat-label">Trạng thái</div>
-          <div class="stat-number">Online</div>
+          <div class="stat-label">
+            Trạng thái
+          </div>
+
+          <div class="stat-number">
+            Online
+          </div>
         </div>
 
       </div>
@@ -880,15 +821,16 @@ code{
         </div>
 
         <p class="muted">
-          Quản lý sản phẩm, danh mục và outfit
+          Quản lý sản phẩm, danh mục và Outfit
           hiển thị trên website.
         </p>
 
         <div class="notice">
-          💡 Khi thêm sản phẩm TikTok/Shopee,
-          bạn có thể dán link rồi bấm
-          <b>Lấy thông tin</b>. Thumbnail sẽ được
-          lấy tự động nếu nguồn cung cấp ảnh.
+          💡 Dán link TikTok/Shopee → bấm
+          <b>Lấy thông tin</b>.
+          Nếu lấy được thumbnail, ảnh sẽ tự hiện.
+          Nếu không, hãy copy ảnh rồi
+          <b>Ctrl + V</b> vào khung ảnh.
         </div>
 
       </div>
@@ -896,10 +838,7 @@ code{
     </section>
 
 
-    <!-- =====================================================
-         PRODUCTS
-    ====================================================== -->
-
+    <!-- PRODUCTS -->
     <section
       id="products"
       class="section"
@@ -960,10 +899,7 @@ code{
     </section>
 
 
-    <!-- =====================================================
-         CATEGORIES
-    ====================================================== -->
-
+    <!-- CATEGORIES -->
     <section
       id="categories"
       class="section"
@@ -1011,10 +947,7 @@ code{
     </section>
 
 
-    <!-- =====================================================
-         OUTFITS
-    ====================================================== -->
-
+    <!-- OUTFITS -->
     <section
       id="outfits"
       class="section"
@@ -1068,10 +1001,7 @@ code{
 </div>
 
 
-<!-- =========================================================
-     MODAL
-========================================================= -->
-
+<!-- MODAL -->
 <div
   id="modal"
   class="modal hidden"
@@ -1120,9 +1050,8 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_DCZRB5bpOCQUGwEWWevizg_lAp2YvIm";
 
-const EDGE_FUNCTION_URL =
-  SUPABASE_URL +
-  "/functions/v1/fetch-product-meta";
+const EDGE_FUNCTION_NAME =
+  "fetch-product-meta";
 
 const STORAGE_BUCKET =
   "product-images";
@@ -1139,17 +1068,19 @@ const db =
 ========================================================= */
 
 let currentUser = null;
+
 let products = [];
 let categories = [];
 let outfits = [];
+
 let selectedOutfitProducts = [];
 
 let pendingImageBlob = null;
 let pendingImageContentType = null;
-let pendingImageName = null;
 
 let currentProductImageUrl = null;
 let imageMarkedForRemoval = false;
+
 let currentImageObjectUrl = null;
 
 
@@ -1167,20 +1098,15 @@ function esc(value){
     value ?? ""
   ).replace(
     /[&<>"']/g,
-    match => ({
+    m => ({
       "&":"&amp;",
       "<":"&lt;",
       ">":"&gt;",
       '"':"&quot;",
       "'":"&#039;"
-    }[match])
+    }[m])
   );
 
-}
-
-
-function money(value){
-  return value || "—";
 }
 
 
@@ -1208,7 +1134,9 @@ function showToast(
     return;
 
   const toast =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   toast.className =
     "toast " + type;
@@ -1222,7 +1150,7 @@ function showToast(
 
   setTimeout(
     () => toast.remove(),
-    4500
+    5000
   );
 
 }
@@ -1256,8 +1184,6 @@ function closeModal(){
 
   pendingImageBlob = null;
   pendingImageContentType = null;
-  pendingImageName = null;
-  currentProductImageUrl = null;
   imageMarkedForRemoval = false;
 
   if(currentImageObjectUrl){
@@ -1268,8 +1194,7 @@ function closeModal(){
       );
     }catch{}
 
-    currentImageObjectUrl =
-      null;
+    currentImageObjectUrl = null;
 
   }
 
@@ -1310,7 +1235,7 @@ async function checkAdmin(user){
 
 
 /* =========================================================
-   LOAD DATA
+   LOAD
 ========================================================= */
 
 async function loadAll(){
@@ -1406,7 +1331,7 @@ function renderAll(){
 
 
 /* =========================================================
-   PRODUCTS TABLE
+   PRODUCTS
 ========================================================= */
 
 function renderProducts(){
@@ -1420,27 +1345,13 @@ function renderProducts(){
 
   const list =
     products.filter(
-      p => {
-
-        const name =
-          (
-            p.name ||
-            ""
-          ).toLowerCase();
-
-        const link =
-          (
-            p.affiliate_url ||
-            p.tiktok_url ||
-            ""
-          ).toLowerCase();
-
-        return (
-          name.includes(q) ||
-          link.includes(q)
-        );
-
-      }
+      p =>
+        (
+          p.name ||
+          ""
+        )
+          .toLowerCase()
+          .includes(q)
     );
 
 
@@ -1459,6 +1370,7 @@ function renderProducts(){
             p.tiktok_url ||
             "";
 
+
           return `
 
             <tr>
@@ -1468,79 +1380,47 @@ function renderProducts(){
                 ${
                   p.image_url
 
-                  ?
+                    ?
 
-                  `
-                    <img
-                      class="thumb"
-                      src="${esc(p.image_url)}"
-                      onerror="
-                        this.style.display='none';
-                        this.nextElementSibling.style.display='flex';
-                      "
-                    >
+                    `
+                      <img
+                        class="thumb"
+                        src="${esc(
+                          p.image_url
+                        )}"
+                        onerror="
+                          this.style.display='none';
+                        "
+                      >
+                    `
 
-                    <div
-                      style="
-                        display:none;
-                        width:58px;
-                        height:70px;
-                        border-radius:8px;
-                        background:#eee;
-                        align-items:center;
-                        justify-content:center;
-                        color:#999;
-                        font-size:11px;
-                      "
-                    >
-                      Ảnh lỗi
-                    </div>
-                  `
+                    :
 
-                  :
-
-                  `
-                    <div
-                      style="
-                        width:58px;
-                        height:70px;
-                        border-radius:8px;
-                        background:#eee;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        color:#999;
-                        font-size:11px;
-                      "
-                    >
-                      Ảnh
-                    </div>
-                  `
+                    `
+                      <div
+                        style="
+                          width:58px;
+                          height:70px;
+                          border-radius:8px;
+                          background:#eee;
+                          display:flex;
+                          align-items:center;
+                          justify-content:center;
+                          color:#999;
+                          font-size:11px;
+                        "
+                      >
+                        Ảnh
+                      </div>
+                    `
                 }
 
               </td>
 
               <td>
-
                 <b>
                   ${esc(p.name)}
                 </b>
-
-                ${
-                  p.description
-                    ?
-                    `
-                      <br>
-                      <small class="muted">
-                        ${esc(
-                          p.description
-                        )}
-                      </small>
-                    `
-                    :
-                    ""
-                }
-
               </td>
 
               <td>
@@ -1552,7 +1432,8 @@ function renderProducts(){
 
               <td>
                 ${esc(
-                  money(p.price)
+                  p.price ||
+                  "—"
                 )}
               </td>
 
@@ -1561,21 +1442,21 @@ function renderProducts(){
                 ${
                   link
 
-                  ?
+                    ?
 
-                  `
-                    <a
-                      href="${esc(link)}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Mở ↗
-                    </a>
-                  `
+                    `
+                      <a
+                        href="${esc(link)}"
+                        target="_blank"
+                        rel="noopener"
+                      >
+                        Mở ↗
+                      </a>
+                    `
 
-                  :
+                    :
 
-                  "—"
+                    "—"
                 }
 
               </td>
@@ -1751,7 +1632,7 @@ function renderCategories(){
 
 
 /* =========================================================
-   OUTFITS TABLE
+   OUTFITS
 ========================================================= */
 
 function renderOutfits(){
@@ -1769,6 +1650,7 @@ function renderOutfits(){
           const items =
             o.outfit_products ||
             [];
+
 
           return `
 
@@ -1803,7 +1685,6 @@ function renderOutfits(){
                           align-items:center;
                           justify-content:center;
                           color:#999;
-                          font-size:11px;
                         "
                       >
                         Ảnh
@@ -1962,21 +1843,17 @@ function imageArea(
   existingUrl=""
 ){
 
-  const hasImage =
-    Boolean(existingUrl);
-
   return `
 
     <div
       id="imageUploadBox"
       class="image-upload-box"
-      tabindex="0"
     >
 
       <div
         id="imagePlaceholder"
         class="image-placeholder ${
-          hasImage
+          existingUrl
             ? "hidden"
             : ""
         }"
@@ -2004,7 +1881,7 @@ function imageArea(
       <div
         id="imagePreviewWrap"
         class="image-preview-wrap ${
-          hasImage
+          existingUrl
             ? ""
             : "hidden"
         }"
@@ -2016,28 +1893,13 @@ function imageArea(
           src="${esc(existingUrl)}"
           onerror="
             this.style.display='none';
-            document.getElementById('imagePreviewError')?.classList.remove('hidden');
           "
         >
-
-        <div
-          id="imagePreviewError"
-          class="hidden"
-          style="
-            color:#999;
-            padding:30px;
-          "
-        >
-          Không tải được ảnh từ URL này.
-          <br>
-          Hãy Ctrl+V ảnh trực tiếp.
-        </div>
 
         <button
           type="button"
           id="removeImageBtn"
           class="remove-image"
-          title="Xoá ảnh"
         >
           ×
         </button>
@@ -2052,8 +1914,8 @@ function imageArea(
       class="image-source-label"
     >
       ${
-        hasImage
-          ? "Ảnh hiện tại. Bạn có thể Ctrl+V ảnh mới để thay."
+        existingUrl
+          ? "Ảnh hiện tại. Ctrl+V ảnh mới để thay."
           : "Chưa có ảnh."
       }
     </div>
@@ -2072,16 +1934,15 @@ function showImage(
   message
 ){
 
-  if(!blob)
-    return;
-
   if(
-    !blob.type ||
-    !blob.type.startsWith("image/")
+    !blob ||
+    !blob.type?.startsWith(
+      "image/"
+    )
   ){
 
     showToast(
-      "Dữ liệu được dán không phải ảnh.",
+      "Clipboard không chứa ảnh.",
       "warning"
     );
 
@@ -2089,31 +1950,16 @@ function showImage(
 
   }
 
+
   pendingImageBlob =
     blob;
 
   pendingImageContentType =
     blob.type;
 
-  pendingImageName =
-    createImageFileName(
-      blob.type
-    );
-
   imageMarkedForRemoval =
     false;
 
-  const preview =
-    $("imagePreview");
-
-  const placeholder =
-    $("imagePlaceholder");
-
-  const wrap =
-    $("imagePreviewWrap");
-
-  const label =
-    $("imageSourceLabel");
 
   if(currentImageObjectUrl){
 
@@ -2125,42 +1971,104 @@ function showImage(
 
   }
 
+
   currentImageObjectUrl =
     URL.createObjectURL(
       blob
     );
 
-  if(preview){
 
-    preview.style.display =
-      "block";
+  $("imagePreview").src =
+    currentImageObjectUrl;
 
-    preview.src =
-      currentImageObjectUrl;
+  $("imagePreview")
+    .style
+    .display =
+    "block";
 
-  }
-
-  $("imagePreviewError")
-    ?.classList
+  $("imagePlaceholder")
+    .classList
     .add("hidden");
 
-  placeholder
-    ?.classList
-    .add("hidden");
-
-  wrap
-    ?.classList
+  $("imagePreviewWrap")
+    .classList
     .remove("hidden");
 
-  if(label){
+  $("imageSourceLabel")
+    .textContent =
+    message ||
+    "✓ Đã nhận ảnh.";
 
-    label.textContent =
-      message ||
-      "✓ Đã nhận ảnh. Ảnh sẽ được lưu khi bấm Lưu.";
+}
+
+
+/* =========================================================
+   PASTE
+========================================================= */
+
+function handlePaste(
+  event
+){
+
+  if(
+    $("modal")
+      .classList
+      .contains("hidden")
+  )
+    return;
+
+
+  const items =
+    event.clipboardData
+      ?.items;
+
+
+  if(!items)
+    return;
+
+
+  for(
+    const item of items
+  ){
+
+    if(
+      item.type?.startsWith(
+        "image/"
+      )
+    ){
+
+      event.preventDefault();
+
+      const blob =
+        item.getAsFile();
+
+      if(blob){
+
+        showImage(
+          blob,
+          "✓ Đã nhận ảnh từ Clipboard. Bấm Lưu để lưu ảnh."
+        );
+
+        showToast(
+          "Đã nhận ảnh.",
+          "success"
+        );
+
+      }
+
+      return;
+
+    }
 
   }
 
 }
+
+
+document.addEventListener(
+  "paste",
+  handlePaste
+);
 
 
 /* =========================================================
@@ -2172,17 +2080,12 @@ function removeImage(){
   pendingImageBlob =
     null;
 
-  pendingImageContentType =
-    null;
-
-  pendingImageName =
-    null;
-
   currentProductImageUrl =
     null;
 
   imageMarkedForRemoval =
     true;
+
 
   if(currentImageObjectUrl){
 
@@ -2197,23 +2100,24 @@ function removeImage(){
 
   }
 
+
   $("imagePreviewWrap")
-    ?.classList
+    .classList
     .add("hidden");
 
   $("imagePlaceholder")
-    ?.classList
+    .classList
     .remove("hidden");
 
   $("imageSourceLabel")
     .textContent =
-    "Ảnh đã được xoá. Bấm Lưu để xác nhận.";
+    "Ảnh đã xoá. Bấm Lưu để xác nhận.";
 
 }
 
 
 /* =========================================================
-   IMAGE AREA EVENTS
+   SETUP IMAGE AREA
 ========================================================= */
 
 function setupImageArea(){
@@ -2223,17 +2127,6 @@ function setupImageArea(){
 
   if(!box)
     return;
-
-
-  /*
-   * Paste toàn trang:
-   * không cần click vào ô ảnh trước.
-   */
-
-  document.addEventListener(
-    "paste",
-    handleGlobalPaste
-  );
 
 
   box.addEventListener(
@@ -2272,30 +2165,24 @@ function setupImageArea(){
         "dragover"
       );
 
+
       const file =
         event.dataTransfer
           ?.files?.[0];
 
+
       if(
-        !file ||
-        !file.type.startsWith(
+        file?.type?.startsWith(
           "image/"
         )
       ){
 
-        showToast(
-          "File kéo vào không phải ảnh.",
-          "error"
+        showImage(
+          file,
+          "✓ Đã nhận ảnh kéo-thả."
         );
 
-        return;
-
       }
-
-      showImage(
-        file,
-        "✓ Đã nhận ảnh kéo-thả. Ảnh sẽ được lưu khi bấm Lưu."
-      );
 
     }
   );
@@ -2313,157 +2200,16 @@ function setupImageArea(){
       }
     );
 
-
-  /*
-   * Không mở file picker.
-   */
-
-  box.addEventListener(
-    "click",
-    () => {}
-  );
-
-
-  box.addEventListener(
-    "paste",
-    event => {
-
-      handlePasteEvent(
-        event
-      );
-
-    }
-  );
-
-}
-
-
-function handleGlobalPaste(
-  event
-){
-
-  /*
-   * Chỉ xử lý khi modal đang mở.
-   */
-
-  if(
-    $("modal")
-      ?.classList
-      .contains("hidden")
-  )
-    return;
-
-  handlePasteEvent(
-    event
-  );
-
-}
-
-
-function handlePasteEvent(
-  event
-){
-
-  const items =
-    event.clipboardData
-      ?.items;
-
-  if(!items)
-    return;
-
-  for(
-    const item of items
-  ){
-
-    if(
-      item.type &&
-      item.type.startsWith(
-        "image/"
-      )
-    ){
-
-      event.preventDefault();
-
-      const blob =
-        item.getAsFile();
-
-      if(blob){
-
-        showImage(
-          blob,
-          "✓ Đã nhận ảnh từ Clipboard. Ảnh sẽ được lưu khi bấm Lưu."
-        );
-
-        showToast(
-          "Đã nhận ảnh từ Clipboard.",
-          "success"
-        );
-
-      }
-
-      return;
-
-    }
-
-  }
-
 }
 
 
 /* =========================================================
-   IMAGE FILE NAME
-========================================================= */
-
-function createImageFileName(
-  contentType
-){
-
-  let ext =
-    "jpg";
-
-  if(
-    contentType.includes(
-      "png"
-    )
-  ){
-    ext = "png";
-  }
-  else if(
-    contentType.includes(
-      "webp"
-    )
-  ){
-    ext = "webp";
-  }
-  else if(
-    contentType.includes(
-      "gif"
-    )
-  ){
-    ext = "gif";
-  }
-
-  return (
-    "product-" +
-    Date.now() +
-    "-" +
-    Math.random()
-      .toString(36)
-      .slice(2,8) +
-    "." +
-    ext
-  );
-
-}
-
-
-/* =========================================================
-   BASE64 → BLOB
+   BASE64 FALLBACK
 ========================================================= */
 
 function base64ToBlob(
   base64,
-  contentType
+  type
 ){
 
   const binary =
@@ -2473,6 +2219,7 @@ function base64ToBlob(
     new Uint8Array(
       binary.length
     );
+
 
   for(
     let i=0;
@@ -2485,11 +2232,12 @@ function base64ToBlob(
 
   }
 
+
   return new Blob(
     [bytes],
     {
       type:
-        contentType ||
+        type ||
         "image/jpeg"
     }
   );
@@ -2498,7 +2246,7 @@ function base64ToBlob(
 
 
 /* =========================================================
-   FETCH PRODUCT METADATA
+   🔥 FETCH PRODUCT METADATA
 ========================================================= */
 
 async function fetchProductMetadata(){
@@ -2515,11 +2263,12 @@ async function fetchProductMetadata(){
   if(!url){
 
     showToast(
-      "Hãy dán link TikTok hoặc Shopee trước.",
+      "Hãy dán link TikTok hoặc Shopee.",
       "warning"
     );
 
     return;
+
   }
 
 
@@ -2527,69 +2276,136 @@ async function fetchProductMetadata(){
     true;
 
   button.textContent =
-    "⏳ Đang lấy dữ liệu...";
+    "⏳ Đang lấy...";
 
 
   try{
 
-    const response =
-      await fetch(
-        EDGE_FUNCTION_URL,
+    /*
+     * ======================================================
+     * QUAN TRỌNG:
+     *
+     * Không gọi fetch() trực tiếp nữa.
+     *
+     * Dùng Supabase functions.invoke()
+     * để tự gửi session/auth.
+     * ======================================================
+     */
+
+    const {
+      data,
+      error
+    } =
+      await db.functions.invoke(
+        EDGE_FUNCTION_NAME,
         {
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-              url
-            })
+          body:{
+            url
+          }
         }
       );
 
 
-    const text =
-      await response.text();
-
-
-    let data;
-
-    try{
-
-      data =
-        JSON.parse(text);
-
-    }catch{
-
-      throw new Error(
-        "Edge Function trả dữ liệu không hợp lệ."
-      );
-
-    }
-
-
-    if(!response.ok){
-
-      throw new Error(
-        data?.error ||
-        "Edge Function lỗi."
-      );
-
-    }
+    console.log(
+      "fetch-product-meta response:",
+      {
+        data,
+        error
+      }
+    );
 
 
     /*
      * ======================================================
-     * TÊN
+     * ERROR
+     * ======================================================
+     */
+
+    if(error){
+
+      let message =
+        error.message ||
+        "Edge Function không phản hồi.";
+
+
+      /*
+       * Supabase có thể nhét body JSON
+       * vào context/context.body.
+       */
+
+      const rawBody =
+        error?.context?.body ||
+        error?.context?.responseBody ||
+        error?.details;
+
+
+      if(rawBody){
+
+        try{
+
+          const parsed =
+            typeof rawBody === "string"
+              ? JSON.parse(rawBody)
+              : rawBody;
+
+
+          if(parsed?.error)
+            message =
+              parsed.error;
+
+          else if(parsed?.message)
+            message =
+              parsed.message;
+
+        }catch{
+
+          if(
+            typeof rawBody === "string" &&
+            rawBody.length < 500
+          ){
+
+            message =
+              rawBody;
+
+          }
+
+        }
+
+      }
+
+
+      throw new Error(
+        message
+      );
+
+    }
+
+
+    if(!data){
+
+      throw new Error(
+        "Edge Function không trả dữ liệu."
+      );
+
+    }
+
+
+    console.log(
+      "Product metadata:",
+      data
+    );
+
+
+    /*
+     * ======================================================
+     * TITLE
      * ======================================================
      */
 
     if(data.title){
 
-      $("fName").value =
+      $("fName")
+        .value =
         data.title;
 
     }
@@ -2597,18 +2413,19 @@ async function fetchProductMetadata(){
 
     /*
      * ======================================================
-     * GIÁ
-     *
-     * Không xoá giá người dùng đã nhập.
+     * PRICE
      * ======================================================
      */
 
     if(
       data.price &&
-      !$("fPrice").value.trim()
+      !$("fPrice")
+        .value
+        .trim()
     ){
 
-      $("fPrice").value =
+      $("fPrice")
+        .value =
         data.price;
 
     }
@@ -2616,15 +2433,18 @@ async function fetchProductMetadata(){
 
     /*
      * ======================================================
-     * AFFILIATE LINK
+     * AFFILIATE
      * ======================================================
      */
 
     if(
-      !$("fAffiliate").value.trim()
+      !$("fAffiliate")
+        .value
+        .trim()
     ){
 
-      $("fAffiliate").value =
+      $("fAffiliate")
+        .value =
         url;
 
     }
@@ -2632,15 +2452,7 @@ async function fetchProductMetadata(){
 
     /*
      * ======================================================
-     * THUMBNAIL
-     *
-     * Edge Function mới trả:
-     *
-     * image
-     * image_available
-     * image_content_type
-     *
-     * Không còn phụ thuộc image_base64.
+     * IMAGE URL
      * ======================================================
      */
 
@@ -2659,218 +2471,56 @@ async function fetchProductMetadata(){
       const placeholder =
         $("imagePlaceholder");
 
-      const previewWrap =
+      const wrap =
         $("imagePreviewWrap");
 
       const label =
         $("imageSourceLabel");
 
-      const imageError =
-        $("imagePreviewError");
 
+      preview.src =
+        data.image;
 
-      if(preview){
-
-        preview.style.display =
-          "block";
-
-        preview.src =
-          data.image;
-
-      }
-
-      imageError
-        ?.classList
-        .add("hidden");
+      preview.style.display =
+        "block";
 
       placeholder
-        ?.classList
+        .classList
         .add("hidden");
 
-      previewWrap
-        ?.classList
+      wrap
+        .classList
         .remove("hidden");
 
 
-      if(label){
-
-        label.textContent =
-          data.image_available
-            ?
-            "✓ Đã lấy thumbnail từ TikTok/Shopee. Có thể lưu trực tiếp hoặc Ctrl+V ảnh khác để thay."
-            :
-            "✓ Đã nhận URL thumbnail. Nếu ảnh không hiện, hãy Ctrl+V ảnh trực tiếp.";
-
-      }
-
-
-      /*
-       * ====================================================
-       * Thử tải ảnh qua browser.
-       *
-       * Nếu CDN cho CORS:
-       *   -> có Blob
-       *   -> upload Storage
-       *
-       * Nếu CDN chặn:
-       *   -> vẫn giữ URL
-       *   -> không báo lỗi chết
-       * ====================================================
-       */
-
-      try{
-
-        const imgResponse =
-          await fetch(
-            data.image,
-            {
-              method:"GET",
-              mode:"cors"
-            }
-          );
-
-
-        if(
-          imgResponse.ok
-        ){
-
-          const blob =
-            await imgResponse.blob();
-
-
-          if(
-            blob.type &&
-            blob.type.startsWith(
-              "image/"
-            )
-          ){
-
-            pendingImageBlob =
-              blob;
-
-            pendingImageContentType =
-              blob.type;
-
-            pendingImageName =
-              createImageFileName(
-                blob.type
-              );
-
-
-            if(currentImageObjectUrl){
-
-              try{
-                URL.revokeObjectURL(
-                  currentImageObjectUrl
-                );
-              }catch{}
-
-            }
-
-
-            currentImageObjectUrl =
-              URL.createObjectURL(
-                blob
-              );
-
-
-            if(preview){
-
-              preview.src =
-                currentImageObjectUrl;
-
-            }
-
-
-            if(label){
-
-              label.textContent =
-                "✓ Đã tải thumbnail. Ảnh sẽ được lưu vào Supabase Storage khi bấm Lưu.";
-
-            }
-
-            showToast(
-              "Đã lấy được thumbnail.",
-              "success"
-            );
-
-          }
-
-        }
-
-      }catch(error){
-
-        console.warn(
-          "Cannot download TikTok/Shopee image in browser:",
-          error
-        );
-
-
-        /*
-         * CORS không phải lỗi chết.
-         */
-
-        if(label){
-
-          label.textContent =
-            "✓ Đã nhận thumbnail. Trình duyệt không cho tải ảnh tự động; ảnh URL vẫn được giữ. Bạn có thể Ctrl+V ảnh trực tiếp nếu muốn lưu ảnh riêng.";
-
-        }
-
-        showToast(
-          "Đã lấy được thumbnail. Nếu ảnh không lưu được, hãy Ctrl+V ảnh trực tiếp.",
-          "warning"
-        );
-
-      }
+      label.textContent =
+        "✓ Đã nhận thumbnail từ TikTok/Shopee.";
 
     }
 
+
     /*
      * ======================================================
-     * Tương thích ngược với Edge Function trả base64.
+     * IMAGE BASE64
+     *
+     * Edge Function cũ vẫn được hỗ trợ.
      * ======================================================
      */
 
-    else if(
+    if(
       data.image_base64
     ){
 
       const blob =
         base64ToBlob(
           data.image_base64,
-          data.image_content_type ||
-          "image/jpeg"
+          data.image_content_type
         );
-
-
-      pendingImageBlob =
-        blob;
-
-      pendingImageContentType =
-        blob.type;
-
-      pendingImageName =
-        createImageFileName(
-          blob.type
-        );
-
-      currentProductImageUrl =
-        null;
-
-      imageMarkedForRemoval =
-        false;
 
 
       showImage(
         blob,
-        "✓ Đã nhận thumbnail từ Edge Function. Ảnh sẽ được lưu khi bấm Lưu."
-      );
-
-
-      showToast(
-        "Đã lấy được thumbnail.",
-        "success"
+        "✓ Đã nhận thumbnail từ Edge Function."
       );
 
     }
@@ -2889,50 +2539,26 @@ async function fetchProductMetadata(){
       data.warnings.length
     ){
 
-      /*
-       * Chỉ hiện warning thật sự đáng chú ý.
-       * Nếu đã lấy được title + image thì không làm
-       * người dùng tưởng request thất bại.
-       */
-
-      const usefulWarnings =
-        data.warnings.filter(
-          warning =>
-            !(
-              data.title &&
-              warning.includes(
-                "Không lấy được tên"
-              )
-            )
-        ).filter(
-          warning =>
-            !(
-              data.image &&
-              warning.includes(
-                "Không lấy được thumbnail"
-              )
-            )
-        );
-
-
-      if(
-        usefulWarnings.length
-      ){
-
-        showToast(
-          usefulWarnings[0],
-          "warning"
-        );
-
-      }
+      console.warn(
+        "Metadata warnings:",
+        data.warnings
+      );
 
     }
 
 
-    if(data.success){
+    /*
+     * ======================================================
+     * SUCCESS
+     * ======================================================
+     */
+
+    if(
+      data.success
+    ){
 
       showToast(
-        "✓ Đã lấy dữ liệu sản phẩm.",
+        "✓ Đã lấy thông tin sản phẩm.",
         "success"
       );
 
@@ -2940,7 +2566,7 @@ async function fetchProductMetadata(){
     else{
 
       showToast(
-        "Không lấy đủ metadata. Bạn có thể nhập/chỉnh sửa thủ công.",
+        "Edge Function chạy nhưng không lấy đủ dữ liệu.",
         "warning"
       );
 
@@ -2950,14 +2576,21 @@ async function fetchProductMetadata(){
   }catch(error){
 
     console.error(
-      "FETCH PRODUCT ERROR:",
+      "FETCH PRODUCT METADATA ERROR:",
       error
     );
 
 
+    /*
+     * Chỉ hiện MỘT toast lỗi.
+     */
+
     showToast(
-      error.message ||
-      "Không thể lấy dữ liệu.",
+      "❌ " +
+      (
+        error.message ||
+        "Không thể gọi Edge Function."
+      ),
       "error"
     );
 
@@ -2976,7 +2609,7 @@ async function fetchProductMetadata(){
 
 
 /* =========================================================
-   UPLOAD IMAGE TO STORAGE
+   IMAGE UPLOAD
 ========================================================= */
 
 async function uploadProductImage(
@@ -2988,25 +2621,32 @@ async function uploadProductImage(
     return null;
 
 
-  const contentType =
+  const type =
     blob.type ||
     "image/jpeg";
 
 
-  const extension =
-    contentType.includes("png")
-      ? "png"
-      :
-    contentType.includes("webp")
-      ? "webp"
-      :
-    contentType.includes("gif")
-      ? "gif"
-      :
+  let ext =
     "jpg";
 
 
-  const filePath =
+  if(
+    type.includes("png")
+  )
+    ext = "png";
+
+  else if(
+    type.includes("webp")
+  )
+    ext = "webp";
+
+  else if(
+    type.includes("gif")
+  )
+    ext = "gif";
+
+
+  const path =
     "products/" +
     productId +
     "/" +
@@ -3016,7 +2656,7 @@ async function uploadProductImage(
       .toString(36)
       .slice(2,8) +
     "." +
-    extension;
+    ext;
 
 
   const {
@@ -3028,28 +2668,17 @@ async function uploadProductImage(
         STORAGE_BUCKET
       )
       .upload(
-        filePath,
+        path,
         blob,
         {
-          contentType,
+          contentType:type,
           upsert:false
         }
       );
 
 
-  if(error){
-
-    console.error(
-      "STORAGE UPLOAD ERROR:",
-      error
-    );
-
-    throw new Error(
-      "Không upload được ảnh lên Supabase Storage: " +
-      error.message
-    );
-
-  }
+  if(error)
+    throw error;
 
 
   const {
@@ -3061,19 +2690,8 @@ async function uploadProductImage(
         STORAGE_BUCKET
       )
       .getPublicUrl(
-        filePath
+        path
       );
-
-
-  if(
-    !data?.publicUrl
-  ){
-
-    throw new Error(
-      "Upload ảnh thành công nhưng không lấy được Public URL."
-    );
-
-  }
 
 
   return data.publicUrl;
@@ -3105,10 +2723,10 @@ function productForm(
 
       <br>
 
-      Dán link TikTok Shop / Shopee vào ô bên dưới,
-      sau đó bấm <b>🔄 Lấy thông tin</b>.
+      Dán link TikTok Shop / Shopee
+      rồi bấm <b>🔄 Lấy thông tin</b>.
 
-      <br><br>
+      <br>
 
       Hệ thống sẽ cố gắng lấy
       <b>tên + thumbnail</b> tự động.
@@ -3116,8 +2734,8 @@ function productForm(
       <br>
 
       Nếu ảnh không lấy được,
-      bạn có thể <b>copy ảnh → Ctrl+V</b>
-      trực tiếp vào khung ảnh.
+      bạn chỉ cần <b>copy ảnh → Ctrl+V</b>
+      vào khung ảnh.
 
     </div>
 
@@ -3127,7 +2745,7 @@ function productForm(
       <label>
         Link sản phẩm TikTok / Shopee
         ${info(
-          "Có thể dùng link vt.tiktok.com, link tiktok.com/view/product/... hoặc link Shopee. Đây cũng có thể là link affiliate."
+          "Có thể dùng link vt.tiktok.com, link TikTok dài hoặc link Shopee."
         )}
       </label>
 
@@ -3152,7 +2770,6 @@ function productForm(
           id="fetchProductMeta"
           type="button"
           class="secondary"
-          style="white-space:nowrap"
         >
           🔄 Lấy thông tin
         </button>
@@ -3169,7 +2786,7 @@ function productForm(
         <label>
           Tên sản phẩm
           ${info(
-            "Tên này có thể được tự động lấy từ TikTok/Shopee. Bạn vẫn có thể sửa lại."
+            "Tên có thể được Edge Function lấy tự động."
           )}
         </label>
 
@@ -3210,7 +2827,7 @@ function productForm(
       <label>
         Thumbnail
         ${info(
-          "Ưu tiên ảnh tự động từ Edge Function. Nếu không được, hãy copy ảnh từ TikTok/Shopee rồi Ctrl+V trực tiếp vào khung."
+          "Ưu tiên thumbnail từ Edge Function. Nếu CDN chặn tải ảnh, hãy Ctrl+V ảnh trực tiếp."
         )}
       </label>
 
@@ -3228,7 +2845,7 @@ function productForm(
         <label>
           Link Affiliate
           ${info(
-            "Link khách hàng sẽ bấm để đi tới sản phẩm. Nếu bỏ trống, hệ thống sẽ dùng link sản phẩm phía trên."
+            "Link khách hàng sẽ bấm. Nếu bỏ trống, hệ thống dùng link sản phẩm."
           )}
         </label>
 
@@ -3302,9 +2919,7 @@ function productForm(
           }
         >
 
-        <span>
-          Hiển thị sản phẩm
-        </span>
+        Hiển thị sản phẩm
 
       </label>
 
@@ -3322,7 +2937,6 @@ function productForm(
 
       <button
         class="secondary"
-        type="button"
         onclick="closeModal()"
       >
         Huỷ
@@ -3331,7 +2945,6 @@ function productForm(
       <button
         id="saveProduct"
         class="primary"
-        type="button"
       >
         Lưu sản phẩm
       </button>
@@ -3348,16 +2961,11 @@ function productForm(
 ========================================================= */
 
 async function saveProduct(
-  existingProduct=null
+  existing=null
 ){
 
   const button =
     $("saveProduct");
-
-
-  const typedImageUrl =
-    currentProductImageUrl ||
-    null;
 
 
   const row = {
@@ -3385,10 +2993,11 @@ async function saveProduct(
 
     image_url:
       imageMarkedForRemoval
-        ? null
+        ?
+        null
         :
-      typedImageUrl ||
-      existingProduct?.image_url ||
+      currentProductImageUrl ||
+      existing?.image_url ||
       null,
 
     tiktok_url:
@@ -3440,14 +3049,34 @@ async function saveProduct(
 
   try{
 
-    let savedProduct;
+    let saved;
 
 
-    /*
-     * INSERT
-     */
+    if(existing){
 
-    if(!existingProduct){
+      const {
+        data,
+        error
+      } =
+        await db
+          .from("products")
+          .update(row)
+          .eq(
+            "id",
+            existing.id
+          )
+          .select()
+          .single();
+
+
+      if(error)
+        throw error;
+
+
+      saved = data;
+
+    }
+    else{
 
       const {
         data,
@@ -3464,71 +3093,31 @@ async function saveProduct(
         throw error;
 
 
-      savedProduct =
-        data;
+      saved = data;
 
     }
 
 
     /*
-     * UPDATE
-     */
-
-    else{
-
-      const {
-        data,
-        error
-      } =
-        await db
-          .from("products")
-          .update(row)
-          .eq(
-            "id",
-            existingProduct.id
-          )
-          .select()
-          .single();
-
-
-      if(error)
-        throw error;
-
-
-      savedProduct =
-        data;
-
-    }
-
-
-    /*
-     * ======================================================
-     * IMAGE
-     * ======================================================
+     * Nếu người dùng Ctrl+V ảnh,
+     * upload vào Storage.
      */
 
     if(
       pendingImageBlob
     ){
 
-      showToast(
-        "Đang lưu thumbnail...",
-        "success"
-      );
-
-
       try{
 
         const imageUrl =
           await uploadProductImage(
             pendingImageBlob,
-            savedProduct.id
+            saved.id
           );
 
 
         const {
-          error:
-            imageUpdateError
+          error
         } =
           await db
             .from("products")
@@ -3538,49 +3127,40 @@ async function saveProduct(
             })
             .eq(
               "id",
-              savedProduct.id
+              saved.id
             );
 
 
-        if(imageUpdateError)
-          throw imageUpdateError;
+        if(error)
+          throw error;
 
 
       }catch(imageError){
 
         /*
-         * Nếu upload Storage thất bại nhưng
-         * Edge Function đã trả URL ảnh:
-         * giữ URL gốc.
+         * Không xoá sản phẩm nếu Storage lỗi.
+         * Nếu có URL thumbnail từ Edge Function,
+         * giữ URL đó.
          */
 
         if(
-          typedImageUrl &&
-          !imageMarkedForRemoval
+          currentProductImageUrl
         ){
 
-          const {
-            error:
-              fallbackError
-          } =
-            await db
-              .from("products")
-              .update({
-                image_url:
-                  typedImageUrl
-              })
-              .eq(
-                "id",
-                savedProduct.id
-              );
-
-
-          if(fallbackError)
-            throw fallbackError;
+          await db
+            .from("products")
+            .update({
+              image_url:
+                currentProductImageUrl
+            })
+            .eq(
+              "id",
+              saved.id
+            );
 
 
           showToast(
-            "Sản phẩm đã lưu. Storage không upload được nên hệ thống giữ ảnh gốc từ TikTok/Shopee.",
+            "Sản phẩm đã lưu. Storage không upload được nên đang giữ thumbnail gốc.",
             "warning"
           );
 
@@ -3602,7 +3182,7 @@ async function saveProduct(
 
 
     showToast(
-      existingProduct
+      existing
         ? "Đã cập nhật sản phẩm."
         : "Đã thêm sản phẩm.",
       "success"
@@ -3615,7 +3195,6 @@ async function saveProduct(
       "SAVE PRODUCT ERROR:",
       error
     );
-
 
     showToast(
       error.message ||
@@ -3641,26 +3220,11 @@ async function saveProduct(
    ADD PRODUCT
 ========================================================= */
 
-async function addProduct(){
+function addProduct(){
 
   pendingImageBlob = null;
-  pendingImageContentType = null;
-  pendingImageName = null;
   currentProductImageUrl = null;
   imageMarkedForRemoval = false;
-
-
-  if(currentImageObjectUrl){
-
-    try{
-      URL.revokeObjectURL(
-        currentImageObjectUrl
-      );
-    }catch{}
-
-    currentImageObjectUrl = null;
-
-  }
 
 
   openModal(
@@ -3689,7 +3253,7 @@ async function addProduct(){
    EDIT PRODUCT
 ========================================================= */
 
-async function editProduct(
+function editProduct(
   id
 ){
 
@@ -3704,27 +3268,13 @@ async function editProduct(
 
 
   pendingImageBlob = null;
-  pendingImageContentType = null;
-  pendingImageName = null;
 
   currentProductImageUrl =
     product.image_url ||
     null;
 
-  imageMarkedForRemoval = false;
-
-
-  if(currentImageObjectUrl){
-
-    try{
-      URL.revokeObjectURL(
-        currentImageObjectUrl
-      );
-    }catch{}
-
-    currentImageObjectUrl = null;
-
-  }
+  imageMarkedForRemoval =
+    false;
 
 
   openModal(
@@ -3754,7 +3304,7 @@ async function editProduct(
 
 
 /* =========================================================
-   TOGGLE PRODUCT
+   PRODUCT ACTIONS
 ========================================================= */
 
 async function toggleProduct(
@@ -3794,36 +3344,9 @@ async function toggleProduct(
 }
 
 
-/* =========================================================
-   DELETE PRODUCT
-========================================================= */
-
 async function deleteProduct(
   id
 ){
-
-  if(
-    outfits.some(
-      o =>
-        (
-          o.outfit_products ||
-          []
-        ).some(
-          x =>
-            x.product_id === id
-        )
-    )
-  ){
-
-    showToast(
-      "Sản phẩm đang nằm trong Outfit. Hãy xoá sản phẩm khỏi Outfit trước.",
-      "warning"
-    );
-
-    return;
-
-  }
-
 
   if(
     !confirm(
@@ -3859,7 +3382,6 @@ async function deleteProduct(
 
   await loadAll();
 
-
   showToast(
     "Đã xoá sản phẩm.",
     "success"
@@ -3869,8 +3391,30 @@ async function deleteProduct(
 
 
 /* =========================================================
-   CATEGORY FORM
+   CATEGORY
 ========================================================= */
+
+function slugify(value){
+
+  return String(value || "")
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .toLowerCase()
+    .trim()
+    .replace(
+      /[^a-z0-9]+/g,
+      "-"
+    )
+    .replace(
+      /^-+|-+$/g,
+      ""
+    );
+
+}
+
 
 function categoryForm(
   category={}
@@ -3882,9 +3426,6 @@ function categoryForm(
 
       <label>
         Tên danh mục
-        ${info(
-          "Tên hiển thị cho khách hàng. Ví dụ: Áo, Quần, Giày, Túi."
-        )}
       </label>
 
       <input
@@ -3904,7 +3445,7 @@ function categoryForm(
       <label>
         Slug
         ${info(
-          "Slug dùng cho URL. Ví dụ: ao-thun, quan-jean. Có thể để trống để hệ thống tự tạo."
+          "Nếu để trống, hệ thống tự tạo slug từ tên."
         )}
       </label>
 
@@ -3914,7 +3455,7 @@ function categoryForm(
         value="${esc(
           category.slug || ""
         )}"
-        placeholder="ao-thun"
+        placeholder="quan-jean"
       >
 
     </div>
@@ -3950,36 +3491,6 @@ function categoryForm(
 }
 
 
-function slugify(
-  value
-){
-
-  return String(
-    value || ""
-  )
-    .normalize("NFD")
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
-    .toLowerCase()
-    .trim()
-    .replace(
-      /[^a-z0-9]+/g,
-      "-"
-    )
-    .replace(
-      /^-+|-+$/g,
-      ""
-    );
-
-}
-
-
-/* =========================================================
-   ADD CATEGORY
-========================================================= */
-
 function addCategory(){
 
   openModal(
@@ -3997,10 +3508,11 @@ function addCategory(){
           .value
           .trim();
 
-      let slug =
+      const slug =
         $("cSlug")
           .value
-          .trim();
+          .trim() ||
+        slugify(name);
 
 
       if(!name){
@@ -4015,55 +3527,42 @@ function addCategory(){
       }
 
 
-      if(!slug)
-        slug =
-          slugify(name);
+      const {
+        error
+      } =
+        await db
+          .from("categories")
+          .insert({
+            name,
+            slug
+          });
 
 
-      try{
-
-        const {
-          error
-        } =
-          await db
-            .from("categories")
-            .insert({
-              name,
-              slug
-            });
-
-
-        if(error)
-          throw error;
-
-
-        closeModal();
-
-        await loadAll();
-
-        showToast(
-          "Đã thêm danh mục.",
-          "success"
-        );
-
-
-      }catch(error){
+      if(error){
 
         showToast(
           error.message,
           "error"
         );
 
+        return;
+
       }
+
+
+      closeModal();
+
+      await loadAll();
+
+      showToast(
+        "Đã thêm danh mục.",
+        "success"
+      );
 
     };
 
 }
 
-
-/* =========================================================
-   EDIT CATEGORY
-========================================================= */
 
 function editCategory(
   id
@@ -4096,10 +3595,11 @@ function editCategory(
           .value
           .trim();
 
-      let slug =
+      const slug =
         $("cSlug")
           .value
-          .trim();
+          .trim() ||
+        slugify(name);
 
 
       if(!name){
@@ -4114,59 +3614,46 @@ function editCategory(
       }
 
 
-      if(!slug)
-        slug =
-          slugify(name);
+      const {
+        error
+      } =
+        await db
+          .from("categories")
+          .update({
+            name,
+            slug
+          })
+          .eq(
+            "id",
+            id
+          );
 
 
-      try{
-
-        const {
-          error
-        } =
-          await db
-            .from("categories")
-            .update({
-              name,
-              slug
-            })
-            .eq(
-              "id",
-              id
-            );
-
-
-        if(error)
-          throw error;
-
-
-        closeModal();
-
-        await loadAll();
-
-        showToast(
-          "Đã cập nhật danh mục.",
-          "success"
-        );
-
-
-      }catch(error){
+      if(error){
 
         showToast(
           error.message,
           "error"
         );
 
+        return;
+
       }
+
+
+      closeModal();
+
+      await loadAll();
+
+      showToast(
+        "Đã cập nhật danh mục.",
+        "success"
+      );
 
     };
 
 }
 
-
-/* =========================================================
-   DELETE CATEGORY
-========================================================= */
 
 async function deleteCategory(
   id
@@ -4177,15 +3664,14 @@ async function deleteCategory(
       p =>
         Number(
           p.category_id
-        ) ===
-        Number(id)
+        ) === Number(id)
     );
 
 
   if(hasProducts){
 
     showToast(
-      "Danh mục này đang có sản phẩm. Hãy chuyển/xoá sản phẩm trước.",
+      "Danh mục đang có sản phẩm. Hãy chuyển sản phẩm trước.",
       "warning"
     );
 
@@ -4237,7 +3723,7 @@ async function deleteCategory(
 
 
 /* =========================================================
-   OUTFIT FORM
+   OUTFIT
 ========================================================= */
 
 function outfitForm(
@@ -4263,12 +3749,6 @@ function outfitForm(
         x =>
           x.product_id
       );
-
-
-  const list =
-    products.filter(
-      p => p.is_active
-    );
 
 
   return `
@@ -4297,9 +3777,6 @@ function outfitForm(
 
         <label>
           Ảnh Outfit
-          ${info(
-            "Có thể để trống. Nếu để trống website có thể dùng ảnh sản phẩm đầu tiên."
-          )}
         </label>
 
         <input
@@ -4325,7 +3802,6 @@ function outfitForm(
       <textarea
         id="oDescription"
         class="textarea"
-        placeholder="Mô tả Outfit..."
       >${esc(
         outfit.description || ""
       )}</textarea>
@@ -4336,12 +3812,8 @@ function outfitForm(
     <div class="form-group">
 
       <label>
-        Chọn sản phẩm
-        ${info(
-          "Click sản phẩm để thêm/bỏ. Sau đó có thể dùng mũi tên để thay đổi thứ tự."
-        )}
+        Sản phẩm trong Outfit
       </label>
-
 
       <div
         id="outfitProducts"
@@ -4349,11 +3821,11 @@ function outfitForm(
       >
 
         ${
-          list.length
-
-            ?
-
-            list.map(
+          products
+            .filter(
+              p => p.is_active
+            )
+            .map(
               p => `
 
                 <div
@@ -4392,47 +3864,33 @@ function outfitForm(
                       `
                         <div
                           style="
-                            width:100%;
                             height:150px;
-                            border-radius:7px;
                             background:#eee;
                             display:flex;
                             align-items:center;
                             justify-content:center;
-                            color:#999;
+                            border-radius:7px;
                           "
                         >
-                          Không có ảnh
+                          Ảnh
                         </div>
                       `
                   }
 
-
                   <div
-                    class="product-option-name"
+                    style="
+                      font-size:13px;
+                      margin-top:7px;
+                    "
                   >
                     ${esc(p.name)}
                   </div>
 
-
-                  <small>
-                    ${esc(
-                      p.price || ""
-                    )}
-                  </small>
-
                 </div>
 
               `
-            ).join("")
-
-            :
-
-            `
-              <div class="empty">
-                Chưa có sản phẩm đang hiển thị.
-              </div>
-            `
+            )
+            .join("")
         }
 
       </div>
@@ -4440,28 +3898,14 @@ function outfitForm(
     </div>
 
 
+    <div
+      id="selectedOutfitList"
+    ></div>
+
+
     <div class="form-group">
 
       <label>
-        Thứ tự sản phẩm
-      </label>
-
-      <div id="selectedOutfitList"></div>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label
-        style="
-          display:flex;
-          align-items:center;
-          gap:9px;
-          cursor:pointer;
-        "
-      >
-
         <input
           id="oActive"
           type="checkbox"
@@ -4509,140 +3953,6 @@ function outfitForm(
 }
 
 
-/* =========================================================
-   UPDATE SELECTED OUTFIT LIST
-========================================================= */
-
-function updateSelectedList(){
-
-  const container =
-    $("selectedOutfitList");
-
-  if(!container)
-    return;
-
-
-  if(
-    !selectedOutfitProducts.length
-  ){
-
-    container.innerHTML =
-      `
-        <div class="notice">
-          Chưa chọn sản phẩm.
-        </div>
-      `;
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    selectedOutfitProducts
-      .map(
-        (
-          productId,
-          index
-        ) => {
-
-          const product =
-            products.find(
-              p =>
-                p.id ===
-                productId
-            );
-
-
-          if(!product)
-            return "";
-
-
-          return `
-
-            <div class="outfit-item">
-
-              ${
-                product.image_url
-
-                  ?
-
-                  `
-                    <img
-                      src="${esc(
-                        product.image_url
-                      )}"
-                    >
-                  `
-
-                  :
-
-                  `
-                    <div
-                      style="
-                        width:45px;
-                        height:55px;
-                        background:#eee;
-                        border-radius:6px;
-                      "
-                    ></div>
-                  `
-              }
-
-
-              <div
-                style="flex:1"
-              >
-                <b>
-                  ${index + 1}.
-                </b>
-
-                ${esc(
-                  product.name
-                )}
-              </div>
-
-
-              <button
-                class="secondary"
-                onclick="
-                  moveOutfit(
-                    ${index},
-                    -1
-                  )
-                "
-              >
-                ↑
-              </button>
-
-
-              <button
-                class="secondary"
-                onclick="
-                  moveOutfit(
-                    ${index},
-                    1
-                  )
-                "
-              >
-                ↓
-              </button>
-
-            </div>
-
-          `;
-
-        }
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
-   SELECT OUTFIT PRODUCT
-========================================================= */
-
 function selectOutfitProduct(
   id
 ){
@@ -4672,19 +3982,16 @@ function selectOutfitProduct(
       ".product-option"
     )
     .forEach(
-      element => {
-
-        element.classList.toggle(
+      el =>
+        el.classList.toggle(
           "selected",
           selectedOutfitProducts
             .includes(
               Number(
-                element.dataset.id
+                el.dataset.id
               )
             )
-        );
-
-      }
+        )
     );
 
 
@@ -4693,9 +4000,94 @@ function selectOutfitProduct(
 }
 
 
-/* =========================================================
-   MOVE OUTFIT
-========================================================= */
+function updateSelectedList(){
+
+  const box =
+    $("selectedOutfitList");
+
+  if(!box)
+    return;
+
+
+  box.innerHTML =
+    selectedOutfitProducts
+      .map(
+        (
+          id,
+          index
+        ) => {
+
+          const p =
+            products.find(
+              x => x.id === id
+            );
+
+
+          if(!p)
+            return "";
+
+
+          return `
+
+            <div class="outfit-item">
+
+              ${
+                p.image_url
+
+                  ?
+
+                  `
+                    <img
+                      src="${esc(
+                        p.image_url
+                      )}"
+                    >
+                  `
+
+                  :
+
+                  ""
+              }
+
+              <div style="flex:1">
+                ${index + 1}.
+                ${esc(p.name)}
+              </div>
+
+              <button
+                class="secondary"
+                onclick="
+                  moveOutfit(
+                    ${index},
+                    -1
+                  )
+                "
+              >
+                ↑
+              </button>
+
+              <button
+                class="secondary"
+                onclick="
+                  moveOutfit(
+                    ${index},
+                    1
+                  )
+                "
+              >
+                ↓
+              </button>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
 
 function moveOutfit(
   index,
@@ -4729,11 +4121,7 @@ function moveOutfit(
 }
 
 
-/* =========================================================
-   ADD OUTFIT
-========================================================= */
-
-async function addOutfit(){
+function addOutfit(){
 
   openModal(
     "Tạo Outfit",
@@ -4746,154 +4134,13 @@ async function addOutfit(){
 
   $("saveOutfit")
     .onclick =
-    async () => {
-
-      const button =
-        $("saveOutfit");
-
-
-      const name =
-        $("oName")
-          .value
-          .trim();
-
-
-      if(!name){
-
-        showToast(
-          "Vui lòng nhập tên Outfit.",
-          "warning"
-        );
-
-        return;
-
-      }
-
-
-      button.disabled =
-        true;
-
-      button.textContent =
-        "Đang lưu...";
-
-
-      try{
-
-        const {
-          data: outfit,
-          error
-        } =
-          await db
-            .from("outfits")
-            .insert({
-
-              name,
-
-              image_url:
-                $("oImage")
-                  .value
-                  .trim() ||
-                null,
-
-              description:
-                $("oDescription")
-                  .value
-                  .trim() ||
-                null,
-
-              is_active:
-                $("oActive")
-                  .checked
-
-            })
-            .select()
-            .single();
-
-
-        if(error)
-          throw error;
-
-
-        if(
-          selectedOutfitProducts.length
-        ){
-
-          const rows =
-            selectedOutfitProducts
-              .map(
-                (
-                  productId,
-                  index
-                ) => ({
-
-                  outfit_id:
-                    outfit.id,
-
-                  product_id:
-                    productId,
-
-                  sort_order:
-                    index
-
-                })
-              );
-
-
-          const {
-            error:
-              relationError
-          } =
-            await db
-              .from(
-                "outfit_products"
-              )
-              .insert(rows);
-
-
-          if(relationError)
-            throw relationError;
-
-        }
-
-
-        closeModal();
-
-        await loadAll();
-
-
-        showToast(
-          "Đã tạo Outfit.",
-          "success"
-        );
-
-
-      }catch(error){
-
-        showToast(
-          error.message,
-          "error"
-        );
-
-      }finally{
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "Lưu Outfit";
-
-      }
-
-    };
+    () =>
+      saveOutfit(null);
 
 }
 
 
-/* =========================================================
-   EDIT OUTFIT
-========================================================= */
-
-async function editOutfit(
+function editOutfit(
   id
 ){
 
@@ -4920,172 +4167,205 @@ async function editOutfit(
 
   $("saveOutfit")
     .onclick =
-    async () => {
-
-      const button =
-        $("saveOutfit");
-
-
-      const name =
-        $("oName")
-          .value
-          .trim();
-
-
-      if(!name){
-
-        showToast(
-          "Vui lòng nhập tên Outfit.",
-          "warning"
-        );
-
-        return;
-
-      }
-
-
-      button.disabled =
-        true;
-
-      button.textContent =
-        "Đang lưu...";
-
-
-      try{
-
-        const {
-          error
-        } =
-          await db
-            .from("outfits")
-            .update({
-
-              name,
-
-              image_url:
-                $("oImage")
-                  .value
-                  .trim() ||
-                null,
-
-              description:
-                $("oDescription")
-                  .value
-                  .trim() ||
-                null,
-
-              is_active:
-                $("oActive")
-                  .checked
-
-            })
-            .eq(
-              "id",
-              id
-            );
-
-
-        if(error)
-          throw error;
-
-
-        const {
-          error:
-            deleteRelationError
-        } =
-          await db
-            .from(
-              "outfit_products"
-            )
-            .delete()
-            .eq(
-              "outfit_id",
-              id
-            );
-
-
-        if(deleteRelationError)
-          throw deleteRelationError;
-
-
-        if(
-          selectedOutfitProducts.length
-        ){
-
-          const rows =
-            selectedOutfitProducts
-              .map(
-                (
-                  productId,
-                  index
-                ) => ({
-
-                  outfit_id:
-                    id,
-
-                  product_id:
-                    productId,
-
-                  sort_order:
-                    index
-
-                })
-              );
-
-
-          const {
-            error:
-              insertRelationError
-          } =
-            await db
-              .from(
-                "outfit_products"
-              )
-              .insert(rows);
-
-
-          if(insertRelationError)
-            throw insertRelationError;
-
-        }
-
-
-        closeModal();
-
-        await loadAll();
-
-
-        showToast(
-          "Đã cập nhật Outfit.",
-          "success"
-        );
-
-
-      }catch(error){
-
-        showToast(
-          error.message,
-          "error"
-        );
-
-      }finally{
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "Lưu Outfit";
-
-      }
-
-    };
+    () =>
+      saveOutfit(
+        outfit
+      );
 
 }
 
 
-/* =========================================================
-   TOGGLE OUTFIT
-========================================================= */
+async function saveOutfit(
+  existing
+){
+
+  const name =
+    $("oName")
+      .value
+      .trim();
+
+
+  if(!name){
+
+    showToast(
+      "Vui lòng nhập tên Outfit.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    $("saveOutfit");
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "Đang lưu...";
+
+
+  try{
+
+    let outfit;
+
+
+    const payload = {
+
+      name,
+
+      image_url:
+        $("oImage")
+          .value
+          .trim() ||
+        null,
+
+      description:
+        $("oDescription")
+          .value
+          .trim() ||
+        null,
+
+      is_active:
+        $("oActive")
+          .checked
+
+    };
+
+
+    if(existing){
+
+      const {
+        data,
+        error
+      } =
+        await db
+          .from("outfits")
+          .update(payload)
+          .eq(
+            "id",
+            existing.id
+          )
+          .select()
+          .single();
+
+
+      if(error)
+        throw error;
+
+
+      outfit =
+        data;
+
+
+      await db
+        .from("outfit_products")
+        .delete()
+        .eq(
+          "outfit_id",
+          outfit.id
+        );
+
+    }
+    else{
+
+      const {
+        data,
+        error
+      } =
+        await db
+          .from("outfits")
+          .insert(payload)
+          .select()
+          .single();
+
+
+      if(error)
+        throw error;
+
+
+      outfit =
+        data;
+
+    }
+
+
+    if(
+      selectedOutfitProducts.length
+    ){
+
+      const rows =
+        selectedOutfitProducts
+          .map(
+            (
+              productId,
+              index
+            ) => ({
+
+              outfit_id:
+                outfit.id,
+
+              product_id:
+                productId,
+
+              sort_order:
+                index
+
+            })
+          );
+
+
+      const {
+        error
+      } =
+        await db
+          .from(
+            "outfit_products"
+          )
+          .insert(rows);
+
+
+      if(error)
+        throw error;
+
+    }
+
+
+    closeModal();
+
+    await loadAll();
+
+
+    showToast(
+      existing
+        ? "Đã cập nhật Outfit."
+        : "Đã tạo Outfit.",
+      "success"
+    );
+
+
+  }catch(error){
+
+    showToast(
+      error.message,
+      "error"
+    );
+
+  }finally{
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Lưu Outfit";
+
+  }
+
+}
+
 
 async function toggleOutfit(
   id,
@@ -5124,10 +4404,6 @@ async function toggleOutfit(
 }
 
 
-/* =========================================================
-   DELETE OUTFIT
-========================================================= */
-
 async function deleteOutfit(
   id
 ){
@@ -5140,31 +4416,13 @@ async function deleteOutfit(
     return;
 
 
-  const {
-    error:
-      relationError
-  } =
-    await db
-      .from(
-        "outfit_products"
-      )
-      .delete()
-      .eq(
-        "outfit_id",
-        id
-      );
-
-
-  if(relationError){
-
-    showToast(
-      relationError.message,
-      "error"
+  await db
+    .from("outfit_products")
+    .delete()
+    .eq(
+      "outfit_id",
+      id
     );
-
-    return;
-
-  }
 
 
   const {
@@ -5193,7 +4451,6 @@ async function deleteOutfit(
 
   await loadAll();
 
-
   showToast(
     "Đã xoá Outfit.",
     "success"
@@ -5203,75 +4460,7 @@ async function deleteOutfit(
 
 
 /* =========================================================
-   SECTION SWITCH
-========================================================= */
-
-function switchSection(
-  name
-){
-
-  document
-    .querySelectorAll(
-      ".section"
-    )
-    .forEach(
-      section =>
-        section.classList
-          .remove(
-            "active"
-          )
-    );
-
-
-  document
-    .querySelectorAll(
-      ".nav-btn"
-    )
-    .forEach(
-      button =>
-        button.classList
-          .remove(
-            "active"
-          )
-    );
-
-
-  $(name)
-    ?.classList
-    .add("active");
-
-
-  document
-    .querySelector(
-      `[data-section="${name}"]`
-    )
-    ?.classList
-    .add("active");
-
-
-  $("pageTitle")
-    .textContent =
-    {
-      dashboard:
-        "Dashboard",
-
-      products:
-        "Sản phẩm",
-
-      categories:
-        "Danh mục",
-
-      outfits:
-        "Outfit"
-
-    }[name] ||
-    name;
-
-}
-
-
-/* =========================================================
-   EVENT BINDINGS
+   NAV
 ========================================================= */
 
 document
@@ -5282,14 +4471,72 @@ document
     button => {
 
       button.onclick =
-        () =>
-          switchSection(
-            button.dataset.section
-          );
+        () => {
+
+          document
+            .querySelectorAll(
+              ".section"
+            )
+            .forEach(
+              x =>
+                x.classList
+                  .remove(
+                    "active"
+                  )
+            );
+
+
+          document
+            .querySelectorAll(
+              ".nav-btn"
+            )
+            .forEach(
+              x =>
+                x.classList
+                  .remove(
+                    "active"
+                  )
+            );
+
+
+          $(button.dataset.section)
+            .classList
+            .add("active");
+
+
+          button
+            .classList
+            .add("active");
+
+
+          $("pageTitle")
+            .textContent =
+            {
+              dashboard:
+                "Dashboard",
+
+              products:
+                "Sản phẩm",
+
+              categories:
+                "Danh mục",
+
+              outfits:
+                "Outfit"
+
+            }[
+              button.dataset.section
+            ];
+
+        };
 
     }
   );
 
+
+/* =========================================================
+   EVENTS
+========================================================= */
 
 $("closeModal")
   .onclick =
@@ -5301,25 +4548,22 @@ $("modal")
   event => {
 
     if(
-      event.target.id ===
-      "modal"
-    ){
-
+      event.target ===
+      $("modal")
+    )
       closeModal();
 
-    }
-
   };
-
-
-$("addCategoryBtn")
-  .onclick =
-  addCategory;
 
 
 $("addProductBtn")
   .onclick =
   addProduct;
+
+
+$("addCategoryBtn")
+  .onclick =
+  addCategory;
 
 
 $("addOutfitBtn")
@@ -5341,48 +4585,6 @@ $("logoutBtn")
     location.reload();
 
   };
-
-
-/* =========================================================
-   ENTER LOGIN
-========================================================= */
-
-$("loginEmail")
-  .addEventListener(
-    "keydown",
-    event => {
-
-      if(
-        event.key ===
-        "Enter"
-      ){
-
-        $("loginPassword")
-          .focus();
-
-      }
-
-    }
-  );
-
-
-$("loginPassword")
-  .addEventListener(
-    "keydown",
-    event => {
-
-      if(
-        event.key ===
-        "Enter"
-      ){
-
-        $("loginBtn")
-          .click();
-
-      }
-
-    }
-  );
 
 
 /* =========================================================
@@ -5429,7 +4631,6 @@ $("loginBtn")
       .textContent =
       "Đang đăng nhập...";
 
-
     $("loginError")
       .innerHTML =
       "";
@@ -5452,9 +4653,9 @@ $("loginBtn")
         throw error;
 
 
-      if(!data?.user)
+      if(!data.user)
         throw new Error(
-          "Đăng nhập thất bại: không nhận được tài khoản."
+          "Không nhận được tài khoản."
         );
 
 
@@ -5471,12 +4672,6 @@ $("loginBtn")
 
 
     }catch(error){
-
-      console.error(
-        "LOGIN ERROR:",
-        error
-      );
-
 
       $("loginError")
         .innerHTML =
@@ -5505,6 +4700,29 @@ $("loginBtn")
 
 
 /* =========================================================
+   ENTER LOGIN
+========================================================= */
+
+$("loginPassword")
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if(
+        event.key ===
+        "Enter"
+      ){
+
+        $("loginBtn")
+          .click();
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
    SHOW ADMIN
 ========================================================= */
 
@@ -5514,11 +4732,9 @@ async function showAdmin(){
     .classList
     .add("hidden");
 
-
   $("adminApp")
     .classList
     .remove("hidden");
-
 
   $("userEmail")
     .textContent =
@@ -5526,25 +4742,7 @@ async function showAdmin(){
     "";
 
 
-  try{
-
-    await loadAll();
-
-  }catch(error){
-
-    console.error(
-      "LOAD ADMIN ERROR:",
-      error
-    );
-
-
-    showToast(
-      "Không tải được dữ liệu: " +
-      error.message,
-      "error"
-    );
-
-  }
+  await loadAll();
 
 }
 
@@ -5565,7 +4763,7 @@ async function boot(){
 
 
     if(
-      data.session
+      data?.session?.user
     ){
 
       try{
