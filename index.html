@@ -1,1 +1,2677 @@
-<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Mặc Gì Đây?</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>*{box-sizing:border-box}body{margin:0;background:#f7f5f1;color:#181818;font-family:Arial,sans-serif}header{height:70px;border-bottom:1px solid #e5e0d8;display:flex;align-items:center;justify-content:space-between;padding:0 max(25px,8vw);background:#f7f5f1;position:sticky;top:0;z-index:10}.logo{font:bold 28px Georgia,serif}.nav{display:flex;gap:28px}.nav a{color:#555;text-decoration:none}.hero{max-width:1100px;margin:0 auto;padding:70px 20px;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}.hero h1{font:700 78px/0.9 Georgia,serif;margin:10px 0 30px}.hero p{color:#777;font-size:17px;line-height:1.7}.hero-img{height:430px;background:#ded7c9;border-radius:30px;display:flex;align-items:end;padding:25px;overflow:hidden}.hero-img img{width:100%;height:100%;object-fit:cover;border-radius:20px}.hero-label{background:#fff;border-radius:30px;padding:12px 18px;position:absolute}.container{max-width:1100px;margin:auto;padding:30px 20px}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.section-title{font:700 38px Georgia,serif}.outfit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}.outfit-card{background:#fff;border:1px solid #e2ddd5;border-radius:20px;overflow:hidden}.outfit-image{height:420px;background:#e2dcd0}.outfit-image img{width:100%;height:100%;object-fit:cover}.outfit-info{padding:20px}.outfit-info h3{font:24px Georgia,serif;margin:0 0 8px}.outfit-info p{color:#777}.outfit-btn{width:100%;padding:13px;border:1px solid #ddd;background:white;border-radius:10px}.search{width:100%;padding:17px;border:1px solid #ddd6ca;border-radius:12px;background:#fff;font-size:16px;margin-bottom:15px}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:25px}.filter{padding:10px 17px;border:1px solid #ddd6ca;background:#fff;border-radius:30px;cursor:pointer}.filter.active{background:#181818;color:#fff}.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.product-card{background:#fff;border:1px solid #e4dfd7;border-radius:14px;overflow:visible;position:relative}.product-image{height:280px;background:#eee;border-radius:14px 14px 0 0;overflow:hidden}.product-image img{width:100%;height:100%;object-fit:cover;transition:.25s}.product-card:hover .product-image img{transform:scale(1.04)}.product-info{padding:14px}.product-info h3{font-size:15px;margin:0 0 7px}.price{font-weight:bold}.product-link{display:block;margin-top:12px;background:#181818;color:white;text-align:center;padding:10px;border-radius:8px;text-decoration:none}.outfit-modal{position:fixed;inset:0;background:#0008;z-index:100;display:none;align-items:center;justify-content:center;padding:20px}.outfit-modal.show{display:flex}.modal-box{background:#fff;border-radius:20px;max-width:900px;width:100%;max-height:90vh;overflow:auto;padding:25px}.modal-head{display:flex;justify-content:space-between}.close{width:38px;height:38px;border:0;border-radius:50%;font-size:22px}.modal-products{display:grid;gap:8px;margin-top:20px}.modal-product{display:flex;align-items:center;gap:15px;padding:10px;border:1px solid #e2ddd5;border-radius:10px;text-decoration:none;color:#181818}.modal-product img{width:70px;height:80px;object-fit:cover;border-radius:8px}.empty{text-align:center;padding:60px;color:#999}@media(max-width:800px){.hero{grid-template-columns:1fr}.hero h1{font-size:60px}.outfit-grid{grid-template-columns:1fr 1fr}.product-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:500px){header{padding:0 15px}.nav{display:none}.hero{padding:40px 15px}.hero h1{font-size:52px}.hero-img{height:320px}.container{padding:25px 15px}.outfit-grid,.product-grid{grid-template-columns:1fr}.product-image{height:360px}}</style></head><body><header><div class="logo">Mặc Gì Đây?</div><nav class="nav"><a href="#outfits">Outfit</a><a href="#products">Sản phẩm</a></nav></header><section class="hero"><div><small>FASHION · OUTFIT · SHOPPING</small><h1>Mặc gì<br>đây?</h1><p>Phối đồ dễ mặc, dễ đẹp. Tìm những món đồ xuất hiện trong các outfit và xem sản phẩm nhanh hơn.</p></div><div class="hero-img"><img id="heroImage" src="" style="display:none"><span class="hero-label">Outfit mới nhất</span></div></section><section id="outfits" class="container"><div class="section-head"><div class="section-title">Outfit mới nhất</div><span id="outfitCount"></span></div><div id="outfitGrid" class="outfit-grid"></div></section><section id="products" class="container"><div class="section-head"><div class="section-title">Sản phẩm</div><span id="productCount"></span></div><input id="search" class="search" placeholder="🔎  Tìm sản phẩm..."><div id="filters" class="filters"></div><div id="productGrid" class="product-grid"></div></section><div id="modal" class="outfit-modal"><div class="modal-box"><div class="modal-head"><div><h2 id="modalTitle"></h2><p id="modalDescription"></p></div><button class="close" onclick="closeModal()">×</button></div><div id="modalProducts" class="modal-products"></div></div></div><script>const SUPABASE_URL="https://rxeqynitxruylvcybrca.supabase.co";const SUPABASE_KEY="sb_publishable_DCZRB5bpOCQUGwEWWevizg_lAp2YvIm";const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);let products=[],categories=[],outfits=[],activeCategory="all";const $=id=>document.getElementById(id);function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}async function load(){const[c,p,o]=await Promise.all([db.from("categories").select("*").order("name"),db.from("products").select("*,categories(name,slug)").eq("is_active",true).order("created_at",{ascending:false}),db.from("outfits").select("*,outfit_products(product_id,sort_order,products(id,name,image_url,price,affiliate_url,category_id))").eq("is_active",true).order("created_at",{ascending:false})]);categories=c.data||[];products=p.data||[];outfits=o.data||[];render()}function render(){renderHero();renderFilters();renderProducts();renderOutfits()}function renderHero(){const o=outfits[0];const img=o?.image_url||o?.outfit_products?.[0]?.products?.image_url;if(img){$("heroImage").src=img;$("heroImage").style.display="block"}}function renderFilters(){ $("filters").innerHTML=`<button class="filter ${activeCategory==="all"?"active":""}" onclick="setCategory('all')">Tất cả</button>`+categories.map(c=>`<button class="filter ${String(activeCategory)===String(c.id)?"active":""}" onclick="setCategory(${c.id})">${esc(c.name)}</button>`).join("")}function setCategory(id){activeCategory=id;renderFilters();renderProducts()}function renderProducts(){const q=$("search").value.toLowerCase();let list=products.filter(p=>(activeCategory==="all"||p.category_id===activeCategory)&&((p.name||"").toLowerCase().includes(q)||(p.description||"").toLowerCase().includes(q)));$("productCount").textContent=list.length+" sản phẩm";$("productGrid").innerHTML=list.length?list.map(p=>`<article class="product-card"><div class="product-image"><img src="${esc(p.image_url||"")}" loading="lazy"></div><div class="product-info"><h3>${esc(p.name)}</h3><div class="price">${esc(p.price||"")}</div>${p.affiliate_url?`<a class="product-link" href="${esc(p.affiliate_url)}" target="_blank" rel="noopener">Xem sản phẩm →</a>`:""}</div></article>`).join(""):`<div class="empty" style="grid-column:1/-1">Không tìm thấy sản phẩm phù hợp.</div>`}function renderOutfits(){$("outfitCount").textContent=outfits.length+" outfit";$("outfitGrid").innerHTML=outfits.length?outfits.map(o=>{const img=o.image_url||o.outfit_products?.[0]?.products?.image_url||"";return `<article class="outfit-card"><div class="outfit-image"><img src="${esc(img)}"></div><div class="outfit-info"><h3>${esc(o.name)}</h3><p>${esc(o.description||"")}</p><button class="outfit-btn" onclick="openOutfit(${o.id})">Xem các món trong set →</button></div></article>`}).join(""):`<div class="empty" style="grid-column:1/-1">Chưa có outfit nào.</div>`}function openOutfit(id){const o=outfits.find(x=>x.id===id);if(!o)return;$("modalTitle").textContent=o.name;$("modalDescription").textContent=o.description||"";$("modalProducts").innerHTML=(o.outfit_products||[]).sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)).map(x=>{const p=x.products;return `<a class="modal-product" href="${esc(p.affiliate_url||"#")}" target="_blank" rel="noopener"><img src="${esc(p.image_url||"")}"><div><b>${esc(p.name)}</b><div>${esc(p.price||"")}</div></div></a>`}).join("");$("modal").classList.add("show")}function closeModal(){$("modal").classList.remove("show")}$("search").oninput=renderProducts;$("modal").onclick=e=>{if(e.target.id==="modal")closeModal()};load();</script></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#f7f5f1">
+
+<title>Mặc Gì Đây? — Thời trang & Outfit</title>
+
+<meta
+  name="description"
+  content="Khám phá những món đồ thời trang và outfit được chọn lọc tại Mặc Gì Đây?"
+>
+
+<!-- =========================================================
+     FONT
+     Be Vietnam Pro hỗ trợ tiếng Việt rất tốt.
+     Có fallback để website vẫn hiển thị đẹp nếu Google Fonts lỗi.
+========================================================= -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+  rel="stylesheet"
+>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:#f7f5f1;
+  color:#171717;
+
+  font-family:
+    "Be Vietnam Pro",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+img{
+  display:block;
+  max-width:100%;
+}
+
+::selection{
+  background:#171717;
+  color:#fff;
+}
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root{
+
+  --bg:#f7f5f1;
+  --surface:#ffffff;
+  --surface-soft:#f1eee8;
+
+  --text:#171717;
+  --muted:#77716a;
+  --muted-light:#9a948d;
+
+  --border:#e2ddd5;
+  --border-dark:#d5cec4;
+
+  --black:#151515;
+
+  --radius-sm:10px;
+  --radius-md:16px;
+  --radius-lg:24px;
+
+  --shadow-sm:
+    0 4px 18px rgba(0,0,0,.045);
+
+  --shadow-md:
+    0 15px 45px rgba(0,0,0,.08);
+
+  --container:1180px;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+  width:9px;
+}
+
+::-webkit-scrollbar-track{
+  background:#eeeae4;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#c7c0b7;
+  border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:#a9a197;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container{
+  width:min(
+    var(--container),
+    calc(100% - 40px)
+  );
+
+  margin:0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.site-header{
+
+  position:sticky;
+  top:0;
+  z-index:100;
+
+  background:
+    rgba(247,245,241,.92);
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  border-bottom:
+    1px solid rgba(226,221,213,.75);
+}
+
+.header-inner{
+
+  min-height:78px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:30px;
+}
+
+.logo{
+
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  flex-shrink:0;
+}
+
+.logo-mark{
+
+  width:42px;
+  height:42px;
+
+  border-radius:50%;
+
+  background:#171717;
+  color:#fff;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size:20px;
+  font-weight:700;
+}
+
+.logo-text{
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size:23px;
+  font-weight:700;
+
+  letter-spacing:-.4px;
+}
+
+.header-nav{
+
+  display:flex;
+  align-items:center;
+  gap:28px;
+
+  color:#5f5952;
+
+  font-size:14px;
+  font-weight:600;
+}
+
+.header-nav a{
+
+  position:relative;
+
+  padding:8px 0;
+
+  transition:
+    color .2s ease;
+}
+
+.header-nav a::after{
+
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  bottom:2px;
+
+  width:0;
+  height:1.5px;
+
+  background:#171717;
+
+  transition:
+    width .25s ease;
+}
+
+.header-nav a:hover{
+  color:#171717;
+}
+
+.header-nav a:hover::after{
+  width:100%;
+}
+
+.header-badge{
+
+  display:flex;
+  align-items:center;
+  gap:7px;
+
+  padding:9px 13px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:999px;
+
+  background:#fff;
+
+  color:#57514a;
+
+  font-size:12px;
+  font-weight:600;
+}
+
+.header-badge-dot{
+
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#38a169;
+
+  box-shadow:
+    0 0 0 4px rgba(56,161,105,.10);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+  padding:
+    72px 0
+    48px;
+}
+
+.hero-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1.2fr)
+    minmax(300px,.8fr);
+
+  gap:50px;
+
+  align-items:end;
+}
+
+.hero-eyebrow{
+
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+
+  margin-bottom:18px;
+
+  color:#756e66;
+
+  font-size:12px;
+  font-weight:700;
+
+  letter-spacing:
+    .12em;
+
+  text-transform:
+    uppercase;
+}
+
+.hero-eyebrow::before{
+
+  content:"";
+
+  width:28px;
+  height:1px;
+
+  background:#171717;
+}
+
+.hero-title{
+
+  margin:0;
+
+  max-width:720px;
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size:
+    clamp(42px,6vw,76px);
+
+  line-height:
+    .98;
+
+  letter-spacing:
+    -2.5px;
+}
+
+.hero-title span{
+  color:#8c857d;
+}
+
+.hero-description{
+
+  max-width:600px;
+
+  margin:
+    24px 0 0;
+
+  color:#756f68;
+
+  font-size:15px;
+
+  line-height:1.8;
+}
+
+.hero-side{
+
+  padding-bottom:5px;
+}
+
+.hero-card{
+
+  padding:25px;
+
+  background:#fff;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    var(--radius-lg);
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+.hero-card-title{
+
+  margin-bottom:9px;
+
+  font-size:15px;
+  font-weight:700;
+}
+
+.hero-card-text{
+
+  color:#7b746d;
+
+  font-size:13px;
+
+  line-height:1.7;
+}
+
+
+/* =========================================================
+   SHOP TOOLBAR
+========================================================= */
+
+.shop{
+
+  padding:
+    25px 0
+    90px;
+}
+
+.shop-top{
+
+  display:flex;
+
+  align-items:end;
+  justify-content:space-between;
+
+  gap:25px;
+
+  margin-bottom:24px;
+}
+
+.section-heading{
+
+  margin:0;
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size:34px;
+
+  letter-spacing:-.7px;
+}
+
+.section-subtitle{
+
+  margin:
+    7px 0 0;
+
+  color:#8a837b;
+
+  font-size:13px;
+}
+
+.result-count{
+
+  color:#8b847d;
+
+  font-size:13px;
+  font-weight:500;
+
+  white-space:nowrap;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-wrap{
+
+  position:relative;
+
+  margin-bottom:20px;
+}
+
+.search-icon{
+
+  position:absolute;
+
+  left:17px;
+  top:50%;
+
+  transform:
+    translateY(-50%);
+
+  width:19px;
+  height:19px;
+
+  color:#8c857d;
+
+  pointer-events:none;
+}
+
+.search-input{
+
+  width:100%;
+
+  height:58px;
+
+  padding:
+    0 50px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    16px;
+
+  background:#fff;
+
+  color:#171717;
+
+  outline:none;
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,.025);
+
+  transition:
+    border .2s ease,
+    box-shadow .2s ease;
+}
+
+.search-input::placeholder{
+  color:#aaa39b;
+}
+
+.search-input:focus{
+
+  border-color:#bcb4aa;
+
+  box-shadow:
+    0 8px 28px rgba(0,0,0,.055);
+}
+
+.search-clear{
+
+  position:absolute;
+
+  right:12px;
+  top:50%;
+
+  transform:
+    translateY(-50%);
+
+  width:34px;
+  height:34px;
+
+  display:none;
+
+  align-items:center;
+  justify-content:center;
+
+  border:0;
+
+  border-radius:50%;
+
+  background:#eeeae4;
+
+  color:#55504a;
+}
+
+.search-clear.show{
+  display:flex;
+}
+
+
+/* =========================================================
+   CATEGORY FILTER
+========================================================= */
+
+.category-scroll{
+
+  overflow-x:auto;
+
+  padding:
+    2px 1px
+    7px;
+
+  scrollbar-width:none;
+}
+
+.category-scroll::-webkit-scrollbar{
+  display:none;
+}
+
+.categories{
+
+  display:flex;
+
+  gap:9px;
+
+  min-width:max-content;
+}
+
+.category-btn{
+
+  border:
+    1px solid var(--border);
+
+  background:#fff;
+
+  color:#4e4943;
+
+  padding:
+    11px 18px;
+
+  border-radius:999px;
+
+  font-size:13px;
+  font-weight:600;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border .2s ease,
+    transform .2s ease;
+}
+
+.category-btn:hover{
+
+  transform:
+    translateY(-1px);
+
+  border-color:#bdb5ab;
+}
+
+.category-btn.active{
+
+  background:#171717;
+  color:#fff;
+
+  border-color:#171717;
+
+  box-shadow:
+    0 5px 15px rgba(0,0,0,.12);
+}
+
+
+/* =========================================================
+   PRODUCT GRID
+========================================================= */
+
+.product-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap:
+    24px 18px;
+
+  margin-top:30px;
+}
+
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+.product-card{
+
+  position:relative;
+
+  min-width:0;
+
+  background:#fff;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    18px;
+
+  overflow:hidden;
+
+  box-shadow:
+    0 4px 18px rgba(0,0,0,.025);
+
+  transition:
+    transform .28s ease,
+    box-shadow .28s ease,
+    border-color .28s ease;
+}
+
+.product-card:hover{
+
+  transform:
+    translateY(-6px);
+
+  border-color:#d5cec5;
+
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.10);
+}
+
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
+
+.product-image-wrap{
+
+  position:relative;
+
+  aspect-ratio:
+    4 / 5;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f0ede8,
+      #e8e3dc
+    );
+}
+
+.product-image{
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  transition:
+    transform .55s cubic-bezier(.2,.7,.2,1);
+}
+
+.product-card:hover
+.product-image{
+
+  transform:
+    scale(1.045);
+}
+
+.image-fallback{
+
+  position:absolute;
+  inset:0;
+
+  display:none;
+
+  align-items:center;
+  justify-content:center;
+
+  flex-direction:column;
+
+  gap:8px;
+
+  color:#a39c94;
+
+  font-size:12px;
+}
+
+.image-fallback-icon{
+  font-size:30px;
+}
+
+.product-image-wrap.image-error
+.product-image{
+  display:none;
+}
+
+.product-image-wrap.image-error
+.image-fallback{
+  display:flex;
+}
+
+
+/* =========================================================
+   PRODUCT BADGE
+========================================================= */
+
+.product-badge{
+
+  position:absolute;
+
+  top:12px;
+  left:12px;
+
+  z-index:2;
+
+  padding:
+    7px 10px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.92);
+
+  backdrop-filter:
+    blur(8px);
+
+  color:#403b36;
+
+  font-size:10px;
+  font-weight:700;
+
+  letter-spacing:.04em;
+
+  box-shadow:
+    0 3px 12px rgba(0,0,0,.08);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.product-content{
+
+  padding:
+    17px 16px
+    16px;
+}
+
+.product-category{
+
+  margin-bottom:7px;
+
+  color:#968f87;
+
+  font-size:10px;
+  font-weight:700;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .09em;
+}
+
+.product-name{
+
+  display:
+    -webkit-box;
+
+  -webkit-box-orient:
+    vertical;
+
+  -webkit-line-clamp:2;
+
+  overflow:hidden;
+
+  min-height:
+    42px;
+
+  margin:0;
+
+  color:#1c1a18;
+
+  font-size:14px;
+  font-weight:700;
+
+  line-height:1.5;
+}
+
+.product-description{
+
+  display:
+    -webkit-box;
+
+  -webkit-box-orient:
+    vertical;
+
+  -webkit-line-clamp:2;
+
+  overflow:hidden;
+
+  min-height:36px;
+
+  margin:
+    8px 0 0;
+
+  color:#8a837b;
+
+  font-size:11px;
+
+  line-height:1.65;
+}
+
+.product-bottom{
+
+  display:flex;
+
+  align-items:end;
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-top:15px;
+}
+
+.product-price{
+
+  color:#171717;
+
+  font-size:17px;
+  font-weight:800;
+
+  white-space:nowrap;
+}
+
+.product-price.empty{
+
+  color:#aaa39c;
+
+  font-size:12px;
+  font-weight:500;
+}
+
+.product-button{
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:5px;
+
+  min-height:38px;
+
+  padding:
+    9px 13px;
+
+  border-radius:
+    10px;
+
+  background:#171717;
+  color:#fff;
+
+  font-size:11px;
+  font-weight:700;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.product-button:hover{
+
+  background:#303030;
+
+  transform:
+    translateY(-1px);
+}
+
+.product-button svg{
+
+  width:13px;
+  height:13px;
+}
+
+
+/* =========================================================
+   LOADING SKELETON
+========================================================= */
+
+.skeleton-card{
+
+  background:#fff;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    18px;
+
+  overflow:hidden;
+}
+
+.skeleton{
+
+  background:
+    linear-gradient(
+      90deg,
+      #eeeae5 25%,
+      #f7f5f1 37%,
+      #eeeae5 63%
+    );
+
+  background-size:
+    400% 100%;
+
+  animation:
+    skeletonLoading 1.4s ease infinite;
+}
+
+.skeleton-image{
+
+  aspect-ratio:
+    4 / 5;
+}
+
+.skeleton-line{
+
+  height:12px;
+
+  margin:14px 16px 0;
+
+  border-radius:6px;
+}
+
+.skeleton-line.short{
+  width:45%;
+}
+
+.skeleton-line.medium{
+  width:75%;
+}
+
+.skeleton-button{
+
+  height:38px;
+
+  margin:
+    16px;
+
+  border-radius:10px;
+}
+
+@keyframes skeletonLoading{
+
+  0%{
+    background-position:
+      100% 0;
+  }
+
+  100%{
+    background-position:
+      -100% 0;
+  }
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state{
+
+  grid-column:
+    1 / -1;
+
+  padding:
+    80px 25px;
+
+  text-align:center;
+
+  background:#fff;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    20px;
+}
+
+.empty-icon{
+
+  width:58px;
+  height:58px;
+
+  margin:
+    0 auto 17px;
+
+  border-radius:50%;
+
+  background:#f0ece6;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:#777069;
+
+  font-size:24px;
+}
+
+.empty-title{
+
+  margin:0;
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size:24px;
+}
+
+.empty-text{
+
+  max-width:420px;
+
+  margin:
+    9px auto 0;
+
+  color:#8d867f;
+
+  font-size:13px;
+
+  line-height:1.7;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.site-footer{
+
+  border-top:
+    1px solid var(--border);
+
+  padding:
+    45px 0
+    35px;
+
+  background:#f2efe9;
+}
+
+.footer-inner{
+
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:25px;
+}
+
+.footer-brand{
+
+  font-family:
+    "Playfair Display",
+    Georgia,
+    serif;
+
+  font-size:22px;
+  font-weight:700;
+}
+
+.footer-text{
+
+  margin-top:5px;
+
+  color:#8c857d;
+
+  font-size:12px;
+}
+
+.footer-right{
+
+  color:#8c857d;
+
+  font-size:11px;
+}
+
+
+/* =========================================================
+   BACK TO TOP
+========================================================= */
+
+.back-top{
+
+  position:fixed;
+
+  right:22px;
+  bottom:22px;
+
+  width:45px;
+  height:45px;
+
+  border:0;
+
+  border-radius:50%;
+
+  background:#171717;
+  color:#fff;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.18);
+
+  opacity:0;
+  visibility:hidden;
+
+  transform:
+    translateY(10px);
+
+  transition:
+    opacity .25s ease,
+    visibility .25s ease,
+    transform .25s ease;
+
+  z-index:90;
+}
+
+.back-top.show{
+
+  opacity:1;
+  visibility:visible;
+
+  transform:
+    translateY(0);
+}
+
+.back-top svg{
+
+  width:18px;
+  height:18px;
+}
+
+
+/* =========================================================
+   RESPONSIVE — LARGE TABLET
+========================================================= */
+
+@media(max-width:1050px){
+
+  .product-grid{
+
+    grid-template-columns:
+      repeat(3,minmax(0,1fr));
+  }
+
+  .hero-grid{
+
+    grid-template-columns:
+      1fr;
+  }
+
+  .hero-side{
+
+    max-width:600px;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media(max-width:760px){
+
+  .container{
+
+    width:
+      min(
+        100% - 28px,
+        var(--container)
+      );
+  }
+
+  .header-inner{
+
+    min-height:68px;
+  }
+
+  .header-nav{
+    display:none;
+  }
+
+  .logo-text{
+    font-size:20px;
+  }
+
+  .logo-mark{
+
+    width:38px;
+    height:38px;
+
+    font-size:18px;
+  }
+
+  .header-badge{
+
+    padding:
+      8px 10px;
+
+    font-size:10px;
+  }
+
+  .hero{
+
+    padding:
+      48px 0
+      30px;
+  }
+
+  .hero-title{
+
+    font-size:
+      clamp(40px,12vw,58px);
+
+    letter-spacing:
+      -1.8px;
+  }
+
+  .hero-description{
+
+    font-size:13px;
+
+    line-height:1.75;
+  }
+
+  .shop{
+
+    padding-bottom:
+      60px;
+  }
+
+  .shop-top{
+
+    align-items:start;
+
+    flex-direction:column;
+
+    gap:7px;
+  }
+
+  .section-heading{
+    font-size:30px;
+  }
+
+  .product-grid{
+
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+
+    gap:
+      17px 12px;
+  }
+
+  .product-content{
+
+    padding:
+      14px 12px
+      13px;
+  }
+
+  .product-name{
+
+    font-size:12px;
+
+    min-height:
+      36px;
+  }
+
+  .product-description{
+    font-size:10px;
+  }
+
+  .product-price{
+    font-size:14px;
+  }
+
+  .product-button{
+
+    padding:
+      8px 9px;
+
+    font-size:10px;
+  }
+
+  .footer-inner{
+
+    align-items:start;
+
+    flex-direction:column;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media(max-width:430px){
+
+  .container{
+
+    width:
+      calc(100% - 22px);
+  }
+
+  .header-badge{
+    display:none;
+  }
+
+  .hero{
+
+    padding-top:
+      38px;
+  }
+
+  .hero-eyebrow{
+
+    font-size:10px;
+  }
+
+  .hero-title{
+
+    font-size:42px;
+
+    letter-spacing:
+      -1.3px;
+  }
+
+  .hero-card{
+
+    padding:19px;
+  }
+
+  .search-input{
+
+    height:53px;
+
+    border-radius:
+      14px;
+  }
+
+  .category-btn{
+
+    padding:
+      10px 15px;
+
+    font-size:12px;
+  }
+
+  .product-grid{
+
+    gap:
+      14px 9px;
+  }
+
+  .product-image-wrap{
+
+    aspect-ratio:
+      3 / 4;
+  }
+
+  .product-badge{
+
+    top:8px;
+    left:8px;
+
+    padding:
+      6px 8px;
+
+    font-size:8px;
+  }
+
+  .product-bottom{
+
+    align-items:stretch;
+
+    flex-direction:column;
+
+    gap:9px;
+  }
+
+  .product-button{
+
+    width:100%;
+  }
+
+  .product-price{
+
+    font-size:14px;
+  }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible{
+
+  outline:
+    3px solid rgba(0,0,0,.15);
+
+  outline-offset:
+    3px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="site-header">
+
+  <div class="container header-inner">
+
+    <a
+      href="#top"
+      class="logo"
+      aria-label="Mặc Gì Đây?"
+    >
+
+      <div class="logo-mark">
+        M
+      </div>
+
+      <div class="logo-text">
+        Mặc Gì Đây?
+      </div>
+
+    </a>
+
+
+    <nav class="header-nav">
+
+      <a href="#products">
+        Sản phẩm
+      </a>
+
+      <a href="#categories">
+        Danh mục
+      </a>
+
+    </nav>
+
+
+    <div class="header-badge">
+
+      <span class="header-badge-dot"></span>
+
+      Đang cập nhật sản phẩm
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<main id="top">
+
+  <section class="hero">
+
+    <div class="container hero-grid">
+
+      <div>
+
+        <div class="hero-eyebrow">
+          Fashion picks
+        </div>
+
+        <h1 class="hero-title">
+
+          Mặc đẹp hơn.
+          <br>
+
+          <span>Đơn giản hơn.</span>
+
+        </h1>
+
+        <p class="hero-description">
+
+          Những món đồ thời trang được chọn lọc
+          để bạn dễ dàng tìm kiếm, tham khảo
+          và chọn được món phù hợp với phong cách
+          của mình.
+
+        </p>
+
+      </div>
+
+
+      <div class="hero-side">
+
+        <div class="hero-card">
+
+          <div class="hero-card-title">
+            ✦ Khám phá bộ sưu tập
+          </div>
+
+          <div class="hero-card-text">
+
+            Tìm kiếm sản phẩm theo tên hoặc
+            danh mục. Bấm vào sản phẩm để xem
+            nguồn mua và lựa chọn phù hợp.
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SHOP
+  ====================================================== -->
+
+  <section
+    id="products"
+    class="shop"
+  >
+
+    <div class="container">
+
+
+      <!-- TOP -->
+
+      <div class="shop-top">
+
+        <div>
+
+          <h2 class="section-heading">
+            Sản phẩm
+          </h2>
+
+          <p class="section-subtitle">
+            Những món đồ đang được chọn lọc
+          </p>
+
+        </div>
+
+        <div
+          id="resultCount"
+          class="result-count"
+        >
+          Đang tải...
+        </div>
+
+      </div>
+
+
+      <!-- SEARCH -->
+
+      <div class="search-wrap">
+
+        <svg
+          class="search-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <circle
+            cx="11"
+            cy="11"
+            r="7"
+          ></circle>
+
+          <path
+            d="m20 20-4-4"
+          ></path>
+
+        </svg>
+
+
+        <input
+          id="searchInput"
+          class="search-input"
+          type="search"
+          autocomplete="off"
+          placeholder="Tìm sản phẩm..."
+          aria-label="Tìm sản phẩm"
+        >
+
+
+        <button
+          id="searchClear"
+          class="search-clear"
+          type="button"
+          aria-label="Xoá tìm kiếm"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- CATEGORIES -->
+
+      <div
+        id="categories"
+        class="category-scroll"
+      >
+
+        <div
+          id="categoryList"
+          class="categories"
+        >
+
+          <button
+            class="category-btn active"
+            data-category="all"
+            type="button"
+          >
+            Tất cả
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- PRODUCTS -->
+
+      <div
+        id="productGrid"
+        class="product-grid"
+      >
+
+        <!-- Skeletons được JS thay thế -->
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="site-footer">
+
+  <div class="container footer-inner">
+
+    <div>
+
+      <div class="footer-brand">
+        Mặc Gì Đây?
+      </div>
+
+      <div class="footer-text">
+        Fashion picks dành cho bạn.
+      </div>
+
+    </div>
+
+    <div class="footer-right">
+      © 2026 Mặc Gì Đây?
+    </div>
+
+  </div>
+
+</footer>
+
+
+<!-- =========================================================
+     BACK TO TOP
+========================================================= -->
+
+<button
+  id="backTop"
+  class="back-top"
+  type="button"
+  aria-label="Lên đầu trang"
+>
+
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <path
+      d="M18 15l-6-6-6 6"
+    ></path>
+  </svg>
+
+</button>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://rxeqynitxruylvcybrca.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_DCZRB5bpOCQUGwEWWevizg_lAp2YvIm";
+
+const db =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let products = [];
+
+let categories = [];
+
+let activeCategory = "all";
+
+let searchQuery = "";
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  ).replace(
+    /[&<>"']/g,
+    char => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[char])
+  );
+
+}
+
+
+function normalizeText(value){
+
+  return String(
+    value ?? ""
+  )
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .toLowerCase()
+    .trim();
+
+}
+
+
+function formatPrice(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ""
+  ){
+    return "";
+  }
+
+  return String(value);
+
+}
+
+
+function getProductLink(product){
+
+  return (
+    product.affiliate_url ||
+    product.tiktok_url ||
+    ""
+  );
+
+}
+
+
+/* =========================================================
+   IMAGE FALLBACK
+========================================================= */
+
+function handleImageError(image){
+
+  const wrap =
+    image.closest(
+      ".product-image-wrap"
+    );
+
+  if(!wrap)
+    return;
+
+  wrap.classList.add(
+    "image-error"
+  );
+
+}
+
+
+/* =========================================================
+   SKELETON
+========================================================= */
+
+function renderSkeleton(){
+
+  $("productGrid").innerHTML =
+
+    Array
+      .from(
+        {
+          length:8
+        }
+      )
+      .map(
+        () => `
+
+          <div class="skeleton-card">
+
+            <div
+              class="skeleton skeleton-image"
+            ></div>
+
+            <div
+              class="skeleton skeleton-line medium"
+            ></div>
+
+            <div
+              class="skeleton skeleton-line short"
+            ></div>
+
+            <div
+              class="skeleton skeleton-button"
+            ></div>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   LOAD DATA
+========================================================= */
+
+async function loadData(){
+
+  renderSkeleton();
+
+  try{
+
+    const [
+      categoriesResult,
+      productsResult
+    ] =
+      await Promise.all([
+
+        db
+          .from("categories")
+          .select("*")
+          .order(
+            "created_at",
+            {
+              ascending:true
+            }
+          ),
+
+        db
+          .from("products")
+          .select(
+            "*,categories(name,slug)"
+          )
+          .eq(
+            "is_active",
+            true
+          )
+          .order(
+            "created_at",
+            {
+              ascending:false
+            }
+          )
+
+      ]);
+
+
+    if(
+      categoriesResult.error
+    ){
+      throw categoriesResult.error;
+    }
+
+
+    if(
+      productsResult.error
+    ){
+      throw productsResult.error;
+    }
+
+
+    categories =
+      categoriesResult.data ||
+      [];
+
+    products =
+      productsResult.data ||
+      [];
+
+
+    renderCategories();
+
+    renderProducts();
+
+
+  }catch(error){
+
+    console.error(
+      "LOAD WEBSITE ERROR:",
+      error
+    );
+
+
+    $("productGrid").innerHTML = `
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          !
+        </div>
+
+        <h3 class="empty-title">
+          Không thể tải sản phẩm
+        </h3>
+
+        <p class="empty-text">
+          Có lỗi khi kết nối tới hệ thống.
+          Vui lòng tải lại trang sau ít phút.
+        </p>
+
+      </div>
+
+    `;
+
+    $("resultCount").textContent =
+      "Không thể tải dữ liệu";
+
+  }
+
+}
+
+
+/* =========================================================
+   RENDER CATEGORIES
+========================================================= */
+
+function renderCategories(){
+
+  const list =
+    $("categoryList");
+
+  list.innerHTML = `
+
+    <button
+      class="
+        category-btn
+        ${
+          activeCategory === "all"
+            ? "active"
+            : ""
+        }
+      "
+      data-category="all"
+      type="button"
+    >
+      Tất cả
+    </button>
+
+  `;
+
+
+  categories.forEach(
+    category => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+      button.type =
+        "button";
+
+      button.className =
+        "category-btn" +
+        (
+          String(
+            activeCategory
+          ) ===
+          String(
+            category.id
+          )
+            ? " active"
+            : ""
+        );
+
+      button.dataset.category =
+        category.id;
+
+      button.textContent =
+        category.name;
+
+      list.appendChild(
+        button
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FILTER PRODUCTS
+========================================================= */
+
+function getFilteredProducts(){
+
+  const query =
+    normalizeText(
+      searchQuery
+    );
+
+
+  return products.filter(
+    product => {
+
+      const categoryMatch =
+        activeCategory === "all" ||
+        String(
+          product.category_id
+        ) ===
+        String(
+          activeCategory
+        );
+
+
+      if(!categoryMatch)
+        return false;
+
+
+      if(!query)
+        return true;
+
+
+      const searchable = [
+
+        product.name,
+
+        product.description,
+
+        product.price,
+
+        product.categories?.name
+
+      ]
+        .map(
+          normalizeText
+        )
+        .join(" ");
+
+
+      return searchable.includes(
+        query
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RENDER PRODUCTS
+========================================================= */
+
+function renderProducts(){
+
+  const filtered =
+    getFilteredProducts();
+
+
+  $("resultCount")
+    .textContent =
+    `${filtered.length} sản phẩm`;
+
+
+  if(!filtered.length){
+
+    $("productGrid").innerHTML = `
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          ⌕
+        </div>
+
+        <h3 class="empty-title">
+          Không tìm thấy sản phẩm
+        </h3>
+
+        <p class="empty-text">
+          Thử tìm với từ khoá khác hoặc
+          chọn một danh mục khác.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  $("productGrid").innerHTML =
+    filtered
+      .map(
+        productCard
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+function productCard(
+  product
+){
+
+  const image =
+    product.image_url ||
+    "";
+
+  const name =
+    product.name ||
+    "Sản phẩm";
+
+  const price =
+    formatPrice(
+      product.price
+    );
+
+  const category =
+    product.categories?.name ||
+    "Thời trang";
+
+  const description =
+    product.description ||
+    "";
+
+  const link =
+    getProductLink(
+      product
+    );
+
+
+  return `
+
+    <article
+      class="product-card"
+    >
+
+
+      <div
+        class="product-image-wrap"
+      >
+
+        ${
+          image
+            ?
+
+            `
+              <img
+                class="product-image"
+                src="${escapeHtml(image)}"
+                alt="${escapeHtml(name)}"
+                loading="lazy"
+                decoding="async"
+                onerror="handleImageError(this)"
+              >
+            `
+
+            :
+
+            ""
+        }
+
+
+        <div
+          class="image-fallback"
+        >
+
+          <div class="image-fallback-icon">
+            🖼
+          </div>
+
+          <div>
+            Chưa có ảnh
+          </div>
+
+        </div>
+
+
+        ${
+          category
+            ?
+
+            `
+              <div
+                class="product-badge"
+              >
+                ${escapeHtml(category)}
+              </div>
+            `
+
+            :
+
+            ""
+        }
+
+      </div>
+
+
+      <div
+        class="product-content"
+      >
+
+        <div
+          class="product-category"
+        >
+          ${escapeHtml(category)}
+        </div>
+
+
+        <h3
+          class="product-name"
+          title="${escapeHtml(name)}"
+        >
+          ${escapeHtml(name)}
+        </h3>
+
+
+        ${
+          description
+
+            ?
+
+            `
+              <div
+                class="product-description"
+              >
+                ${escapeHtml(description)}
+              </div>
+            `
+
+            :
+
+            `
+              <div
+                class="product-description"
+              ></div>
+            `
+        }
+
+
+        <div
+          class="product-bottom"
+        >
+
+          ${
+            price
+
+              ?
+
+              `
+                <div
+                  class="product-price"
+                >
+                  ${escapeHtml(price)}
+                </div>
+              `
+
+              :
+
+              `
+                <div
+                  class="
+                    product-price
+                    empty
+                  "
+                >
+                  Xem giá
+                </div>
+              `
+          }
+
+
+          ${
+            link
+
+              ?
+
+              `
+                <a
+                  class="product-button"
+                  href="${escapeHtml(link)}"
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                >
+
+                  Xem sản phẩm
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M5 12h13"
+                    ></path>
+
+                    <path
+                      d="m13 6 6 6-6 6"
+                    ></path>
+                  </svg>
+
+                </a>
+              `
+
+              :
+
+              `
+                <span
+                  class="product-button"
+                  style="
+                    opacity:.5;
+                    cursor:default;
+                  "
+                >
+                  Chưa có link
+                </span>
+              `
+          }
+
+        </div>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================================
+   CATEGORY CLICK
+========================================================= */
+
+$("categoryList")
+  .addEventListener(
+    "click",
+    event => {
+
+      const button =
+        event.target.closest(
+          ".category-btn"
+        );
+
+      if(!button)
+        return;
+
+
+      activeCategory =
+        button.dataset.category;
+
+
+      document
+        .querySelectorAll(
+          ".category-btn"
+        )
+        .forEach(
+          item => {
+
+            item.classList.toggle(
+              "active",
+              item === button
+            );
+
+          }
+        );
+
+
+      renderProducts();
+
+    }
+  );
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+$("searchInput")
+  .addEventListener(
+    "input",
+    event => {
+
+      searchQuery =
+        event.target.value;
+
+      $("searchClear")
+        .classList.toggle(
+          "show",
+          Boolean(
+            searchQuery
+          )
+        );
+
+      renderProducts();
+
+    }
+  );
+
+
+/* =========================================================
+   SEARCH CLEAR
+========================================================= */
+
+$("searchClear")
+  .addEventListener(
+    "click",
+    () => {
+
+      searchQuery = "";
+
+      $("searchInput")
+        .value = "";
+
+      $("searchClear")
+        .classList
+        .remove("show");
+
+      renderProducts();
+
+      $("searchInput")
+        .focus();
+
+    }
+  );
+
+
+/* =========================================================
+   BACK TO TOP
+========================================================= */
+
+const backTop =
+  $("backTop");
+
+
+window.addEventListener(
+  "scroll",
+  () => {
+
+    backTop.classList.toggle(
+      "show",
+      window.scrollY > 500
+    );
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+backTop.addEventListener(
+  "click",
+  () => {
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  }
+);
+
+
+/* =========================================================
+   LOAD
+========================================================= */
+
+loadData();
+
+</script>
+
+</body>
+</html>
