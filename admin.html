@@ -1,4678 +1,2956 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Mặc Gì Đây? — Admin</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #f7f5f0;
-      --card: #ffffff;
-      --text: #171717;
-      --muted: #777;
-      --border: #ded9d0;
-      --soft: #f1eee8;
-      --dark: #171717;
-      --danger: #d93025;
-      --danger-bg: #fff0ef;
-      --success: #16834b;
-      --success-bg: #eaf8f0;
-      --warning: #a66b00;
-      --warning-bg: #fff7df;
-      --sidebar: #171717;
-      --sidebar-hover: #292929;
-      --radius: 14px;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    a {
-      color: inherit;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    /* =========================================================
-       LOGIN
-    ========================================================= */
-
-    #loginScreen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: var(--bg);
-    }
-
-    .login-card {
-      width: min(440px, 100%);
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 36px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
-    }
-
-    .brand {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 36px;
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 8px;
-    }
-
-    .login-subtitle {
-      color: var(--muted);
-      margin-bottom: 28px;
-    }
-
-    .form-group {
-      margin-bottom: 17px;
-    }
-
-    label {
-      display: block;
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
-
-    .input,
-    select,
-    textarea {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: #fff;
-      border-radius: 11px;
-      padding: 12px 14px;
-      outline: none;
-      color: var(--text);
-      transition: 0.15s ease;
-    }
-
-    .input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: #999;
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 110px;
-    }
-
-    .btn {
-      border: 1px solid var(--border);
-      background: #fff;
-      color: var(--text);
-      border-radius: 10px;
-      padding: 10px 15px;
-      font-weight: 700;
-      transition: 0.15s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .btn:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-dark {
-      background: var(--dark);
-      color: #fff;
-      border-color: var(--dark);
-    }
-
-    .btn-danger {
-      color: #fff;
-      background: var(--danger);
-      border-color: var(--danger);
-    }
-
-    .btn-success {
-      color: #fff;
-      background: var(--success);
-      border-color: var(--success);
-    }
-
-    .btn-warning {
-      color: #fff;
-      background: #a66b00;
-      border-color: #a66b00;
-    }
-
-    .btn-small {
-      padding: 7px 10px;
-      font-size: 13px;
-    }
-
-    .login-button {
-      width: 100%;
-      margin-top: 4px;
-      height: 46px;
-    }
-
-    .alert {
-      padding: 12px 14px;
-      border-radius: 10px;
-      margin-bottom: 18px;
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    .alert-error {
-      color: #c62828;
-      background: var(--danger-bg);
-      border: 1px solid #ffc4c0;
-    }
-
-    .alert-success {
-      color: var(--success);
-      background: var(--success-bg);
-      border: 1px solid #b9e8cd;
-    }
-
-    .alert-warning {
-      color: var(--warning);
-      background: var(--warning-bg);
-      border: 1px solid #efd693;
-    }
-
-    /* =========================================================
-       APP
-    ========================================================= */
-
-    #app {
-      min-height: 100vh;
-      display: flex;
-    }
-
-    .sidebar {
-      width: 245px;
-      flex-shrink: 0;
-      background: var(--sidebar);
-      color: #fff;
-      min-height: 100vh;
-      padding: 24px 14px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .sidebar-brand {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 23px;
-      font-weight: 700;
-      padding: 0 10px 25px;
-    }
-
-    .sidebar-label {
-      color: #777;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0 10px 9px;
-      font-weight: 700;
-    }
-
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .nav-btn {
-      width: 100%;
-      border: 0;
-      background: transparent;
-      color: #ddd;
-      text-align: left;
-      padding: 11px 12px;
-      border-radius: 9px;
-      font-weight: 600;
-    }
-
-    .nav-btn:hover {
-      background: var(--sidebar-hover);
-      color: #fff;
-    }
-
-    .nav-btn.active {
-      background: #2c2c2c;
-      color: #fff;
-    }
-
-    .sidebar-bottom {
-      margin-top: auto;
-      padding: 15px 8px 0;
-      border-top: 1px solid #303030;
-    }
-
-    .user-email {
-      color: #aaa;
-      font-size: 12px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      margin-bottom: 10px;
-    }
-
-    .logout-btn {
-      width: 100%;
-      background: #262626;
-      border: 1px solid #3a3a3a;
-      color: #fff;
-      padding: 9px;
-      border-radius: 9px;
-    }
-
-    .main {
-      flex: 1;
-      min-width: 0;
-      padding: 34px;
-    }
-
-    .page {
-      max-width: 1250px;
-      margin: 0 auto;
-    }
-
-    .page-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 26px;
-    }
-
-    .page-title {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 36px;
-      margin: 0;
-    }
-
-    .page-description {
-      color: var(--muted);
-      margin-top: 7px;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    /* =========================================================
-       DASHBOARD
-    ========================================================= */
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 22px;
-    }
-
-    .stat-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-    }
-
-    .stat-label {
-      color: #888;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .stat-value {
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    .panel {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px;
-    }
-
-    .panel + .panel {
-      margin-top: 18px;
-    }
-
-    .panel-title {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 23px;
-      margin: 0 0 8px;
-    }
-
-    .panel-text {
-      color: var(--muted);
-      margin: 0;
-      line-height: 1.6;
-    }
-
-    /* =========================================================
-       TOOLBAR
-    ========================================================= */
-
-    .toolbar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .toolbar .search {
-      flex: 1;
-      min-width: 220px;
-    }
-
-    .toolbar select {
-      width: auto;
-      min-width: 160px;
-    }
-
-    /* =========================================================
-       TABLE
-    ========================================================= */
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: #fff;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 800px;
-    }
-
-    th,
-    td {
-      padding: 13px 14px;
-      text-align: left;
-      border-bottom: 1px solid #eeeae4;
-      vertical-align: middle;
-      font-size: 14px;
-    }
-
-    th {
-      background: #faf9f6;
-      color: #777;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    tr:last-child td {
-      border-bottom: 0;
-    }
-
-    .product-cell {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      min-width: 250px;
-    }
-
-    .thumb {
-      width: 52px;
-      height: 52px;
-      border-radius: 9px;
-      object-fit: cover;
-      background: #eee;
-      border: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .thumb-placeholder {
-      width: 52px;
-      height: 52px;
-      border-radius: 9px;
-      background: #f0ede8;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #aaa;
-      flex-shrink: 0;
-    }
-
-    .product-name {
-      font-weight: 700;
-    }
-
-    .product-id {
-      color: #aaa;
-      font-size: 11px;
-      margin-top: 3px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 5px 9px;
-      font-size: 11px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .badge-active {
-      background: #e9f8ef;
-      color: #16834b;
-    }
-
-    .badge-inactive {
-      background: #f0efed;
-      color: #777;
-    }
-
-    .badge-category {
-      background: #f2f0ec;
-      color: #555;
-    }
-
-    .actions {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .empty {
-      padding: 45px 20px;
-      text-align: center;
-      color: #999;
-    }
-
-    /* =========================================================
-       MODAL
-    ========================================================= */
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.48);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 1000;
-    }
-
-    .modal {
-      width: min(900px, 100%);
-      max-height: calc(100vh - 40px);
-      overflow-y: auto;
-      background: #fff;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      padding: 28px;
-      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.25);
-    }
-
-    .modal-small {
-      width: min(580px, 100%);
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 24px;
-    }
-
-    .modal-title {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 28px;
-      margin: 0;
-    }
-
-    .close-btn {
-      width: 38px;
-      height: 38px;
-      border: 0;
-      border-radius: 50%;
-      background: #f0efed;
-      font-size: 18px;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .full {
-      grid-column: 1 / -1;
-    }
-
-    .field-note {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 17px;
-      height: 17px;
-      border-radius: 50%;
-      background: #dededc;
-      color: #666;
-      font-size: 11px;
-      font-weight: 800;
-      cursor: help;
-      vertical-align: middle;
-      margin-left: 3px;
-    }
-
-    .metadata-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: -4px;
-      margin-bottom: 16px;
-    }
-
-    .metadata-status {
-      font-size: 13px;
-      color: #888;
-    }
-
-    .metadata-status.success {
-      color: var(--success);
-    }
-
-    .metadata-status.warning {
-      color: var(--warning);
-    }
-
-    .metadata-status.error {
-      color: var(--danger);
-    }
-
-    .checkbox-row {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      font-size: 14px;
-      font-weight: 700;
-      margin-top: 3px;
-    }
-
-    .checkbox-row input {
-      width: 17px;
-      height: 17px;
-    }
-
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 9px;
-      margin-top: 25px;
-      padding-top: 18px;
-      border-top: 1px solid #eeeae4;
-    }
-
-    /* =========================================================
-       IMAGE PASTE AREA
-    ========================================================= */
-
-    .image-paste-area {
-      width: 100%;
-      min-height: 230px;
-      border: 2px dashed #d2cec6;
-      border-radius: 14px;
-      background: #faf9f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 18px;
-      transition: 0.15s ease;
-      cursor: text;
-      outline: none;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .image-paste-area:hover,
-    .image-paste-area:focus {
-      border-color: #999;
-      background: #f6f4ef;
-    }
-
-    .image-paste-area.dragover {
-      border-color: #171717;
-      background: #eeeeeb;
-      transform: scale(1.005);
-    }
-
-    .paste-empty {
-      color: #888;
-      line-height: 1.6;
-      pointer-events: none;
-    }
-
-    .paste-icon {
-      font-size: 42px;
-      margin-bottom: 8px;
-    }
-
-    .paste-title {
-      color: #333;
-      font-size: 16px;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-
-    .paste-subtitle {
-      font-size: 13px;
-      color: #999;
-    }
-
-    .image-preview-wrap {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      min-height: 230px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .image-preview {
-      max-width: 100%;
-      max-height: 300px;
-      object-fit: contain;
-      border-radius: 10px;
-    }
-
-    .remove-image-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 34px;
-      height: 34px;
-      border: 0;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.72);
-      color: #fff;
-      font-size: 17px;
-      cursor: pointer;
-    }
-
-    .image-source-info {
-      margin-top: 8px;
-      color: #999;
-      font-size: 12px;
-      word-break: break-all;
-    }
-
-    .existing-image-note {
-      margin-top: 7px;
-      color: #888;
-      font-size: 12px;
-    }
-
-    /* =========================================================
-       OUTFIT
-    ========================================================= */
-
-    .outfit-list {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-    }
-
-    .outfit-card {
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      overflow: hidden;
-      background: #fff;
-    }
-
-    .outfit-image {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      background: #eee;
-    }
-
-    .outfit-content {
-      padding: 15px;
-    }
-
-    .outfit-name {
-      font-weight: 800;
-      margin-bottom: 5px;
-    }
-
-    .outfit-description {
-      color: #888;
-      font-size: 13px;
-      line-height: 1.45;
-      min-height: 38px;
-    }
-
-    .outfit-products {
-      margin-top: 12px;
-      color: #777;
-      font-size: 12px;
-    }
-
-    .outfit-actions {
-      display: flex;
-      gap: 7px;
-      margin-top: 13px;
-    }
-
-    /* =========================================================
-       TOAST
-    ========================================================= */
-
-    #toastContainer {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      z-index: 5000;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      width: min(380px, calc(100vw - 40px));
-    }
-
-    .toast {
-      background: #191919;
-      color: #fff;
-      padding: 13px 15px;
-      border-radius: 11px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-      font-size: 14px;
-      animation: toastIn 0.18s ease;
-    }
-
-    .toast.success {
-      background: #176b43;
-    }
-
-    .toast.error {
-      background: #a92922;
-    }
-
-    .toast.warning {
-      background: #8a5c00;
-    }
-
-    @keyframes toastIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* =========================================================
-       LOADING
-    ========================================================= */
-
-    .loading {
-      position: fixed;
-      inset: 0;
-      background: rgba(247, 245, 240, 0.78);
-      z-index: 4000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(2px);
-    }
-
-    .loading-box {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 20px 24px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
-      font-weight: 700;
-    }
-
-    /* =========================================================
-       MOBILE
-    ========================================================= */
-
-    .mobile-header {
-      display: none;
-    }
-
-    @media (max-width: 1000px) {
-      .sidebar {
-        width: 210px;
-      }
-
-      .main {
-        padding: 25px;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .outfit-list {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 720px) {
-      #app {
-        display: block;
-      }
-
-      .mobile-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: var(--sidebar);
-        color: #fff;
-        padding: 13px 16px;
-        position: sticky;
-        top: 0;
-        z-index: 200;
-      }
-
-      .mobile-brand {
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 20px;
-        font-weight: 700;
-      }
-
-      .mobile-menu-btn {
-        border: 0;
-        background: #292929;
-        color: #fff;
-        border-radius: 8px;
-        padding: 8px 11px;
-      }
-
-      .sidebar {
-        position: fixed;
-        left: -260px;
-        top: 0;
-        bottom: 0;
-        width: 250px;
-        z-index: 1000;
-        transition: left 0.2s ease;
-      }
-
-      .sidebar.open {
-        left: 0;
-      }
-
-      .main {
-        padding: 20px 14px;
-      }
-
-      .page-title {
-        font-size: 30px;
-      }
-
-      .page-header {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .grid-2 {
-        grid-template-columns: 1fr;
-      }
-
-      .full {
-        grid-column: auto;
-      }
-
-      .outfit-list {
-        grid-template-columns: 1fr;
-      }
-
-      .modal {
-        padding: 20px;
-        border-radius: 14px;
-      }
-    }
-
-    @media (max-width: 450px) {
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .login-card {
-        padding: 25px;
-      }
-
-      .brand {
-        font-size: 30px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mặc Gì Đây — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#f6f4ef;
+  --card:#fff;
+  --text:#171717;
+  --muted:#858585;
+  --line:#e4e0d8;
+  --dark:#171717;
+  --green:#16834b;
+  --red:#d92d20;
+  --yellow:#9a6800;
+  --sidebar:#151515;
+}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);background:var(--bg)}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+
+#login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.login-card{
+  width:min(420px,100%);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px;
+  box-shadow:0 20px 60px #0000000c;
+}
+.logo{
+  font-family:Georgia,serif;
+  font-size:34px;
+  font-weight:700;
+  margin-bottom:5px;
+}
+.sub{color:var(--muted);margin-bottom:25px}
+label{display:block;font-size:13px;font-weight:750;margin-bottom:7px}
+.field{margin-bottom:16px}
+.input,select,textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  padding:11px 13px;
+  outline:0;
+}
+.input:focus,select:focus,textarea:focus{
+  border-color:#888;
+  box-shadow:0 0 0 3px #00000007;
+}
+textarea{min-height:110px;resize:vertical}
+.btn{
+  border:1px solid var(--line);
+  background:#fff;
+  color:#171717;
+  border-radius:9px;
+  padding:9px 13px;
+  font-weight:700;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-dark{background:#171717;color:#fff;border-color:#171717}
+.btn-red{background:var(--red);color:#fff;border-color:var(--red)}
+.btn-green{background:var(--green);color:#fff;border-color:var(--green)}
+.btn-sm{font-size:12px;padding:7px 9px}
+
+.alert{
+  border-radius:9px;
+  padding:11px 13px;
+  margin-bottom:15px;
+  font-size:13px;
+}
+.alert-error{background:#fff0ef;color:#c62828;border:1px solid #ffc8c4}
+
+#app{min-height:100vh;display:flex}
+.sidebar{
+  width:235px;
+  min-height:100vh;
+  background:var(--sidebar);
+  color:#fff;
+  padding:22px 13px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+.side-logo{
+  font-family:Georgia,serif;
+  font-size:22px;
+  font-weight:700;
+  padding:0 10px 25px;
+}
+.side-label{
+  font-size:10px;
+  color:#777;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  padding:0 10px 8px;
+}
+.nav{display:grid;gap:3px}
+.nav button{
+  border:0;
+  background:transparent;
+  color:#ccc;
+  text-align:left;
+  padding:10px 12px;
+  border-radius:8px;
+  font-weight:650;
+}
+.nav button:hover,.nav button.active{background:#2a2a2a;color:#fff}
+.side-bottom{margin-top:auto;border-top:1px solid #333;padding:14px 8px 0}
+.user-email{
+  color:#999;
+  font-size:11px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  margin-bottom:9px;
+}
+.logout{
+  width:100%;
+  background:#252525;
+  border:1px solid #3a3a3a;
+  color:#fff;
+  padding:8px;
+  border-radius:8px;
+}
+
+.mobilebar{
+  display:none;
+}
+.main{
+  flex:1;
+  min-width:0;
+  padding:30px;
+}
+.page{max-width:1250px;margin:auto}
+.header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:22px;
+}
+.title{
+  font-family:Georgia,serif;
+  font-size:34px;
+  margin:0 0 5px;
+}
+.desc{color:var(--muted);font-size:13px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:18px;
+}
+.stat{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:17px;
+}
+.stat small{display:block;color:#888;margin-bottom:7px}
+.stat strong{font-size:27px}
+
+.panel{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:20px;
+}
+.panel h2{font-family:Georgia,serif;margin:0 0 7px}
+.panel p{color:#777;margin:0;line-height:1.55}
+
+.toolbar{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
+.toolbar .search{flex:1;min-width:230px}
+.toolbar select{width:auto;min-width:145px}
+
+.table{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:auto;
+}
+table{width:100%;border-collapse:collapse;min-width:780px}
+th,td{
+  padding:12px 13px;
+  border-bottom:1px solid #eeeae4;
+  text-align:left;
+  vertical-align:middle;
+  font-size:13px;
+}
+th{
+  color:#888;
+  background:#faf9f6;
+  font-size:10px;
+  text-transform:uppercase;
+}
+tr:last-child td{border-bottom:0}
+.product{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.thumb{
+  width:48px;
+  height:48px;
+  object-fit:cover;
+  border-radius:8px;
+  background:#eee;
+  border:1px solid var(--line);
+  flex:none;
+}
+.no-thumb{
+  width:48px;
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  background:#eee;
+  color:#999;
+  flex:none;
+}
+.name{font-weight:750}
+.id{font-size:10px;color:#aaa;margin-top:2px}
+.badge{
+  display:inline-flex;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:750;
+}
+.badge-green{background:#e9f8ef;color:#16834b}
+.badge-gray{background:#eee;color:#777}
+.badge-cat{background:#f1eee8;color:#555}
+.empty{text-align:center;color:#999;padding:40px 15px}
+
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+.modal{
+  width:min(900px,100%);
+  max-height:calc(100vh - 36px);
+  overflow:auto;
+  background:#fff;
+  border-radius:17px;
+  padding:25px;
+}
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:20px;
+}
+.modal-title{font-family:Georgia,serif;font-size:27px;margin:0}
+.close{
+  width:36px;
+  height:36px;
+  border:0;
+  border-radius:50%;
+  background:#eee;
+  font-size:18px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.full{grid-column:1/-1}
+
+.note{
+  display:inline-flex;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  align-items:center;
+  justify-content:center;
+  background:#ddd;
+  color:#666;
+  font-size:10px;
+  font-weight:800;
+  cursor:help;
+}
+
+.meta-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.meta-status{font-size:12px;color:#888}
+.meta-status.ok{color:var(--green)}
+.meta-status.warn{color:var(--yellow)}
+.meta-status.err{color:var(--red)}
+
+.image-zone{
+  min-height:235px;
+  border:2px dashed #d2cec5;
+  border-radius:13px;
+  background:#faf9f5;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:16px;
+  outline:0;
+  transition:.15s;
+}
+.image-zone:focus,.image-zone:hover{
+  border-color:#999;
+}
+.image-zone.drag{
+  border-color:#171717;
+  background:#efeee9;
+}
+.paste-icon{font-size:38px}
+.paste-title{font-weight:800;margin-top:5px}
+.paste-help{font-size:12px;color:#999;margin-top:5px}
+.preview-wrap{
+  width:100%;
+  min-height:230px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+.preview{
+  max-width:100%;
+  max-height:300px;
+  object-fit:contain;
+  border-radius:9px;
+}
+.remove-image{
+  position:absolute;
+  top:5px;
+  right:5px;
+  width:33px;
+  height:33px;
+  border:0;
+  border-radius:50%;
+  background:#000b;
+  color:#fff;
+  font-size:17px;
+}
+.image-info{
+  color:#999;
+  font-size:11px;
+  margin-top:6px;
+  word-break:break-all;
+}
+
+.footer{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  border-top:1px solid #eee;
+  padding-top:16px;
+  margin-top:22px;
+}
+
+.toast-box{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:5000;
+  display:grid;
+  gap:7px;
+  width:min(370px,calc(100vw - 36px));
+}
+.toast{
+  color:#fff;
+  background:#181818;
+  border-radius:10px;
+  padding:12px 14px;
+  font-size:13px;
+  box-shadow:0 15px 35px #0003;
+}
+.toast.ok{background:#176b43}
+.toast.err{background:#a92922}
+.toast.warn{background:#875d00}
+
+.loading{
+  position:fixed;
+  inset:0;
+  background:#f6f4efcc;
+  z-index:4000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.loading-box{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:18px 22px;
+  box-shadow:0 20px 50px #0002;
+  font-weight:750;
+}
+
+@media(max-width:900px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .sidebar{width:210px}
+  .main{padding:22px}
+}
+
+@media(max-width:700px){
+  #app{display:block}
+  .mobilebar{
+    height:52px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#151515;
+    color:#fff;
+    padding:0 14px;
+    position:sticky;
+    top:0;
+    z-index:900;
+  }
+  .mobile-logo{font-family:Georgia,serif;font-weight:700}
+  .mobile-menu{
+    border:0;
+    background:#292929;
+    color:#fff;
+    border-radius:7px;
+    padding:7px 10px;
+  }
+  .sidebar{
+    position:fixed;
+    z-index:1100;
+    left:-250px;
+    top:0;
+    bottom:0;
+    width:245px;
+    transition:left .2s;
+  }
+  .sidebar.open{left:0}
+  .main{padding:18px 12px}
+  .header{flex-direction:column}
+  .title{font-size:29px}
+  .grid{grid-template-columns:1fr}
+  .full{grid-column:auto}
+  .modal{padding:19px}
+}
+
+@media(max-width:450px){
+  .stats{grid-template-columns:1fr}
+}
+</style>
 </head>
 
 <body>
 
-  <!-- =========================================================
-       LOGIN
-  ========================================================== -->
+<!-- LOGIN -->
+<section id="login">
+  <div class="login-card">
 
-  <section id="loginScreen">
+    <div class="logo">Mặc Gì Đây?</div>
+    <div class="sub">Admin Dashboard</div>
 
-    <div class="login-card">
+    <div id="loginAlert" class="alert alert-error hidden"></div>
 
-      <div class="brand">
-        Mặc Gì Đây?
-      </div>
+    <form id="loginForm">
 
-      <div class="login-subtitle">
-        Admin Dashboard
-      </div>
-
-      <div
-        id="loginAlert"
-        class="alert hidden"
-      ></div>
-
-      <form id="loginForm">
-
-        <div class="form-group">
-
-          <label for="loginEmail">
-            Email
-          </label>
-
-          <input
-            id="loginEmail"
-            class="input"
-            type="email"
-            autocomplete="email"
-            placeholder="admin@example.com"
-            required
-          >
-
-        </div>
-
-        <div class="form-group">
-
-          <label for="loginPassword">
-            Mật khẩu
-          </label>
-
-          <input
-            id="loginPassword"
-            class="input"
-            type="password"
-            autocomplete="current-password"
-            placeholder="••••••••"
-            required
-          >
-
-        </div>
-
-        <button
-          id="loginButton"
-          class="btn btn-dark login-button"
-          type="submit"
+      <div class="field">
+        <label>Email</label>
+        <input
+          id="email"
+          class="input"
+          type="email"
+          autocomplete="email"
+          placeholder="admin@example.com"
+          required
         >
-          Đăng nhập
-        </button>
+      </div>
 
-      </form>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================================
-       APP
-  ========================================================== -->
-
-  <div
-    id="app"
-    class="hidden"
-  >
-
-    <div class="mobile-header">
-
-      <div class="mobile-brand">
-        Mặc Gì Đây?
+      <div class="field">
+        <label>Mật khẩu</label>
+        <input
+          id="password"
+          class="input"
+          type="password"
+          autocomplete="current-password"
+          placeholder="••••••••"
+          required
+        >
       </div>
 
       <button
-        id="mobileMenuButton"
-        class="mobile-menu-btn"
-        type="button"
+        id="loginBtn"
+        class="btn btn-dark"
+        style="width:100%;height:45px"
       >
-        ☰
+        Đăng nhập
+      </button>
+
+    </form>
+  </div>
+</section>
+
+
+<!-- APP -->
+<div id="app" class="hidden">
+
+  <div class="mobilebar">
+    <div class="mobile-logo">Mặc Gì Đây?</div>
+    <button id="mobileMenu" class="mobile-menu">☰</button>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+
+    <div class="side-logo">Mặc Gì Đây?</div>
+
+    <div class="side-label">Quản lý</div>
+
+    <div class="nav">
+
+      <button class="active" data-page="dashboard">
+        📊 Dashboard
+      </button>
+
+      <button data-page="products">
+        🛍️ Sản phẩm
+      </button>
+
+      <button data-page="categories">
+        📁 Danh mục
+      </button>
+
+      <button data-page="outfits">
+        👗 Outfit
       </button>
 
     </div>
 
+    <div class="side-bottom">
+      <div id="userEmail" class="user-email"></div>
+      <button id="logout" class="logout">Đăng xuất</button>
+    </div>
 
-    <aside
-      id="sidebar"
-      class="sidebar"
-    >
-
-      <div class="sidebar-brand">
-        Mặc Gì Đây?
-      </div>
-
-      <div class="sidebar-label">
-        Quản lý
-      </div>
-
-      <nav class="nav">
-
-        <button
-          class="nav-btn active"
-          data-page="dashboard"
-          type="button"
-        >
-          📊 Dashboard
-        </button>
-
-        <button
-          class="nav-btn"
-          data-page="products"
-          type="button"
-        >
-          🛍️ Sản phẩm
-        </button>
-
-        <button
-          class="nav-btn"
-          data-page="categories"
-          type="button"
-        >
-          📁 Danh mục
-        </button>
-
-        <button
-          class="nav-btn"
-          data-page="outfits"
-          type="button"
-        >
-          👗 Outfit
-        </button>
-
-      </nav>
+  </aside>
 
 
-      <div class="sidebar-bottom">
+  <main class="main">
+    <div class="page">
 
-        <div
-          id="currentUserEmail"
-          class="user-email"
-        ></div>
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="page-section">
 
-        <button
-          id="logoutButton"
-          class="logout-btn"
-          type="button"
-        >
-          Đăng xuất
-        </button>
-
-      </div>
-
-    </aside>
-
-
-    <main class="main">
-
-      <div class="page">
-
-        <!-- ===================================================
-             DASHBOARD
-        ==================================================== -->
-
-        <section
-          id="page-dashboard"
-          class="page-section"
-        >
-
-          <div class="page-header">
-
-            <div>
-
-              <h1 class="page-title">
-                Dashboard
-              </h1>
-
-              <div class="page-description">
-                Tổng quan hệ thống Mặc Gì Đây?
-              </div>
-
+        <div class="header">
+          <div>
+            <h1 class="title">Dashboard</h1>
+            <div class="desc">
+              Quản lý hệ thống Mặc Gì Đây?
             </div>
+          </div>
+        </div>
 
+        <div class="stats">
+
+          <div class="stat">
+            <small>Sản phẩm</small>
+            <strong id="statProducts">0</strong>
           </div>
 
+          <div class="stat">
+            <small>Danh mục</small>
+            <strong id="statCategories">0</strong>
+          </div>
 
-          <div class="stats-grid">
+          <div class="stat">
+            <small>Outfit</small>
+            <strong id="statOutfits">0</strong>
+          </div>
 
-            <div class="stat-card">
+          <div class="stat">
+            <small>Đang hiển thị</small>
+            <strong id="statActive">0</strong>
+          </div>
 
-              <div class="stat-label">
-                Sản phẩm
-              </div>
+        </div>
 
-              <div
-                id="statProducts"
-                class="stat-value"
-              >
-                0
-              </div>
+        <div class="panel">
+          <h2>Quản lý nhanh</h2>
+          <p>
+            Thêm sản phẩm bằng link TikTok/Shopee.
+            Với TikTok, hệ thống sẽ thử đọc Product ID,
+            tên và thumbnail từ link. Nếu không đọc được,
+            bạn vẫn có thể nhập thủ công và dán ảnh bằng Ctrl+V.
+          </p>
+        </div>
 
+      </section>
+
+
+      <!-- PRODUCTS -->
+      <section id="products" class="page-section hidden">
+
+        <div class="header">
+
+          <div>
+            <h1 class="title">Sản phẩm</h1>
+            <div class="desc">
+              TikTok / Shopee Affiliate
             </div>
-
-
-            <div class="stat-card">
-
-              <div class="stat-label">
-                Danh mục
-              </div>
-
-              <div
-                id="statCategories"
-                class="stat-value"
-              >
-                0
-              </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-              <div class="stat-label">
-                Outfit
-              </div>
-
-              <div
-                id="statOutfits"
-                class="stat-value"
-              >
-                0
-              </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-              <div class="stat-label">
-                Trạng thái
-              </div>
-
-              <div class="stat-value">
-                Online
-              </div>
-
-            </div>
-
           </div>
 
+          <button id="addProduct" class="btn btn-dark">
+            + Thêm sản phẩm
+          </button>
 
-          <div class="panel">
+        </div>
 
-            <h2 class="panel-title">
-              Chào mừng đến Admin
-            </h2>
+        <div class="toolbar">
 
-            <p class="panel-text">
-              Quản lý sản phẩm, danh mục và outfit
-              của Mặc Gì Đây?
-            </p>
-
-          </div>
-
-        </section>
-
-
-        <!-- ===================================================
-             PRODUCTS
-        ==================================================== -->
-
-        <section
-          id="page-products"
-          class="page-section hidden"
-        >
-
-          <div class="page-header">
-
-            <div>
-
-              <h1 class="page-title">
-                Sản phẩm
-              </h1>
-
-              <div class="page-description">
-                Quản lý toàn bộ sản phẩm affiliate.
-              </div>
-
-            </div>
-
-
-            <button
-              id="addProductButton"
-              class="btn btn-dark"
-              type="button"
-            >
-              + Thêm sản phẩm
-            </button>
-
-          </div>
-
-
-          <div class="toolbar">
-
-            <input
-              id="productSearch"
-              class="input search"
-              type="search"
-              placeholder="Tìm theo tên sản phẩm..."
-            >
-
-
-            <select
-              id="productCategoryFilter"
-            >
-              <option value="">
-                Tất cả danh mục
-              </option>
-            </select>
-
-
-            <select
-              id="productStatusFilter"
-            >
-
-              <option value="">
-                Tất cả trạng thái
-              </option>
-
-              <option value="true">
-                Đang hiển thị
-              </option>
-
-              <option value="false">
-                Đang ẩn
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="table-wrap">
-
-            <table>
-
-              <thead>
-
-                <tr>
-
-                  <th>
-                    Sản phẩm
-                  </th>
-
-                  <th>
-                    Danh mục
-                  </th>
-
-                  <th>
-                    Giá
-                  </th>
-
-                  <th>
-                    Nguồn
-                  </th>
-
-                  <th>
-                    Trạng thái
-                  </th>
-
-                  <th>
-                    Thao tác
-                  </th>
-
-                </tr>
-
-              </thead>
-
-
-              <tbody
-                id="productsTableBody"
-              ></tbody>
-
-            </table>
-
-          </div>
-
-        </section>
-
-
-        <!-- ===================================================
-             CATEGORIES
-        ==================================================== -->
-
-        <section
-          id="page-categories"
-          class="page-section hidden"
-        >
-
-          <div class="page-header">
-
-            <div>
-
-              <h1 class="page-title">
-                Danh mục
-              </h1>
-
-              <div class="page-description">
-                Quản lý các nhóm sản phẩm.
-              </div>
-
-            </div>
-
-
-            <button
-              id="addCategoryButton"
-              class="btn btn-dark"
-              type="button"
-            >
-              + Thêm danh mục
-            </button>
-
-          </div>
-
-
-          <div class="table-wrap">
-
-            <table>
-
-              <thead>
-
-                <tr>
-
-                  <th>ID</th>
-                  <th>Tên</th>
-                  <th>Slug</th>
-                  <th>Ngày tạo</th>
-                  <th>Thao tác</th>
-
-                </tr>
-
-              </thead>
-
-
-              <tbody
-                id="categoriesTableBody"
-              ></tbody>
-
-            </table>
-
-          </div>
-
-        </section>
-
-
-        <!-- ===================================================
-             OUTFITS
-        ==================================================== -->
-
-        <section
-          id="page-outfits"
-          class="page-section hidden"
-        >
-
-          <div class="page-header">
-
-            <div>
-
-              <h1 class="page-title">
-                Outfit
-              </h1>
-
-              <div class="page-description">
-                Tạo các outfit để hiển thị trên website.
-              </div>
-
-            </div>
-
-
-            <button
-              id="addOutfitButton"
-              class="btn btn-dark"
-              type="button"
-            >
-              + Thêm outfit
-            </button>
-
-          </div>
-
-
-          <div
-            id="outfitsGrid"
-            class="outfit-list"
-          ></div>
-
-        </section>
-
-      </div>
-
-    </main>
-
-  </div>
-
-
-  <!-- =========================================================
-       PRODUCT MODAL
-  ========================================================== -->
-
-  <div
-    id="productModal"
-    class="modal-backdrop hidden"
-  >
-
-    <div class="modal">
-
-      <div class="modal-header">
-
-        <div>
-
-          <h2
-            id="productModalTitle"
-            class="modal-title"
+          <input
+            id="search"
+            class="input search"
+            placeholder="Tìm sản phẩm..."
           >
-            Thêm sản phẩm
-          </h2>
+
+          <select id="categoryFilter">
+            <option value="">Tất cả danh mục</option>
+          </select>
+
+          <select id="statusFilter">
+            <option value="">Tất cả</option>
+            <option value="true">Đang hiện</option>
+            <option value="false">Đang ẩn</option>
+          </select>
+
+        </div>
+
+        <div class="table">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Sản phẩm</th>
+                <th>Danh mục</th>
+                <th>Giá</th>
+                <th>Nguồn</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+
+            <tbody id="productRows"></tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- CATEGORIES -->
+      <section id="categories" class="page-section hidden">
+
+        <div class="header">
+
+          <div>
+            <h1 class="title">Danh mục</h1>
+            <div class="desc">
+              Nhóm sản phẩm
+            </div>
+          </div>
+
+          <button id="addCategory" class="btn btn-dark">
+            + Thêm danh mục
+          </button>
+
+        </div>
+
+        <div class="table">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tên</th>
+                <th>Slug</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+
+            <tbody id="categoryRows"></tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- OUTFITS -->
+      <section id="outfits" class="page-section hidden">
+
+        <div class="header">
+
+          <div>
+            <h1 class="title">Outfit</h1>
+            <div class="desc">
+              Tạo outfit từ các sản phẩm
+            </div>
+          </div>
+
+          <button id="addOutfit" class="btn btn-dark">
+            + Thêm outfit
+          </button>
+
+        </div>
+
+        <div id="outfitRows"></div>
+
+      </section>
+
+    </div>
+  </main>
+</div>
+
+
+<!-- PRODUCT MODAL -->
+<div id="productModal" class="modal-bg hidden">
+
+  <div class="modal">
+
+    <div class="modal-head">
+      <h2 id="productModalTitle" class="modal-title">
+        Thêm sản phẩm
+      </h2>
+
+      <button class="close" data-close="productModal">×</button>
+    </div>
+
+    <form id="productForm">
+
+      <input id="productId" type="hidden">
+
+      <div class="grid">
+
+        <div class="field full">
+
+          <label>
+            Link sản phẩm / Affiliate
+            <span
+              class="note"
+              title="Dán link TikTok Affiliate hoặc Shopee Affiliate. Với TikTok, nên dán link vt.tiktok.com bạn copy từ TikTok."
+            >i</span>
+          </label>
+
+          <input
+            id="sourceUrl"
+            class="input"
+            type="url"
+            placeholder="https://vt.tiktok.com/..."
+            required
+          >
 
         </div>
 
 
-        <button
-          class="close-btn"
-          type="button"
-          data-close="productModal"
-        >
-          ×
-        </button>
+        <div class="field full">
 
-      </div>
+          <div class="meta-row">
 
-
-      <form id="productForm">
-
-        <input
-          id="productId"
-          type="hidden"
-        >
-
-
-        <div class="grid-2">
-
-          <!-- LINK -->
-
-          <div class="form-group full">
-
-            <label for="productSourceUrl">
-
-              Link sản phẩm TikTok / Shopee
-
-              <span
-                class="field-note"
-                title="Dán link sản phẩm TikTok Shop hoặc Shopee. Link này dùng để tham chiếu sản phẩm."
-              >
-                i
-              </span>
-
-            </label>
-
-
-            <input
-              id="productSourceUrl"
-              class="input"
-              type="url"
-              placeholder="https://www.tiktok.com/... hoặc https://shopee.vn/..."
+            <button
+              id="fetchMeta"
+              type="button"
+              class="btn"
             >
+              🔄 Lấy thông tin từ link
+            </button>
+
+            <span id="metaStatus" class="meta-status"></span>
 
           </div>
 
-
-          <!-- CATEGORY -->
-
-          <div class="form-group">
-
-            <label for="productCategory">
-              Danh mục
-            </label>
+        </div>
 
 
-            <select
-              id="productCategory"
-              required
-            >
+        <div class="field">
 
-              <option value="">
-                Chọn danh mục
-              </option>
+          <label>
+            Product ID
+            <span
+              class="note"
+              title="ID sản phẩm TikTok được lấy từ /view/product/..."
+            >i</span>
+          </label>
 
-            </select>
-
-          </div>
-
-
-          <!-- METADATA -->
-
-          <div
-            class="form-group"
-            style="display:flex;align-items:end;"
+          <input
+            id="productCode"
+            class="input"
+            placeholder="Tự động"
           >
 
-            <div style="width:100%;">
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Danh mục
+          </label>
+
+          <select id="productCategory" required>
+            <option value="">Chọn danh mục</option>
+          </select>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Tên sản phẩm
+            <span
+              class="note"
+              title="Hệ thống sẽ tự lấy nếu link TikTok có metadata. Bạn có thể sửa lại tên."
+            >i</span>
+          </label>
+
+          <input
+            id="productName"
+            class="input"
+            placeholder="Tên sản phẩm"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Giá
+            <span
+              class="note"
+              title="Giá được nhập thủ công. Ví dụ: 129.000đ"
+            >i</span>
+          </label>
+
+          <input
+            id="productPrice"
+            class="input"
+            placeholder="129.000đ"
+          >
+
+        </div>
+
+
+        <div class="field full">
+
+          <label>
+            Thumbnail
+            <span
+              class="note"
+              title="Copy ảnh sản phẩm từ TikTok/Shopee rồi Ctrl+V. Không cần mở thư mục trên máy."
+            >i</span>
+          </label>
+
+          <div
+            id="imageZone"
+            class="image-zone"
+            tabindex="0"
+          >
+
+            <div id="imageEmpty">
+
+              <div class="paste-icon">🖼️</div>
+
+              <div class="paste-title">
+                Copy ảnh → Ctrl + V
+              </div>
+
+              <div class="paste-help">
+                Bạn cũng có thể kéo ảnh vào đây.
+              </div>
+
+              <div class="paste-help">
+                Không cần mở thư mục trên PC.
+              </div>
+
+            </div>
+
+
+            <div
+              id="previewWrap"
+              class="preview-wrap hidden"
+            >
+
+              <img
+                id="preview"
+                class="preview"
+                alt="Thumbnail"
+              >
 
               <button
-                id="fetchMetadataButton"
-                class="btn"
+                id="removeImage"
                 type="button"
+                class="remove-image"
               >
-                🔄 Lấy thông tin
+                ×
               </button>
 
-
-              <span
-                id="metadataStatus"
-                class="metadata-status"
-              ></span>
-
             </div>
 
           </div>
 
-
-          <!-- NAME -->
-
-          <div class="form-group">
-
-            <label for="productName">
-
-              Tên sản phẩm
-
-              <span
-                class="field-note"
-                title="Nếu TikTok/Shopee không cho phép lấy tự động, hãy nhập tên sản phẩm thủ công."
-              >
-                i
-              </span>
-
-            </label>
-
-
-            <input
-              id="productName"
-              class="input"
-              type="text"
-              placeholder="Tên sản phẩm"
-              required
-            >
-
-          </div>
-
-
-          <!-- PRICE -->
-
-          <div class="form-group">
-
-            <label for="productPrice">
-
-              Giá
-
-              <span
-                class="field-note"
-                title="Nhập giá hiển thị trên website. Ví dụ: 129.000đ"
-              >
-                i
-              </span>
-
-            </label>
-
-
-            <input
-              id="productPrice"
-              class="input"
-              type="text"
-              placeholder="129.000đ"
-            >
-
-          </div>
-
-
-          <!-- IMAGE -->
-
-          <div class="form-group full">
-
-            <label>
-
-              Ảnh thumbnail
-
-              <span
-                class="field-note"
-                title="Không cần mở thư mục. Hãy copy ảnh sản phẩm từ TikTok/Shopee rồi click vào khung này và nhấn Ctrl+V."
-              >
-                i
-              </span>
-
-            </label>
-
-
-            <div
-              id="imagePasteArea"
-              class="image-paste-area"
-              tabindex="0"
-              title="Click vào đây rồi nhấn Ctrl+V để dán ảnh"
-            >
-
-              <div
-                id="pasteEmpty"
-                class="paste-empty"
-              >
-
-                <div class="paste-icon">
-                  🖼️
-                </div>
-
-                <div class="paste-title">
-                  Copy ảnh → Ctrl + V
-                </div>
-
-                <div class="paste-subtitle">
-                  Bạn có thể copy trực tiếp ảnh từ TikTok/Shopee
-                  và dán vào đây.
-                </div>
-
-                <div
-                  class="paste-subtitle"
-                  style="margin-top:5px;"
-                >
-                  Không cần mở thư mục trên máy.
-                </div>
-
-              </div>
-
-
-              <div
-                id="imagePreviewWrap"
-                class="image-preview-wrap hidden"
-              >
-
-                <img
-                  id="imagePreview"
-                  class="image-preview"
-                  alt="Thumbnail preview"
-                >
-
-
-                <button
-                  id="removeImageButton"
-                  class="remove-image-btn"
-                  type="button"
-                  title="Xoá ảnh"
-                >
-                  ×
-                </button>
-
-              </div>
-
-            </div>
-
-
-            <div
-              id="imageSourceInfo"
-              class="image-source-info"
-            ></div>
-
-
-            <div
-              id="existingImageNote"
-              class="existing-image-note hidden"
-            >
-              Ảnh hiện tại đang được lưu trên Supabase.
-              Dán ảnh mới để thay ảnh.
-            </div>
-
-          </div>
-
-
-          <!-- AFFILIATE -->
-
-          <div class="form-group full">
-
-            <label for="productAffiliate">
-
-              Link Affiliate
-
-              <span
-                class="field-note"
-                title="Đây là link người dùng sẽ bấm để mua hàng. Có thể là TikTok Affiliate hoặc Shopee Affiliate."
-              >
-                i
-              </span>
-
-            </label>
-
-
-            <input
-              id="productAffiliate"
-              class="input"
-              type="url"
-              placeholder="Dán link affiliate..."
-            >
-
-          </div>
-
-
-          <!-- DESCRIPTION -->
-
-          <div class="form-group full">
-
-            <label for="productDescription">
-              Mô tả
-            </label>
-
-
-            <textarea
-              id="productDescription"
-              placeholder="Mô tả ngắn..."
-            ></textarea>
-
-          </div>
-
-
-          <!-- ACTIVE -->
-
-          <div class="form-group full">
-
-            <label class="checkbox-row">
-
-              <input
-                id="productActive"
-                type="checkbox"
-                checked
-              >
-
-              Hiển thị sản phẩm trên website
-
-            </label>
-
-          </div>
+          <div id="imageInfo" class="image-info"></div>
 
         </div>
 
 
-        <div class="modal-footer">
+        <div class="field full">
 
-          <button
-            class="btn"
-            type="button"
-            data-close="productModal"
+          <label>
+            Link Affiliate
+            <span
+              class="note"
+              title="Hệ thống lưu nguyên link bạn dán, không tự rút gọn hoặc thay đổi để tránh làm mất tracking."
+            >i</span>
+          </label>
+
+          <input
+            id="affiliateUrl"
+            class="input"
+            placeholder="Nếu link trên là link affiliate thì có thể giữ nguyên."
           >
-            Huỷ
-          </button>
-
-
-          <button
-            id="saveProductButton"
-            class="btn btn-dark"
-            type="submit"
-          >
-            Lưu sản phẩm
-          </button>
 
         </div>
 
-      </form>
+
+        <div class="field full">
+
+          <label>Mô tả</label>
+
+          <textarea
+            id="description"
+            placeholder="Mô tả sản phẩm..."
+          ></textarea>
+
+        </div>
+
+
+        <div class="field full">
+
+          <label style="display:flex;align-items:center;gap:8px">
+
+            <input
+              id="active"
+              type="checkbox"
+              checked
+            >
+
+            Hiển thị sản phẩm
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <div class="footer">
+
+        <button
+          type="button"
+          class="btn"
+          data-close="productModal"
+        >
+          Huỷ
+        </button>
+
+        <button
+          id="saveProduct"
+          class="btn btn-dark"
+        >
+          Lưu sản phẩm
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+
+<!-- CATEGORY MODAL -->
+<div id="categoryModal" class="modal-bg hidden">
+
+  <div class="modal" style="max-width:520px">
+
+    <div class="modal-head">
+
+      <h2 id="categoryModalTitle" class="modal-title">
+        Thêm danh mục
+      </h2>
+
+      <button class="close" data-close="categoryModal">×</button>
 
     </div>
 
-  </div>
+    <form id="categoryForm">
 
+      <input id="categoryId" type="hidden">
 
-  <!-- =========================================================
-       CATEGORY MODAL
-  ========================================================== -->
+      <div class="field">
 
-  <div
-    id="categoryModal"
-    class="modal-backdrop hidden"
-  >
+        <label>Tên danh mục</label>
 
-    <div class="modal modal-small">
-
-      <div class="modal-header">
-
-        <h2
-          id="categoryModalTitle"
-          class="modal-title"
+        <input
+          id="categoryName"
+          class="input"
+          placeholder="Áo"
+          required
         >
-          Thêm danh mục
-        </h2>
 
+      </div>
+
+      <div class="field">
+
+        <label>
+          Slug
+          <span
+            class="note"
+            title="Ví dụ: Áo → ao, Phụ kiện → phu-kien."
+          >i</span>
+        </label>
+
+        <input
+          id="categorySlug"
+          class="input"
+          placeholder="ao"
+          required
+        >
+
+      </div>
+
+      <div class="footer">
 
         <button
-          class="close-btn"
           type="button"
+          class="btn"
           data-close="categoryModal"
         >
-          ×
+          Huỷ
+        </button>
+
+        <button class="btn btn-dark">
+          Lưu
         </button>
 
       </div>
 
-
-      <form id="categoryForm">
-
-        <input
-          id="categoryId"
-          type="hidden"
-        >
+    </form>
+  </div>
+</div>
 
 
-        <div class="form-group">
+<!-- OUTFIT MODAL -->
+<div id="outfitModal" class="modal-bg hidden">
 
-          <label for="categoryName">
-            Tên danh mục
-          </label>
+  <div class="modal">
 
+    <div class="modal-head">
 
-          <input
-            id="categoryName"
-            class="input"
-            type="text"
-            placeholder="Ví dụ: Áo"
-            required
-          >
+      <h2 id="outfitModalTitle" class="modal-title">
+        Thêm outfit
+      </h2>
 
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="categorySlug">
-
-            Slug
-
-            <span
-              class="field-note"
-              title="Slug dùng cho URL. Ví dụ: Áo → ao, Phụ kiện → phu-kien."
-            >
-              i
-            </span>
-
-          </label>
-
-
-          <input
-            id="categorySlug"
-            class="input"
-            type="text"
-            placeholder="ao"
-            required
-          >
-
-        </div>
-
-
-        <div class="modal-footer">
-
-          <button
-            class="btn"
-            type="button"
-            data-close="categoryModal"
-          >
-            Huỷ
-          </button>
-
-
-          <button
-            class="btn btn-dark"
-            type="submit"
-          >
-            Lưu danh mục
-          </button>
-
-        </div>
-
-      </form>
+      <button class="close" data-close="outfitModal">×</button>
 
     </div>
 
-  </div>
+    <form id="outfitForm">
 
+      <input id="outfitId" type="hidden">
 
-  <!-- =========================================================
-       OUTFIT MODAL
-  ========================================================== -->
+      <div class="grid">
 
-  <div
-    id="outfitModal"
-    class="modal-backdrop hidden"
-  >
+        <div class="field">
+          <label>Tên outfit</label>
+          <input
+            id="outfitName"
+            class="input"
+            required
+          >
+        </div>
 
-    <div class="modal">
+        <div class="field">
+          <label>Ảnh outfit URL</label>
+          <input
+            id="outfitImage"
+            class="input"
+            type="url"
+          >
+        </div>
 
-      <div class="modal-header">
+        <div class="field full">
+          <label>Mô tả</label>
+          <textarea id="outfitDescription"></textarea>
+        </div>
 
-        <h2
-          id="outfitModalTitle"
-          class="modal-title"
-        >
-          Thêm outfit
-        </h2>
+        <div class="field full">
 
+          <label>
+            Sản phẩm
+            <span
+              class="note"
+              title="Chọn các sản phẩm đã có để ghép thành outfit."
+            >i</span>
+          </label>
+
+          <div
+            id="outfitProducts"
+            style="
+              border:1px solid var(--line);
+              border-radius:10px;
+              max-height:260px;
+              overflow:auto;
+              padding:7px;
+            "
+          ></div>
+
+        </div>
+
+        <div class="field full">
+
+          <label style="display:flex;align-items:center;gap:8px">
+
+            <input
+              id="outfitActive"
+              type="checkbox"
+              checked
+            >
+
+            Hiển thị outfit
+
+          </label>
+
+        </div>
+
+      </div>
+
+      <div class="footer">
 
         <button
-          class="close-btn"
           type="button"
+          class="btn"
           data-close="outfitModal"
         >
-          ×
+          Huỷ
+        </button>
+
+        <button class="btn btn-dark">
+          Lưu outfit
         </button>
 
       </div>
 
-
-      <form id="outfitForm">
-
-        <input
-          id="outfitId"
-          type="hidden"
-        >
-
-
-        <div class="grid-2">
-
-          <div class="form-group">
-
-            <label for="outfitName">
-              Tên outfit
-            </label>
-
-
-            <input
-              id="outfitName"
-              class="input"
-              type="text"
-              placeholder="Outfit đi chơi..."
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="outfitImage">
-
-              Ảnh outfit
-
-              <span
-                class="field-note"
-                title="URL ảnh đại diện cho outfit."
-              >
-                i
-              </span>
-
-            </label>
-
-
-            <input
-              id="outfitImage"
-              class="input"
-              type="url"
-              placeholder="https://..."
-            >
-
-          </div>
-
-
-          <div class="form-group full">
-
-            <label for="outfitDescription">
-              Mô tả
-            </label>
-
-
-            <textarea
-              id="outfitDescription"
-              placeholder="Mô tả outfit..."
-            ></textarea>
-
-          </div>
-
-
-          <div class="form-group full">
-
-            <label>
-              Sản phẩm trong outfit
-            </label>
-
-
-            <div
-              id="outfitProductsPicker"
-              style="
-                border:1px solid var(--border);
-                border-radius:11px;
-                padding:12px;
-                max-height:260px;
-                overflow:auto;
-              "
-            ></div>
-
-          </div>
-
-
-          <div class="form-group full">
-
-            <label class="checkbox-row">
-
-              <input
-                id="outfitActive"
-                type="checkbox"
-                checked
-              >
-
-              Hiển thị outfit trên website
-
-            </label>
-
-          </div>
-
-        </div>
-
-
-        <div class="modal-footer">
-
-          <button
-            class="btn"
-            type="button"
-            data-close="outfitModal"
-          >
-            Huỷ
-          </button>
-
-
-          <button
-            class="btn btn-dark"
-            type="submit"
-          >
-            Lưu outfit
-          </button>
-
-        </div>
-
-      </form>
-
-    </div>
-
+    </form>
   </div>
+</div>
 
 
-  <!-- =========================================================
-       TOAST
-  ========================================================== -->
+<div id="toastBox" class="toast-box"></div>
 
-  <div id="toastContainer"></div>
-
-
-  <!-- =========================================================
-       LOADING
-  ========================================================== -->
-
-  <div
-    id="loading"
-    class="loading hidden"
-  >
-
-    <div
-      id="loadingText"
-      class="loading-box"
-    >
-      Đang xử lý...
-    </div>
-
+<div id="loading" class="loading hidden">
+  <div id="loadingText" class="loading-box">
+    Đang xử lý...
   </div>
+</div>
 
 
-  <!-- =========================================================
-       JAVASCRIPT
-  ========================================================== -->
+<script>
+const SUPABASE_URL =
+  "https://rxeqynitxruylvcybrca.supabase.co";
 
-  <script>
+const SUPABASE_KEY =
+  "sb_publishable_DCZRB5bpOCQUGwEWWevizg_lAp2YvIm";
 
-    /* =========================================================
-       CONFIG
-    ========================================================= */
+const FUNCTION_URL =
+  `${SUPABASE_URL}/functions/v1/fetch-product-meta`;
 
-    const SUPABASE_URL =
-      "https://rxeqynitxruylvcybrca.supabase.co";
+const IMAGE_BUCKET =
+  "product-images";
+
+const db =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+let user = null;
+let categories = [];
+let products = [];
+let outfits = [];
+
+let pastedBlob = null;
+let previewUrl = null;
+let currentImageUrl = null;
 
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_DCZRB5bpOCQUGwEWWevizg_lAp2YvIm";
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const $ =
+  id => document.getElementById(id);
+
+function escapeHtml(v){
+  if(v===null||v===undefined)return "";
+  return String(v)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function slugify(v){
+  return String(v||"")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/đ/g,"d")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"");
+}
+
+function toast(
+  text,
+  type=""
+){
+  const el =
+    document.createElement("div");
+
+  el.className =
+    `toast ${type}`;
+
+  el.textContent =
+    text;
+
+  $("toastBox")
+    .appendChild(el);
+
+  setTimeout(
+    ()=>el.remove(),
+    3500
+  );
+}
+
+function loading(
+  show,
+  text="Đang xử lý..."
+){
+  $("loadingText")
+    .textContent =
+    text;
+
+  $("loading")
+    .classList
+    .toggle(
+      "hidden",
+      !show
+    );
+}
+
+function openModal(id){
+  $(id)
+    .classList
+    .remove("hidden");
+}
+
+function closeModal(id){
+  $(id)
+    .classList
+    .add("hidden");
+}
+
+function showLoginError(text){
+  $("loginAlert")
+    .textContent =
+    text;
+
+  $("loginAlert")
+    .classList
+    .remove("hidden");
+}
+
+function formatDate(v){
+  if(!v)return "—";
+
+  try{
+    return new Date(v)
+      .toLocaleDateString(
+        "vi-VN"
+      );
+  }catch{
+    return "—";
+  }
+}
 
 
-    const FETCH_META_FUNCTION =
-      `${SUPABASE_URL}/functions/v1/fetch-product-meta`;
+/* =========================================================
+   AUTH
+========================================================= */
 
+async function isAdmin(u){
 
-    const PRODUCT_IMAGE_BUCKET =
-      "product-images";
+  if(!u)return false;
 
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("admin_users")
+      .select("user_id")
+      .eq(
+        "user_id",
+        u.id
+      )
+      .maybeSingle();
 
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
+  if(error)
+    throw error;
+
+  return !!data;
+}
+
+async function login(e){
+
+  e.preventDefault();
+
+  $("loginAlert")
+    .classList
+    .add("hidden");
+
+  const email =
+    $("email")
+      .value
+      .trim();
+
+  const password =
+    $("password")
+      .value;
+
+  const btn =
+    $("loginBtn");
+
+  btn.disabled = true;
+  btn.textContent =
+    "Đang đăng nhập...";
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await db.auth
+        .signInWithPassword({
+          email,
+          password
+        });
+
+    if(error)
+      throw error;
+
+    const admin =
+      await isAdmin(
+        data.user
       );
 
+    if(!admin){
 
-    /* =========================================================
-       STATE
-    ========================================================== */
-
-    let currentUser = null;
-
-    let categories = [];
-
-    let products = [];
-
-    let outfits = [];
-
-    let currentPage =
-      "dashboard";
-
-
-    /*
-     * Ảnh mới đang được dán.
-     *
-     * imageBlob:
-     *   File/Blob thật từ clipboard
-     *
-     * imagePreviewUrl:
-     *   URL tạm dùng để preview
-     *
-     * existingImageUrl:
-     *   ảnh cũ trong database
-     */
-
-    let pastedImageBlob = null;
-
-    let pastedImagePreviewUrl = null;
-
-    let existingImageUrl = null;
-
-
-    /* =========================================================
-       DOM
-    ========================================================== */
-
-    const $ =
-      id =>
-        document.getElementById(id);
-
-
-    /* =========================================================
-       ESCAPE
-    ========================================================== */
-
-    function escapeHtml(value) {
-
-      if (
-        value === null ||
-        value === undefined
-      ) {
-        return "";
-      }
-
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-
-    /* =========================================================
-       SLUG
-    ========================================================== */
-
-    function slugify(text) {
-
-      return String(text || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/đ/g, "d")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
-    }
-
-
-    /* =========================================================
-       LOADING
-    ========================================================== */
-
-    function showLoading(
-      text = "Đang xử lý..."
-    ) {
-
-      $("loadingText")
-        .textContent =
-        text;
-
-      $("loading")
-        .classList
-        .remove("hidden");
-    }
-
-
-    function hideLoading() {
-
-      $("loading")
-        .classList
-        .add("hidden");
-    }
-
-
-    /* =========================================================
-       TOAST
-    ========================================================== */
-
-    function toast(
-      message,
-      type = ""
-    ) {
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-      item.className =
-        `toast ${type}`;
-
-      item.textContent =
-        message;
-
-      $("toastContainer")
-        .appendChild(item);
-
-
-      setTimeout(
-        () => item.remove(),
-        3500
-      );
-    }
-
-
-    /* =========================================================
-       LOGIN ALERT
-    ========================================================== */
-
-    function showLoginAlert(
-      message,
-      type = "error"
-    ) {
-
-      const el =
-        $("loginAlert");
-
-      el.textContent =
-        message;
-
-      el.className =
-        `alert alert-${type}`;
-
-      el.classList
-        .remove("hidden");
-    }
-
-
-    function hideLoginAlert() {
-
-      $("loginAlert")
-        .classList
-        .add("hidden");
-    }
-
-
-    /* =========================================================
-       MODALS
-    ========================================================== */
-
-    function openModal(id) {
-
-      $(id)
-        .classList
-        .remove("hidden");
-    }
-
-
-    function closeModal(id) {
-
-      $(id)
-        .classList
-        .add("hidden");
-    }
-
-
-    /* =========================================================
-       AUTH
-    ========================================================== */
-
-    async function checkAdmin(user) {
-
-      if (!user) {
-        return false;
-      }
-
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("admin_users")
-          .select("user_id")
-          .eq(
-            "user_id",
-            user.id
-          )
-          .maybeSingle();
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      return !!data;
-    }
-
-
-    async function showAdminApp(
-      user
-    ) {
-
-      currentUser =
-        user;
-
-
-      $("currentUserEmail")
-        .textContent =
-        user.email || "";
-
-
-      $("loginScreen")
-        .classList
-        .add("hidden");
-
-
-      $("app")
-        .classList
-        .remove("hidden");
-
-
-      await loadEverything();
-    }
-
-
-    async function showLogin() {
-
-      currentUser =
-        null;
-
-
-      $("app")
-        .classList
-        .add("hidden");
-
-
-      $("loginScreen")
-        .classList
-        .remove("hidden");
-    }
-
-
-    async function handleLogin(
-      event
-    ) {
-
-      event.preventDefault();
-
-      hideLoginAlert();
-
-
-      const email =
-        $("loginEmail")
-          .value
-          .trim();
-
-
-      const password =
-        $("loginPassword")
-          .value;
-
-
-      if (
-        !email ||
-        !password
-      ) {
-
-        showLoginAlert(
-          "Vui lòng nhập email và mật khẩu."
-        );
-
-        return;
-      }
-
-
-      const button =
-        $("loginButton");
-
-
-      button.disabled =
-        true;
-
-
-      button.textContent =
-        "Đang đăng nhập...";
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .auth
-            .signInWithPassword({
-              email,
-              password
-            });
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        if (!data.user) {
-
-          throw new Error(
-            "Không nhận được thông tin tài khoản."
-          );
-        }
-
-
-        const isAdmin =
-          await checkAdmin(
-            data.user
-          );
-
-
-        if (!isAdmin) {
-
-          await supabaseClient
-            .auth
-            .signOut();
-
-
-          showLoginAlert(
-            "Tài khoản này chưa được cấp quyền Admin."
-          );
-
-          return;
-        }
-
-
-        await showAdminApp(
-          data.user
-        );
-
-
-      } catch (error) {
-
-        console.error(error);
-
-
-        let message =
-          "Đăng nhập thất bại.";
-
-
-        if (
-          error?.message
-            ?.toLowerCase()
-            .includes(
-              "invalid login credentials"
-            )
-        ) {
-
-          message =
-            "Email hoặc mật khẩu không chính xác.";
-
-        } else if (
-          error?.message
-            ?.toLowerCase()
-            .includes(
-              "email not confirmed"
-            )
-        ) {
-
-          message =
-            "Email chưa được xác nhận.";
-
-        } else if (
-          error?.message
-        ) {
-
-          message =
-            error.message;
-        }
-
-
-        showLoginAlert(
-          message
-        );
-
-
-      } finally {
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "Đăng nhập";
-      }
-    }
-
-
-    async function logout() {
-
-      await supabaseClient
-        .auth
+      await db.auth
         .signOut();
 
-      await showLogin();
+      throw new Error(
+        "Tài khoản này chưa được cấp quyền Admin."
+      );
     }
 
+    await showApp(
+      data.user
+    );
 
-    /* =========================================================
-       NAVIGATION
-    ========================================================== */
+  }catch(error){
 
-    function switchPage(
-      page
-    ) {
+    console.error(error);
 
-      currentPage =
-        page;
+    showLoginError(
+      error.message ||
+      "Đăng nhập thất bại."
+    );
+
+  }finally{
+
+    btn.disabled = false;
+    btn.textContent =
+      "Đăng nhập";
+  }
+}
+
+async function showApp(u){
+
+  user = u;
+
+  $("login")
+    .classList
+    .add("hidden");
+
+  $("app")
+    .classList
+    .remove("hidden");
+
+  $("userEmail")
+    .textContent =
+    u.email || "";
+
+  await loadAll();
+}
+
+async function showLogin(){
+
+  $("app")
+    .classList
+    .add("hidden");
+
+  $("login")
+    .classList
+    .remove("hidden");
+}
+
+async function logout(){
+
+  await db.auth
+    .signOut();
+
+  await showLogin();
+}
 
 
-      document
-        .querySelectorAll(
-          ".page-section"
+/* =========================================================
+   LOAD
+========================================================= */
+
+async function loadAll(){
+
+  loading(
+    true,
+    "Đang tải dữ liệu..."
+  );
+
+  try{
+
+    await Promise.all([
+      loadCategories(),
+      loadProducts(),
+      loadOutfits()
+    ]);
+
+    dashboard();
+
+  }catch(error){
+
+    console.error(error);
+
+    toast(
+      error.message ||
+      "Không tải được dữ liệu.",
+      "err"
+    );
+
+  }finally{
+
+    loading(false);
+  }
+}
+
+
+/* =========================================================
+   NAV
+========================================================= */
+
+function page(name){
+
+  document
+    .querySelectorAll(".page-section")
+    .forEach(
+      x =>
+        x.classList
+          .add("hidden")
+    );
+
+  $(name)
+    .classList
+    .remove("hidden");
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(
+      x =>
+        x.classList.toggle(
+          "active",
+          x.dataset.page ===
+          name
         )
-        .forEach(
-          section => {
+    );
 
-            section.classList
-              .add("hidden");
-
-          }
-        );
+  $("sidebar")
+    .classList
+    .remove("open");
+}
 
 
-      const target =
-        $(`page-${page}`);
+/* =========================================================
+   CATEGORIES
+========================================================= */
 
+async function loadCategories(){
 
-      if (target) {
-
-        target.classList
-          .remove("hidden");
-      }
-
-
-      document
-        .querySelectorAll(
-          ".nav-btn"
-        )
-        .forEach(
-          btn => {
-
-            btn.classList
-              .toggle(
-                "active",
-                btn.dataset.page ===
-                page
-              );
-
-          }
-        );
-
-
-      $("sidebar")
-        .classList
-        .remove("open");
-    }
-
-
-    /* =========================================================
-       LOAD EVERYTHING
-    ========================================================== */
-
-    async function loadEverything() {
-
-      showLoading(
-        "Đang tải dữ liệu..."
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("categories")
+      .select("*")
+      .order(
+        "id",
+        {ascending:true}
       );
 
+  if(error)
+    throw error;
 
-      try {
+  categories =
+    data || [];
 
-        await Promise.all([
-          loadCategories(),
-          loadProducts(),
-          loadOutfits()
-        ]);
+  renderCategories();
+  renderCategoryOptions();
+}
 
+function renderCategoryOptions(){
 
-        updateDashboard();
+  const html =
+    categories
+      .map(
+        c =>
+          `<option value="${c.id}">
+            ${escapeHtml(c.name)}
+          </option>`
+      )
+      .join("");
 
+  $("productCategory")
+    .innerHTML =
+      `<option value="">
+        Chọn danh mục
+      </option>${html}`;
 
-      } catch (error) {
+  const old =
+    $("categoryFilter")
+      .value;
 
-        console.error(error);
+  $("categoryFilter")
+    .innerHTML =
+      `<option value="">
+        Tất cả danh mục
+      </option>${html}`;
 
+  $("categoryFilter")
+    .value =
+    old;
+}
 
-        toast(
-          error.message ||
-          "Không thể tải dữ liệu.",
-          "error"
-        );
+function renderCategories(){
 
+  if(!categories.length){
 
-      } finally {
+    $("categoryRows")
+      .innerHTML =
+      `<tr><td colspan="4">
+        <div class="empty">
+          Chưa có danh mục.
+        </div>
+      </td></tr>`;
 
-        hideLoading();
-      }
-    }
+    return;
+  }
 
-
-    /* =========================================================
-       CATEGORY
-    ========================================================== */
-
-    async function loadCategories() {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("categories")
-          .select("*")
-          .order(
-            "id",
-            {
-              ascending: true
-            }
-          );
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      categories =
-        data || [];
-
-
-      renderCategories();
-
-      renderCategorySelects();
-    }
-
-
-    function renderCategories() {
-
-      const tbody =
-        $("categoriesTableBody");
-
-
-      if (!categories.length) {
-
-        tbody.innerHTML = `
+  $("categoryRows")
+    .innerHTML =
+    categories
+      .map(
+        c => `
           <tr>
-            <td colspan="5">
-              <div class="empty">
-                Chưa có danh mục nào.
+            <td>#${c.id}</td>
+            <td><strong>
+              ${escapeHtml(c.name)}
+            </strong></td>
+            <td>${escapeHtml(c.slug)}</td>
+            <td>
+              <div class="actions">
+                <button
+                  class="btn btn-sm"
+                  onclick="editCategory(${c.id})"
+                >Sửa</button>
+
+                <button
+                  class="btn btn-red btn-sm"
+                  onclick="deleteCategory(${c.id})"
+                >Xoá</button>
               </div>
             </td>
           </tr>
-        `;
+        `
+      )
+      .join("");
+}
 
-        return;
+function addCategory(){
+
+  $("categoryForm")
+    .reset();
+
+  $("categoryId")
+    .value = "";
+
+  $("categoryModalTitle")
+    .textContent =
+    "Thêm danh mục";
+
+  openModal(
+    "categoryModal"
+  );
+}
+
+function editCategory(id){
+
+  const c =
+    categories.find(
+      x => x.id === id
+    );
+
+  if(!c)return;
+
+  $("categoryId")
+    .value =
+    c.id;
+
+  $("categoryName")
+    .value =
+    c.name || "";
+
+  $("categorySlug")
+    .value =
+    c.slug || "";
+
+  $("categoryModalTitle")
+    .textContent =
+    "Sửa danh mục";
+
+  openModal(
+    "categoryModal"
+  );
+}
+
+async function saveCategory(e){
+
+  e.preventDefault();
+
+  const id =
+    $("categoryId")
+      .value;
+
+  const name =
+    $("categoryName")
+      .value
+      .trim();
+
+  const slug =
+    $("categorySlug")
+      .value
+      .trim() ||
+    slugify(name);
+
+  loading(
+    true,
+    "Đang lưu danh mục..."
+  );
+
+  try{
+
+    if(id){
+
+      const {
+        error
+      } =
+        await db
+          .from("categories")
+          .update({
+            name,
+            slug
+          })
+          .eq(
+            "id",
+            id
+          );
+
+      if(error)
+        throw error;
+
+    }else{
+
+      const {
+        error
+      } =
+        await db
+          .from("categories")
+          .insert({
+            name,
+            slug
+          });
+
+      if(error)
+        throw error;
+    }
+
+    toast(
+      "Đã lưu danh mục.",
+      "ok"
+    );
+
+    closeModal(
+      "categoryModal"
+    );
+
+    await loadCategories();
+    dashboard();
+
+  }catch(error){
+
+    console.error(error);
+
+    toast(
+      error.message ||
+      "Không lưu được.",
+      "err"
+    );
+
+  }finally{
+
+    loading(false);
+  }
+}
+
+async function deleteCategory(id){
+
+  const c =
+    categories.find(
+      x => x.id === id
+    );
+
+  if(!c)return;
+
+  const used =
+    products.filter(
+      p =>
+        p.category_id === id
+    );
+
+  if(used.length){
+
+    toast(
+      `Không thể xoá. Có ${used.length} sản phẩm đang dùng danh mục này.`,
+      "warn"
+    );
+
+    return;
+  }
+
+  if(
+    !confirm(
+      `Xoá danh mục "${c.name}"?`
+    )
+  )return;
+
+  loading(
+    true,
+    "Đang xoá..."
+  );
+
+  try{
+
+    const {
+      error
+    } =
+      await db
+        .from("categories")
+        .delete()
+        .eq(
+          "id",
+          id
+        );
+
+    if(error)
+      throw error;
+
+    toast(
+      "Đã xoá danh mục.",
+      "ok"
+    );
+
+    await loadCategories();
+    dashboard();
+
+  }catch(error){
+
+    toast(
+      error.message ||
+      "Không thể xoá.",
+      "err"
+    );
+
+  }finally{
+
+    loading(false);
+  }
+}
+
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+async function loadProducts(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("products")
+      .select(`
+        id,
+        name,
+        category_id,
+        price,
+        image_url,
+        tiktok_url,
+        affiliate_url,
+        description,
+        is_active,
+        created_at,
+        categories(
+          id,
+          name,
+          slug
+        )
+      `)
+      .order(
+        "id",
+        {ascending:false}
+      );
+
+  if(error)
+    throw error;
+
+  products =
+    data || [];
+
+  renderProducts();
+}
+
+function categoryName(id){
+
+  const c =
+    categories.find(
+      x => x.id === id
+    );
+
+  return c?.name ||
+    "Chưa phân loại";
+}
+
+function platform(p){
+
+  const value =
+    `${p.tiktok_url || ""} ${p.affiliate_url || ""}`
+      .toLowerCase();
+
+  if(
+    value.includes(
+      "tiktok"
+    )
+  )return "TikTok";
+
+  if(
+    value.includes(
+      "shopee"
+    )
+  )return "Shopee";
+
+  return "Khác";
+}
+
+function renderProducts(){
+
+  const search =
+    $("search")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const cat =
+    $("categoryFilter")
+      .value;
+
+  const status =
+    $("statusFilter")
+      .value;
+
+  const list =
+    products.filter(
+      p => {
+
+        const a =
+          !search ||
+          (
+            p.name || ""
+          )
+            .toLowerCase()
+            .includes(
+              search
+            );
+
+        const b =
+          !cat ||
+          String(
+            p.category_id
+          ) ===
+          String(cat);
+
+        const c =
+          !status ||
+          String(
+            p.is_active
+          ) ===
+          status;
+
+        return a && b && c;
       }
+    );
 
+  if(!list.length){
 
-      tbody.innerHTML =
-        categories
-          .map(
-            category => `
+    $("productRows")
+      .innerHTML =
+      `<tr><td colspan="6">
+        <div class="empty">
+          Không tìm thấy sản phẩm.
+        </div>
+      </td></tr>`;
 
-              <tr>
+    return;
+  }
 
-                <td>
-                  #${escapeHtml(
-                    category.id
-                  )}
-                </td>
+  $("productRows")
+    .innerHTML =
+    list.map(
+      p => {
 
-                <td>
-                  <strong>
-                    ${escapeHtml(
-                      category.name
-                    )}
-                  </strong>
-                </td>
+        const image =
+          p.image_url
+            ? `<img
+                class="thumb"
+                src="${escapeHtml(p.image_url)}"
+                onerror="this.style.display='none'"
+              >`
+            : `<div class="no-thumb">
+                Ảnh
+              </div>`;
 
-                <td>
-                  ${escapeHtml(
-                    category.slug
-                  )}
-                </td>
+        return `
+          <tr>
 
-                <td>
-                  ${formatDate(
-                    category.created_at
-                  )}
-                </td>
+            <td>
+              <div class="product">
 
-                <td>
+                ${image}
 
-                  <div class="actions">
-
-                    <button
-                      class="btn btn-small"
-                      type="button"
-                      onclick="editCategory(${category.id})"
-                    >
-                      Sửa
-                    </button>
-
-                    <button
-                      class="btn btn-danger btn-small"
-                      type="button"
-                      onclick="deleteCategory(${category.id})"
-                    >
-                      Xoá
-                    </button>
-
+                <div>
+                  <div class="name">
+                    ${escapeHtml(p.name)}
                   </div>
 
-                </td>
+                  <div class="id">
+                    #${p.id}
+                  </div>
+                </div>
 
-              </tr>
-
-            `
-          )
-          .join("");
-    }
-
-
-    function renderCategorySelects() {
-
-      const options =
-        categories
-          .map(
-            category => `
-
-              <option
-                value="${escapeHtml(
-                  category.id
-                )}"
-              >
-                ${escapeHtml(
-                  category.name
-                )}
-              </option>
-
-            `
-          )
-          .join("");
-
-
-      const current =
-        $("productCategoryFilter")
-          .value;
-
-
-      $("productCategory")
-        .innerHTML =
-        `
-          <option value="">
-            Chọn danh mục
-          </option>
-          ${options}
-        `;
-
-
-      $("productCategoryFilter")
-        .innerHTML =
-        `
-          <option value="">
-            Tất cả danh mục
-          </option>
-          ${options}
-        `;
-
-
-      $("productCategoryFilter")
-        .value =
-        current;
-    }
-
-
-    function openAddCategory() {
-
-      $("categoryForm")
-        .reset();
-
-
-      $("categoryId")
-        .value = "";
-
-
-      $("categoryModalTitle")
-        .textContent =
-        "Thêm danh mục";
-
-
-      openModal(
-        "categoryModal"
-      );
-    }
-
-
-    function editCategory(
-      id
-    ) {
-
-      const category =
-        categories.find(
-          item =>
-            item.id === id
-        );
-
-
-      if (!category) {
-        return;
-      }
-
-
-      $("categoryId")
-        .value =
-        category.id;
-
-
-      $("categoryName")
-        .value =
-        category.name || "";
-
-
-      $("categorySlug")
-        .value =
-        category.slug || "";
-
-
-      $("categoryModalTitle")
-        .textContent =
-        "Sửa danh mục";
-
-
-      openModal(
-        "categoryModal"
-      );
-    }
-
-
-    async function saveCategory(
-      event
-    ) {
-
-      event.preventDefault();
-
-
-      const id =
-        $("categoryId")
-          .value;
-
-
-      const name =
-        $("categoryName")
-          .value
-          .trim();
-
-
-      let slug =
-        $("categorySlug")
-          .value
-          .trim();
-
-
-      if (!name) {
-
-        toast(
-          "Vui lòng nhập tên danh mục.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      if (!slug) {
-
-        slug =
-          slugify(name);
-      }
-
-
-      showLoading(
-        "Đang lưu danh mục..."
-      );
-
-
-      try {
-
-        if (id) {
-
-          const {
-            error
-          } =
-            await supabaseClient
-              .from("categories")
-              .update({
-                name,
-                slug
-              })
-              .eq(
-                "id",
-                id
-              );
-
-
-          if (error) {
-            throw error;
-          }
-
-
-          toast(
-            "Đã cập nhật danh mục.",
-            "success"
-          );
-
-        } else {
-
-          const {
-            error
-          } =
-            await supabaseClient
-              .from("categories")
-              .insert({
-                name,
-                slug
-              });
-
-
-          if (error) {
-            throw error;
-          }
-
-
-          toast(
-            "Đã thêm danh mục.",
-            "success"
-          );
-        }
-
-
-        closeModal(
-          "categoryModal"
-        );
-
-
-        await loadCategories();
-
-        updateDashboard();
-
-
-      } catch (error) {
-
-        console.error(error);
-
-
-        toast(
-          error.message ||
-          "Không thể lưu danh mục.",
-          "error"
-        );
-
-
-      } finally {
-
-        hideLoading();
-      }
-    }
-
-
-    async function deleteCategory(
-      id
-    ) {
-
-      const category =
-        categories.find(
-          item =>
-            item.id === id
-        );
-
-
-      if (!category) {
-        return;
-      }
-
-
-      const related =
-        products.filter(
-          product =>
-            product.category_id ===
-            id
-        );
-
-
-      if (related.length) {
-
-        toast(
-          `Không thể xoá "${category.name}" vì đang có ${related.length} sản phẩm sử dụng danh mục này.`,
-          "warning"
-        );
-
-        return;
-      }
-
-
-      if (
-        !confirm(
-          `Xoá danh mục "${category.name}"?`
-        )
-      ) {
-
-        return;
-      }
-
-
-      showLoading(
-        "Đang xoá danh mục..."
-      );
-
-
-      try {
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("categories")
-            .delete()
-            .eq(
-              "id",
-              id
-            );
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        toast(
-          "Đã xoá danh mục.",
-          "success"
-        );
-
-
-        await loadCategories();
-
-        updateDashboard();
-
-
-      } catch (error) {
-
-        console.error(error);
-
-
-        toast(
-          error.message ||
-          "Không thể xoá danh mục.",
-          "error"
-        );
-
-
-      } finally {
-
-        hideLoading();
-      }
-    }
-
-
-    /* =========================================================
-       PRODUCTS
-    ========================================================== */
-
-    async function loadProducts() {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("products")
-          .select(`
-            id,
-            name,
-            category_id,
-            price,
-            image_url,
-            tiktok_url,
-            affiliate_url,
-            description,
-            is_active,
-            created_at,
-            categories (
-              id,
-              name,
-              slug
-            )
-          `)
-          .order(
-            "id",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      products =
-        data || [];
-
-
-      renderProducts();
-    }
-
-
-    function getCategoryName(
-      categoryId
-    ) {
-
-      const category =
-        categories.find(
-          item =>
-            item.id ===
-            categoryId
-        );
-
-
-      return category
-        ? category.name
-        : "Chưa phân loại";
-    }
-
-
-    function getPlatform(
-      product
-    ) {
-
-      const source =
-        (
-          product.tiktok_url ||
-          ""
-        )
-          .toLowerCase();
-
-
-      if (
-        source.includes(
-          "tiktok"
-        )
-      ) {
-
-        return "TikTok";
-      }
-
-
-      const affiliate =
-        (
-          product.affiliate_url ||
-          ""
-        )
-          .toLowerCase();
-
-
-      if (
-        affiliate.includes(
-          "shopee"
-        )
-      ) {
-
-        return "Shopee";
-      }
-
-
-      return "Khác";
-    }
-
-
-    function renderProducts() {
-
-      const tbody =
-        $("productsTableBody");
-
-
-      const search =
-        $("productSearch")
-          .value
-          .trim()
-          .toLowerCase();
-
-
-      const category =
-        $("productCategoryFilter")
-          .value;
-
-
-      const status =
-        $("productStatusFilter")
-          .value;
-
-
-      const filtered =
-        products.filter(
-          product => {
-
-            const matchesSearch =
-              !search ||
-              (
-                product.name ||
-                ""
-              )
-                .toLowerCase()
-                .includes(
-                  search
-                );
-
-
-            const matchesCategory =
-              !category ||
-              String(
-                product.category_id
-              ) ===
-              String(
-                category
-              );
-
-
-            const matchesStatus =
-              !status ||
-              String(
-                product.is_active
-              ) ===
-              status;
-
-
-            return (
-              matchesSearch &&
-              matchesCategory &&
-              matchesStatus
-            );
-          }
-        );
-
-
-      if (!filtered.length) {
-
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6">
-              <div class="empty">
-                Không tìm thấy sản phẩm phù hợp.
               </div>
             </td>
+
+            <td>
+              <span class="badge badge-cat">
+                ${escapeHtml(
+                  categoryName(
+                    p.category_id
+                  )
+                )}
+              </span>
+            </td>
+
+            <td>
+              <strong>
+                ${escapeHtml(
+                  p.price || "—"
+                )}
+              </strong>
+            </td>
+
+            <td>
+              ${platform(p)}
+            </td>
+
+            <td>
+              ${
+                p.is_active
+                ? `<span class="badge badge-green">
+                    Đang hiện
+                  </span>`
+                : `<span class="badge badge-gray">
+                    Đang ẩn
+                  </span>`
+              }
+            </td>
+
+            <td>
+
+              <div class="actions">
+
+                <button
+                  class="btn btn-sm"
+                  onclick="editProduct(${p.id})"
+                >Sửa</button>
+
+                <button
+                  class="btn btn-sm"
+                  onclick="toggleProduct(${p.id})"
+                >
+                  ${p.is_active?"Ẩn":"Hiện"}
+                </button>
+
+                <button
+                  class="btn btn-red btn-sm"
+                  onclick="deleteProduct(${p.id})"
+                >Xoá</button>
+
+              </div>
+
+            </td>
+
           </tr>
         `;
-
-        return;
       }
+    ).join("");
+}
 
 
-      tbody.innerHTML =
-        filtered
-          .map(
-            product => {
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
 
-              const image =
-                product.image_url;
+function resetImage(){
 
+  if(previewUrl){
 
-              const imageHtml =
-                image
-                  ? `
-                    <img
-                      class="thumb"
-                      src="${escapeHtml(
-                        image
-                      )}"
-                      alt=""
-                      onerror="this.outerHTML='<div class=&quot;thumb-placeholder&quot;>Ảnh</div>'"
-                    >
-                  `
-                  : `
-                    <div class="thumb-placeholder">
-                      Ảnh
-                    </div>
-                  `;
+    URL.revokeObjectURL(
+      previewUrl
+    );
 
+  }
 
-              return `
+  pastedBlob =
+    null;
 
-                <tr>
+  previewUrl =
+    null;
 
-                  <td>
+  currentImageUrl =
+    null;
 
-                    <div class="product-cell">
+  $("preview")
+    .removeAttribute(
+      "src"
+    );
 
-                      ${imageHtml}
+  $("previewWrap")
+    .classList
+    .add("hidden");
 
-                      <div>
+  $("imageEmpty")
+    .classList
+    .remove("hidden");
 
-                        <div class="product-name">
-                          ${escapeHtml(
-                            product.name
-                          )}
-                        </div>
+  $("imageInfo")
+    .textContent = "";
+}
 
-                        <div class="product-id">
-                          #${escapeHtml(
-                            product.id
-                          )}
-                        </div>
+function showImage(
+  blob,
+  info="Ảnh đã dán"
+){
 
-                      </div>
+  if(previewUrl){
 
-                    </div>
+    URL.revokeObjectURL(
+      previewUrl
+    );
 
-                  </td>
+  }
 
+  pastedBlob =
+    blob;
 
-                  <td>
-
-                    <span class="badge badge-category">
-                      ${escapeHtml(
-                        getCategoryName(
-                          product.category_id
-                        )
-                      )}
-                    </span>
-
-                  </td>
-
-
-                  <td>
-
-                    <strong>
-                      ${escapeHtml(
-                        product.price ||
-                        "—"
-                      )}
-                    </strong>
-
-                  </td>
-
-
-                  <td>
-                    ${escapeHtml(
-                      getPlatform(
-                        product
-                      )
-                    )}
-                  </td>
-
-
-                  <td>
-
-                    ${
-                      product.is_active
-
-                        ? `
-                          <span class="badge badge-active">
-                            Đang hiển thị
-                          </span>
-                        `
-
-                        : `
-                          <span class="badge badge-inactive">
-                            Đang ẩn
-                          </span>
-                        `
-                    }
-
-                  </td>
-
-
-                  <td>
-
-                    <div class="actions">
-
-                      <button
-                        class="btn btn-small"
-                        type="button"
-                        onclick="editProduct(${product.id})"
-                      >
-                        Sửa
-                      </button>
-
-
-                      <button
-                        class="btn btn-small"
-                        type="button"
-                        onclick="toggleProduct(${product.id})"
-                      >
-                        ${
-                          product.is_active
-                            ? "Ẩn"
-                            : "Hiện"
-                        }
-                      </button>
-
-
-                      <button
-                        class="btn btn-danger btn-small"
-                        type="button"
-                        onclick="deleteProduct(${product.id})"
-                      >
-                        Xoá
-                      </button>
-
-                    </div>
-
-                  </td>
-
-                </tr>
-
-              `;
-            }
-          )
-          .join("");
-    }
-
-
-    /* =========================================================
-       IMAGE PASTE
-    ========================================================== */
-
-    function resetImageState() {
-
-      if (
-        pastedImagePreviewUrl
-      ) {
-
-        URL.revokeObjectURL(
-          pastedImagePreviewUrl
-        );
-      }
-
-
-      pastedImageBlob =
-        null;
-
-
-      pastedImagePreviewUrl =
-        null;
-
-
-      existingImageUrl =
-        null;
-
-
-      $("imagePreview")
-        .removeAttribute(
-          "src"
-        );
-
-
-      $("imagePreviewWrap")
-        .classList
-        .add("hidden");
-
-
-      $("pasteEmpty")
-        .classList
-        .remove("hidden");
-
-
-      $("imageSourceInfo")
-        .textContent = "";
-
-
-      $("existingImageNote")
-        .classList
-        .add("hidden");
-    }
-
-
-    function showPastedImage(
-      blob,
-      sourceText =
-        "Ảnh đã dán từ clipboard"
-    ) {
-
-      if (!blob) {
-        return;
-      }
-
-
-      if (
-        pastedImagePreviewUrl
-      ) {
-
-        URL.revokeObjectURL(
-          pastedImagePreviewUrl
-        );
-      }
-
-
-      pastedImageBlob =
-        blob;
-
-
-      pastedImagePreviewUrl =
-        URL.createObjectURL(
-          blob
-        );
-
-
-      $("imagePreview")
-        .src =
-        pastedImagePreviewUrl;
-
-
-      $("pasteEmpty")
-        .classList
-        .add("hidden");
-
-
-      $("imagePreviewWrap")
-        .classList
-        .remove("hidden");
-
-
-      $("imageSourceInfo")
-        .textContent =
-        `${sourceText} · ${formatBytes(blob.size)}`;
-
-
-      $("existingImageNote")
-        .classList
-        .add("hidden");
-    }
-
-
-    function showExistingImage(
-      url
-    ) {
-
-      if (!url) {
-        return;
-      }
-
-
-      existingImageUrl =
-        url;
-
-
-      $("imagePreview")
-        .src =
-        url;
-
-
-      $("pasteEmpty")
-        .classList
-        .add("hidden");
-
-
-      $("imagePreviewWrap")
-        .classList
-        .remove("hidden");
-
-
-      $("imageSourceInfo")
-        .textContent =
-        "Ảnh hiện tại";
-
-
-      $("existingImageNote")
-        .classList
-        .remove("hidden");
-    }
-
-
-    function removeCurrentImage() {
-
-      if (
-        pastedImagePreviewUrl
-      ) {
-
-        URL.revokeObjectURL(
-          pastedImagePreviewUrl
-        );
-      }
-
-
-      pastedImageBlob =
-        null;
-
-
-      pastedImagePreviewUrl =
-        null;
-
-
-      existingImageUrl =
-        null;
-
-
-      $("imagePreview")
-        .removeAttribute(
-          "src"
-        );
-
-
-      $("imagePreviewWrap")
-        .classList
-        .add("hidden");
-
-
-      $("pasteEmpty")
-        .classList
-        .remove("hidden");
-
-
-      $("imageSourceInfo")
-        .textContent = "";
-
-
-      $("existingImageNote")
-        .classList
-        .add("hidden");
-    }
-
-
-    async function handleClipboardPaste(
-      event
-    ) {
-
-      const clipboard =
-        event.clipboardData;
-
-
-      if (!clipboard) {
-        return;
-      }
-
-
-      const items =
-        Array.from(
-          clipboard.items || []
-        );
-
-
-      const imageItem =
-        items.find(
-          item =>
-            item.type &&
-            item.type.startsWith(
-              "image/"
-            )
-        );
-
-
-      if (!imageItem) {
-
-        return;
-      }
-
-
-      event.preventDefault();
-
-
-      const file =
-        imageItem.getAsFile();
-
-
-      if (!file) {
-        return;
-      }
-
-
-      if (
-        file.size >
-        15 * 1024 * 1024
-      ) {
-
-        toast(
-          "Ảnh quá lớn. Vui lòng dùng ảnh dưới 15MB.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      showPastedImage(
-        file,
-        "Ảnh từ clipboard"
-      );
-    }
-
-
-    function handleImageDrop(
-      event
-    ) {
-
-      event.preventDefault();
-
-
-      $("imagePasteArea")
-        .classList
-        .remove(
-          "dragover"
-        );
-
-
-      const files =
-        Array.from(
-          event.dataTransfer?.files ||
-          []
-        );
-
-
-      const image =
-        files.find(
-          file =>
-            file.type.startsWith(
-              "image/"
-            )
-        );
-
-
-      if (!image) {
-
-        toast(
-          "File kéo vào không phải ảnh.",
-          "warning"
-        );
-
-        return;
-      }
-
-
-      if (
-        image.size >
-        15 * 1024 * 1024
-      ) {
-
-        toast(
-          "Ảnh quá lớn. Vui lòng dùng ảnh dưới 15MB.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      showPastedImage(
-        image,
-        "Ảnh kéo thả"
-      );
-    }
-
-
-    function formatBytes(
-      bytes
-    ) {
-
-      if (
-        !bytes ||
-        bytes <= 0
-      ) {
-
-        return "0 KB";
-      }
-
-
-      const units = [
-        "B",
-        "KB",
-        "MB",
-        "GB"
-      ];
-
-
-      const index =
-        Math.floor(
-          Math.log(bytes) /
-          Math.log(1024)
-        );
-
-
-      return (
-        `${(
-          bytes /
-          Math.pow(
-            1024,
-            index
-          )
-        ).toFixed(
-          index === 0
-            ? 0
-            : 1
-        )} ${units[index]}`
-      );
-    }
-
-
-    function getExtensionFromBlob(
+  previewUrl =
+    URL.createObjectURL(
       blob
-    ) {
+    );
 
-      const type =
-        (
-          blob.type ||
-          "image/jpeg"
+  $("preview")
+    .src =
+    previewUrl;
+
+  $("imageEmpty")
+    .classList
+    .add("hidden");
+
+  $("previewWrap")
+    .classList
+    .remove("hidden");
+
+  $("imageInfo")
+    .textContent =
+    `${info} · ${Math.round(blob.size/1024)} KB`;
+}
+
+function showImageUrl(
+  url,
+  info="Ảnh từ TikTok"
+){
+
+  if(!url)return;
+
+  currentImageUrl =
+    url;
+
+  $("preview")
+    .src =
+    url;
+
+  $("imageEmpty")
+    .classList
+    .add("hidden");
+
+  $("previewWrap")
+    .classList
+    .remove("hidden");
+
+  $("imageInfo")
+    .textContent =
+    info;
+}
+
+function removeImage(){
+
+  resetImage();
+}
+
+function clipboardPaste(e){
+
+  const items =
+    Array.from(
+      e.clipboardData?.items ||
+      []
+    );
+
+  const item =
+    items.find(
+      x =>
+        x.type?.startsWith(
+          "image/"
         )
-          .toLowerCase();
+    );
 
+  if(!item)return;
 
-      if (
-        type.includes(
-          "png"
+  e.preventDefault();
+
+  const blob =
+    item.getAsFile();
+
+  if(!blob)return;
+
+  if(
+    blob.size >
+    15 * 1024 * 1024
+  ){
+
+    toast(
+      "Ảnh quá lớn. Giới hạn 15MB.",
+      "err"
+    );
+
+    return;
+  }
+
+  showImage(
+    blob,
+    "Ảnh từ clipboard"
+  );
+}
+
+function imageDrop(e){
+
+  e.preventDefault();
+
+  $("imageZone")
+    .classList
+    .remove("drag");
+
+  const file =
+    Array.from(
+      e.dataTransfer?.files ||
+      []
+    ).find(
+      x =>
+        x.type?.startsWith(
+          "image/"
         )
-      ) {
+    );
 
-        return "png";
-      }
+  if(!file)return;
+
+  showImage(
+    file,
+    "Ảnh kéo thả"
+  );
+}
+
+function extension(blob){
+
+  const t =
+    blob.type ||
+    "image/jpeg";
+
+  if(
+    t.includes("png")
+  )return "png";
+
+  if(
+    t.includes("webp")
+  )return "webp";
+
+  if(
+    t.includes("gif")
+  )return "gif";
+
+  return "jpg";
+}
+
+async function uploadImage(
+  blob,
+  id
+){
+
+  const path =
+    `products/${id}/${crypto.randomUUID()}.${extension(blob)}`;
+
+  const {
+    error
+  } =
+    await db.storage
+      .from(
+        IMAGE_BUCKET
+      )
+      .upload(
+        path,
+        blob,
+        {
+          contentType:
+            blob.type ||
+            "image/jpeg",
+          cacheControl:
+            "31536000",
+          upsert:false
+        }
+      );
+
+  if(error)
+    throw error;
+
+  return db.storage
+    .from(
+      IMAGE_BUCKET
+    )
+    .getPublicUrl(
+      path
+    )
+    .data
+    .publicUrl;
+}
 
 
-      if (
-        type.includes(
-          "webp"
-        )
-      ) {
+/* =========================================================
+   PRODUCT FORM
+========================================================= */
 
-        return "webp";
-      }
+function resetProductForm(){
+
+  $("productForm")
+    .reset();
+
+  $("productId")
+    .value = "";
+
+  $("productCode")
+    .value = "";
+
+  $("active")
+    .checked = true;
+
+  $("metaStatus")
+    .textContent = "";
+
+  $("metaStatus")
+    .className =
+    "meta-status";
+
+  resetImage();
+
+  renderCategoryOptions();
+
+  $("productModalTitle")
+    .textContent =
+    "Thêm sản phẩm";
+}
+
+function addProduct(){
+
+  resetProductForm();
+
+  $("affiliateUrl")
+    .value = "";
+
+  openModal(
+    "productModal"
+  );
+}
+
+function editProduct(id){
+
+  const p =
+    products.find(
+      x => x.id === id
+    );
+
+  if(!p)return;
+
+  resetImage();
+
+  $("productId")
+    .value =
+    p.id;
+
+  $("sourceUrl")
+    .value =
+    p.tiktok_url ||
+    p.affiliate_url ||
+    "";
+
+  $("affiliateUrl")
+    .value =
+    p.affiliate_url ||
+    p.tiktok_url ||
+    "";
+
+  $("productCategory")
+    .value =
+    p.category_id ||
+    "";
+
+  $("productName")
+    .value =
+    p.name ||
+    "";
+
+  $("productPrice")
+    .value =
+    p.price ||
+    "";
+
+  $("productCode")
+    .value =
+    "";
+
+  $("description")
+    .value =
+    p.description ||
+    "";
+
+  $("active")
+    .checked =
+    p.is_active !== false;
+
+  if(p.image_url){
+
+    showImageUrl(
+      p.image_url,
+      "Thumbnail hiện tại"
+    );
+  }
+
+  $("productModalTitle")
+    .textContent =
+    "Sửa sản phẩm";
+
+  openModal(
+    "productModal"
+  );
+}
 
 
-      if (
-        type.includes(
-          "gif"
-        )
-      ) {
+/* =========================================================
+   TIKTOK / SHOPEE METADATA
+========================================================= */
 
-        return "gif";
-      }
+async function fetchMetadata(){
 
+  const url =
+    $("sourceUrl")
+      .value
+      .trim();
 
-      return "jpg";
-    }
+  if(!url){
 
+    toast(
+      "Hãy dán link TikTok/Shopee.",
+      "warn"
+    );
 
-    async function uploadProductImage(
-      blob,
-      productId
-    ) {
+    return;
+  }
 
-      if (!blob) {
-        return null;
-      }
+  const btn =
+    $("fetchMeta");
 
+  const status =
+    $("metaStatus");
 
-      const extension =
-        getExtensionFromBlob(
-          blob
+  btn.disabled =
+    true;
+
+  btn.textContent =
+    "⏳ Đang đọc...";
+
+  status.textContent =
+    "Đang xử lý link...";
+
+  status.className =
+    "meta-status";
+
+  try{
+
+    /*
+     * Trường hợp link TikTok /view/product
+     * có sẵn og_info.
+     *
+     * Browser có thể đọc ngay query string.
+     */
+
+    let localTitle =
+      null;
+
+    let localImage =
+      null;
+
+    let localProductId =
+      null;
+
+    try{
+
+      const u =
+        new URL(url);
+
+      const productMatch =
+        u.pathname.match(
+          /\/view\/product\/(\d+)/i
         );
 
-
-      const safeProductId =
-        productId ||
-        "new";
-
-
-      const fileName =
-        `products/${safeProductId}/${crypto.randomUUID()}.${extension}`;
-
-
-      const {
-        error
-      } =
-        await supabaseClient
-          .storage
-          .from(
-            PRODUCT_IMAGE_BUCKET
-          )
-          .upload(
-            fileName,
-            blob,
-            {
-              contentType:
-                blob.type ||
-                `image/${extension}`,
-
-              cacheControl:
-                "31536000",
-
-              upsert:
-                false
-            }
-          );
-
-
-      if (error) {
-        throw error;
+      if(
+        productMatch
+      ){
+        localProductId =
+          productMatch[1];
       }
 
+      const rawOg =
+        u.searchParams.get(
+          "og_info"
+        );
 
-      const {
-        data
-      } =
-        supabaseClient
-          .storage
-          .from(
-            PRODUCT_IMAGE_BUCKET
-          )
-          .getPublicUrl(
-            fileName
+      if(rawOg){
+
+        try{
+
+          const og =
+            JSON.parse(
+              decodeURIComponent(
+                rawOg
+              )
+            );
+
+          localTitle =
+            og?.title ||
+            null;
+
+          localImage =
+            og?.image ||
+            null;
+
+        }catch(error){
+
+          console.warn(
+            "og_info parse error",
+            error
           );
+        }
+      }
 
+    }catch(error){
 
-      return data.publicUrl;
-    }
-
-
-    /* =========================================================
-       PRODUCT FORM
-    ========================================================== */
-
-    function resetProductForm() {
-
-      $("productForm")
-        .reset();
-
-
-      $("productId")
-        .value = "";
-
-
-      $("productActive")
-        .checked =
-        true;
-
-
-      $("metadataStatus")
-        .textContent = "";
-
-
-      $("metadataStatus")
-        .className =
-        "metadata-status";
-
-
-      resetImageState();
-
-
-      $("productModalTitle")
-        .textContent =
-        "Thêm sản phẩm";
-    }
-
-
-    function openAddProduct() {
-
-      resetProductForm();
-
-      renderCategorySelects();
-
-      openModal(
-        "productModal"
+      console.warn(
+        "Local URL parse error",
+        error
       );
     }
 
 
-    function editProduct(
-      id
-    ) {
+    if(localProductId){
 
-      const product =
-        products.find(
-          item =>
-            item.id === id
-        );
-
-
-      if (!product) {
-        return;
-      }
-
-
-      renderCategorySelects();
-
-
-      resetImageState();
-
-
-      $("productId")
+      $("productCode")
         .value =
-        product.id;
+        localProductId;
+    }
 
-
-      $("productSourceUrl")
-        .value =
-        product.tiktok_url ||
-        "";
-
-
-      $("productCategory")
-        .value =
-        product.category_id ||
-        "";
-
+    if(localTitle){
 
       $("productName")
         .value =
-        product.name ||
-        "";
+        localTitle;
+    }
 
+    if(
+      localImage &&
+      !pastedBlob
+    ){
 
-      $("productPrice")
-        .value =
-        product.price ||
-        "";
-
-
-      $("productAffiliate")
-        .value =
-        product.affiliate_url ||
-        "";
-
-
-      $("productDescription")
-        .value =
-        product.description ||
-        "";
-
-
-      $("productActive")
-        .checked =
-        product.is_active !==
-        false;
-
-
-      if (
-        product.image_url
-      ) {
-
-        showExistingImage(
-          product.image_url
-        );
-      }
-
-
-      $("metadataStatus")
-        .textContent = "";
-
-
-      $("productModalTitle")
-        .textContent =
-        "Sửa sản phẩm";
-
-
-      openModal(
-        "productModal"
+      showImageUrl(
+        localImage,
+        "Thumbnail từ TikTok"
       );
     }
 
 
-    /* =========================================================
-       METADATA
-    ========================================================== */
+    /*
+     * Gọi Edge Function để xử lý vt.tiktok.com
+     * hoặc metadata mà browser chưa đọc được.
+     */
 
-    async function fetchProductMetadata() {
+    const {
+      data
+    } =
+      await db.auth
+        .getSession();
 
-      const url =
-        $("productSourceUrl")
-          .value
-          .trim();
+    const token =
+      data?.session
+        ?.access_token;
 
+    const headers = {
+      "Content-Type":
+        "application/json"
+    };
 
-      if (!url) {
+    if(token){
 
-        toast(
-          "Hãy dán link TikTok hoặc Shopee trước.",
-          "warning"
+      headers.Authorization =
+        `Bearer ${token}`;
+    }
+
+    const controller =
+      new AbortController();
+
+    const timeout =
+      setTimeout(
+        () =>
+          controller.abort(),
+        22000
+      );
+
+    let response;
+
+    try{
+
+      response =
+        await fetch(
+          FUNCTION_URL,
+          {
+            method:"POST",
+            headers,
+            body:
+              JSON.stringify({
+                url
+              }),
+            signal:
+              controller.signal
+          }
         );
 
-        return;
-      }
+    }finally{
+
+      clearTimeout(
+        timeout
+      );
+    }
+
+    const text =
+      await response.text();
+
+    let result;
+
+    try{
+
+      result =
+        JSON.parse(text);
+
+    }catch{
+
+      throw new Error(
+        "Edge Function trả về dữ liệu không hợp lệ."
+      );
+    }
+
+    if(
+      !response.ok
+    ){
+
+      throw new Error(
+        result?.error ||
+        `HTTP ${response.status}`
+      );
+    }
 
 
-      const button =
-        $("fetchMetadataButton");
+    /*
+     * Ưu tiên dữ liệu Edge Function.
+     */
+
+    if(
+      result.product_id
+    ){
+
+      $("productCode")
+        .value =
+        result.product_id;
+    }
+
+    if(
+      result.title
+    ){
+
+      $("productName")
+        .value =
+        result.title;
+    }
+
+    if(
+      result.image &&
+      !pastedBlob
+    ){
+
+      showImageUrl(
+        result.image,
+        "Thumbnail từ TikTok"
+      );
+    }
 
 
-      const status =
-        $("metadataStatus");
+    const warnings =
+      Array.isArray(
+        result.warnings
+      )
+        ? result.warnings
+        : [];
 
 
-      button.disabled =
-        true;
+    const gotSomething =
+      Boolean(
+        result.product_id ||
+        result.title ||
+        result.image
+      );
 
 
-      button.textContent =
-        "⏳ Đang lấy...";
-
+    if(gotSomething){
 
       status.textContent =
-        "Đang kết nối...";
-
+        "✓ Đã lấy được thông tin.";
 
       status.className =
-        "metadata-status";
-
-
-      try {
-
-        const {
-          data
-        } =
-          await supabaseClient
-            .auth
-            .getSession();
-
-
-        const accessToken =
-          data?.session
-            ?.access_token;
-
-
-        const headers = {
-          "Content-Type":
-            "application/json"
-        };
-
-
-        if (
-          accessToken
-        ) {
-
-          headers.Authorization =
-            `Bearer ${accessToken}`;
-        }
-
-
-        const controller =
-          new AbortController();
-
-
-        const timeout =
-          setTimeout(
-            () =>
-              controller.abort(),
-            20000
-          );
-
-
-        let response;
-
-
-        try {
-
-          response =
-            await fetch(
-              FETCH_META_FUNCTION,
-              {
-                method:
-                  "POST",
-
-                headers,
-
-                body:
-                  JSON.stringify({
-                    url
-                  }),
-
-                signal:
-                  controller.signal
-              }
-            );
-
-        } finally {
-
-          clearTimeout(
-            timeout
-          );
-        }
-
-
-        const raw =
-          await response.text();
-
-
-        let result;
-
-
-        try {
-
-          result =
-            JSON.parse(raw);
-
-        } catch {
-
-          throw new Error(
-            "Edge Function trả về dữ liệu không hợp lệ."
-          );
-        }
-
-
-        if (
-          !response.ok
-        ) {
-
-          throw new Error(
-            result?.error ||
-            result?.message ||
-            `HTTP ${response.status}`
-          );
-        }
-
-
-        if (
-          result.title &&
-          !/security check|captcha|verify|access denied/i
-            .test(
-              result.title
-            )
-        ) {
-
-          $("productName")
-            .value =
-            result.title;
-        }
-
-
-        if (
-          result.price
-        ) {
-
-          $("productPrice")
-            .value =
-            result.price;
-        }
-
-
-        if (
-          result.description
-        ) {
-
-          $("productDescription")
-            .value =
-            result.description;
-        }
-
-
-        /*
-         * Nếu Edge Function lấy được
-         * image URL thì vẫn hiển thị nó.
-         *
-         * Nhưng ảnh clipboard sẽ được
-         * ưu tiên khi lưu nếu người dùng
-         * đã paste ảnh mới.
-         */
-
-        if (
-          result.image &&
-          !pastedImageBlob
-        ) {
-
-          showExistingImage(
-            result.image
-          );
-
-          $("imageSourceInfo")
-            .textContent =
-            "Ảnh metadata từ nguồn";
-        }
-
-
-        const warnings =
-          Array.isArray(
-            result.warnings
-          )
-            ? result.warnings
-            : [];
-
-
-        if (
-          result.success &&
-          (
-            result.title ||
-            result.price ||
-            result.image
-          )
-        ) {
-
-          status.textContent =
-            "✓ Đã lấy được dữ liệu.";
-
-          status.className =
-            "metadata-status success";
-
-
-          toast(
-            "Đã lấy thông tin sản phẩm.",
-            "success"
-          );
-
-        } else {
-
-          status.textContent =
-            "⚠ Không lấy được metadata.";
-
-
-          status.className =
-            "metadata-status warning";
-
-
-          toast(
-            (
-              warnings[0] ||
-              "Không thể tự động lấy thông tin. Hãy nhập thủ công."
-            ),
-            "warning"
-          );
-        }
-
-
-      } catch (error) {
-
-        console.error(
-          "Metadata error:",
-          error
-        );
-
-
-        status.textContent =
-          "✕ Không kết nối được.";
-
-
-        status.className =
-          "metadata-status error";
-
-
-        if (
-          error.name ===
-          "AbortError"
-        ) {
-
-          toast(
-            "Edge Function phản hồi quá lâu.",
-            "error"
-          );
-
-        } else {
-
-          toast(
-            error.message ||
-            "Không thể lấy thông tin.",
-            "error"
-          );
-        }
-
-
-      } finally {
-
-        button.disabled =
-          false;
-
-
-        button.textContent =
-          "🔄 Lấy thông tin";
-      }
-    }
-
-
-    /* =========================================================
-       SAVE PRODUCT
-    ========================================================== */
-
-    async function saveProduct(
-      event
-    ) {
-
-      event.preventDefault();
-
-
-      const id =
-        $("productId")
-          .value;
-
-
-      const sourceUrl =
-        $("productSourceUrl")
-          .value
-          .trim();
-
-
-      const categoryId =
-        $("productCategory")
-          .value;
-
-
-      const name =
-        $("productName")
-          .value
-          .trim();
-
-
-      const price =
-        $("productPrice")
-          .value
-          .trim();
-
-
-      const affiliate =
-        $("productAffiliate")
-          .value
-          .trim();
-
-
-      const description =
-        $("productDescription")
-          .value
-          .trim();
-
-
-      const isActive =
-        $("productActive")
-          .checked;
-
-
-      if (!name) {
-
-        toast(
-          "Vui lòng nhập tên sản phẩm.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      if (!categoryId) {
-
-        toast(
-          "Vui lòng chọn danh mục.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      showLoading(
-        pastedImageBlob
-          ? "Đang upload ảnh và lưu sản phẩm..."
-          : "Đang lưu sản phẩm..."
+        "meta-status ok";
+
+      toast(
+        "Đã đọc thông tin sản phẩm.",
+        "ok"
       );
 
+    }else{
 
-      try {
+      status.textContent =
+        "⚠ Không lấy được metadata.";
 
-        /*
-         * Nếu là sản phẩm mới,
-         * cần tạo product trước để
-         * lấy ID cho đường dẫn Storage.
-         */
+      status.className =
+        "meta-status warn";
 
-        let productId =
-          id
-            ? Number(id)
-            : null;
+      toast(
+        warnings[0] ||
+        "Hãy nhập tên/giá thủ công và Ctrl+V ảnh.",
+        "warn"
+      );
+    }
+
+  }catch(error){
+
+    console.error(
+      "Metadata error:",
+      error
+    );
+
+    /*
+     * Nếu local parser đã lấy được thông tin,
+     * vẫn coi đây là partial success.
+     */
+
+    const hasLocal =
+      $("productName")
+        .value
+        .trim() ||
+      $("productCode")
+        .value
+        .trim() ||
+      pastedBlob ||
+      currentImageUrl;
+
+    if(hasLocal){
+
+      status.textContent =
+        "✓ Đã lấy được một phần.";
+
+      status.className =
+        "meta-status warn";
+
+      toast(
+        "Đã lấy được dữ liệu từ link. Một số metadata còn thiếu.",
+        "warn"
+      );
+
+    }else{
+
+      status.textContent =
+        "✕ Không đọc được.";
+
+      status.className =
+        "meta-status err";
+
+      toast(
+        error.name ===
+        "AbortError"
+          ? "TikTok phản hồi quá lâu."
+          : error.message ||
+            "Không thể đọc link.",
+        "err"
+      );
+    }
+
+  }finally{
+
+    btn.disabled =
+      false;
+
+    btn.textContent =
+      "🔄 Lấy thông tin từ link";
+  }
+}
 
 
-        let imageUrl =
-          existingImageUrl ||
-          null;
+/* =========================================================
+   SAVE PRODUCT
+========================================================= */
+
+async function saveProduct(e){
+
+  e.preventDefault();
+
+  const id =
+    $("productId")
+      .value;
+
+  const name =
+    $("productName")
+      .value
+      .trim();
+
+  const categoryId =
+    $("productCategory")
+      .value;
+
+  const price =
+    $("productPrice")
+      .value
+      .trim();
+
+  const sourceUrl =
+    $("sourceUrl")
+      .value
+      .trim();
+
+  const affiliateUrl =
+    $("affiliateUrl")
+      .value
+      .trim() ||
+    sourceUrl;
+
+  const description =
+    $("description")
+      .value
+      .trim();
+
+  const active =
+    $("active")
+      .checked;
+
+  if(!name){
+
+    toast(
+      "Chưa có tên sản phẩm.",
+      "err"
+    );
+
+    return;
+  }
+
+  if(!categoryId){
+
+    toast(
+      "Hãy chọn danh mục.",
+      "err"
+    );
+
+    return;
+  }
+
+  loading(
+    true,
+    pastedBlob
+      ? "Đang upload ảnh..."
+      : "Đang lưu sản phẩm..."
+  );
+
+  try{
+
+    let productId =
+      id
+        ? Number(id)
+        : null;
+
+    let imageUrl =
+      currentImageUrl ||
+      null;
 
 
-        if (productId) {
+    /*
+     * Nếu product đã tồn tại,
+     * upload ảnh mới trước khi update.
+     */
 
-          /*
-           * Nếu user paste ảnh mới:
-           * upload trước.
-           */
+    if(productId){
 
-          if (
-            pastedImageBlob
-          ) {
+      if(pastedBlob){
 
-            imageUrl =
-              await uploadProductImage(
-                pastedImageBlob,
-                productId
-              );
-          }
+        imageUrl =
+          await uploadImage(
+            pastedBlob,
+            productId
+          );
+      }
 
-
-          const payload = {
+      const {
+        error
+      } =
+        await db
+          .from("products")
+          .update({
 
             name,
 
@@ -4693,7 +2971,7 @@
               null,
 
             affiliate_url:
-              affiliate ||
+              affiliateUrl ||
               null,
 
             description:
@@ -4701,36 +2979,31 @@
               null,
 
             is_active:
-              isActive
-          };
+              active
+
+          })
+          .eq(
+            "id",
+            productId
+          );
+
+      if(error)
+        throw error;
 
 
-          const {
-            error
-          } =
-            await supabaseClient
-              .from("products")
-              .update(
-                payload
-              )
-              .eq(
-                "id",
-                productId
-              );
+    }else{
 
+      /*
+       * Tạo product trước.
+       */
 
-          if (error) {
-            throw error;
-          }
-
-
-        } else {
-
-          /*
-           * Tạo product trước.
-           */
-
-          const payload = {
+      const {
+        data,
+        error
+      } =
+        await db
+          .from("products")
+          .insert({
 
             name,
 
@@ -4751,7 +3024,7 @@
               null,
 
             affiliate_url:
-              affiliate ||
+              affiliateUrl ||
               null,
 
             description:
@@ -4759,1713 +3032,1023 @@
               null,
 
             is_active:
-              isActive
-          };
+              active
 
+          })
+          .select("id")
+          .single();
 
-          const {
-            data,
-            error
-          } =
-            await supabaseClient
-              .from("products")
-              .insert(
-                payload
-              )
-              .select(
-                "id"
-              )
-              .single();
+      if(error)
+        throw error;
 
+      productId =
+        data.id;
 
-          if (error) {
-            throw error;
-          }
 
+      /*
+       * Upload clipboard image.
+       */
 
-          productId =
-            data.id;
+      if(pastedBlob){
 
-
-          /*
-           * Có product ID rồi mới upload ảnh.
-           */
-
-          if (
-            pastedImageBlob
-          ) {
-
-            imageUrl =
-              await uploadProductImage(
-                pastedImageBlob,
-                productId
-              );
-
-
-            const {
-              error:
-                imageUpdateError
-            } =
-              await supabaseClient
-                .from("products")
-                .update({
-                  image_url:
-                    imageUrl
-                })
-                .eq(
-                  "id",
-                  productId
-                );
-
-
-            if (
-              imageUpdateError
-            ) {
-
-              throw imageUpdateError;
-            }
-          }
-        }
-
-
-        toast(
-          id
-            ? "Đã cập nhật sản phẩm."
-            : "Đã thêm sản phẩm.",
-          "success"
-        );
-
-
-        closeModal(
-          "productModal"
-        );
-
-
-        resetImageState();
-
-
-        await loadProducts();
-
-
-        updateDashboard();
-
-
-      } catch (error) {
-
-        console.error(
-          "SAVE PRODUCT ERROR:",
-          error
-        );
-
-
-        toast(
-          error.message ||
-          "Không thể lưu sản phẩm.",
-          "error"
-        );
-
-
-      } finally {
-
-        hideLoading();
-      }
-    }
-
-
-    /* =========================================================
-       TOGGLE PRODUCT
-    ========================================================== */
-
-    async function toggleProduct(
-      id
-    ) {
-
-      const product =
-        products.find(
-          item =>
-            item.id === id
-        );
-
-
-      if (!product) {
-        return;
-      }
-
-
-      showLoading(
-        "Đang cập nhật..."
-      );
-
-
-      try {
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("products")
-            .update({
-              is_active:
-                !product.is_active
-            })
-            .eq(
-              "id",
-              id
-            );
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        toast(
-          product.is_active
-            ? "Đã ẩn sản phẩm."
-            : "Đã hiển thị sản phẩm.",
-          "success"
-        );
-
-
-        await loadProducts();
-
-
-      } catch (error) {
-
-        console.error(error);
-
-
-        toast(
-          error.message ||
-          "Không thể cập nhật.",
-          "error"
-        );
-
-
-      } finally {
-
-        hideLoading();
-      }
-    }
-
-
-    /* =========================================================
-       DELETE PRODUCT
-    ========================================================== */
-
-    async function deleteProduct(
-      id
-    ) {
-
-      const product =
-        products.find(
-          item =>
-            item.id === id
-        );
-
-
-      if (!product) {
-        return;
-      }
-
-
-      if (
-        !confirm(
-          `Xoá sản phẩm "${product.name}"?`
-        )
-      ) {
-
-        return;
-      }
-
-
-      showLoading(
-        "Đang xoá sản phẩm..."
-      );
-
-
-      try {
-
-        /*
-         * Xoá quan hệ outfit.
-         */
+        imageUrl =
+          await uploadImage(
+            pastedBlob,
+            productId
+          );
 
         const {
           error:
-            relationError
+            imageError
         } =
-          await supabaseClient
-            .from(
-              "outfit_products"
-            )
-            .delete()
-            .eq(
-              "product_id",
-              id
-            );
-
-
-        if (
-          relationError
-        ) {
-
-          console.warn(
-            relationError
-          );
-        }
-
-
-        /*
-         * Xoá product.
-         */
-
-        const {
-          error
-        } =
-          await supabaseClient
+          await db
             .from("products")
-            .delete()
+            .update({
+              image_url:
+                imageUrl
+            })
             .eq(
               "id",
-              id
+              productId
             );
 
-
-        if (error) {
-          throw error;
-        }
-
-
-        /*
-         * Không bắt buộc phải xoá ảnh
-         * cũ khỏi Storage.
-         *
-         * Giữ lại giúp tránh lỗi nếu
-         * website còn đang dùng URL.
-         */
-
-
-        toast(
-          "Đã xoá sản phẩm.",
-          "success"
-        );
-
-
-        await loadProducts();
-
-        await loadOutfits();
-
-        updateDashboard();
-
-
-      } catch (error) {
-
-        console.error(error);
-
-
-        toast(
-          error.message ||
-          "Không thể xoá sản phẩm.",
-          "error"
-        );
-
-
-      } finally {
-
-        hideLoading();
+        if(imageError)
+          throw imageError;
       }
     }
 
 
-    /* =========================================================
-       OUTFIT
-    ========================================================== */
+    toast(
+      id
+        ? "Đã cập nhật sản phẩm."
+        : "Đã thêm sản phẩm.",
+      "ok"
+    );
 
-    async function loadOutfits() {
+    closeModal(
+      "productModal"
+    );
+
+    resetImage();
+
+    await loadProducts();
+
+    dashboard();
+
+  }catch(error){
+
+    console.error(
+      "SAVE PRODUCT:",
+      error
+    );
+
+    toast(
+      error.message ||
+      "Không thể lưu sản phẩm.",
+      "err"
+    );
+
+  }finally{
+
+    loading(false);
+  }
+}
+
+async function toggleProduct(id){
+
+  const p =
+    products.find(
+      x => x.id === id
+    );
+
+  if(!p)return;
+
+  loading(
+    true,
+    "Đang cập nhật..."
+  );
+
+  try{
+
+    const {
+      error
+    } =
+      await db
+        .from("products")
+        .update({
+          is_active:
+            !p.is_active
+        })
+        .eq(
+          "id",
+          id
+        );
+
+    if(error)
+      throw error;
+
+    await loadProducts();
+
+    dashboard();
+
+    toast(
+      p.is_active
+        ? "Đã ẩn sản phẩm."
+        : "Đã hiện sản phẩm.",
+      "ok"
+    );
+
+  }catch(error){
+
+    toast(
+      error.message ||
+      "Không thể cập nhật.",
+      "err"
+    );
+
+  }finally{
+
+    loading(false);
+  }
+}
+
+async function deleteProduct(id){
+
+  const p =
+    products.find(
+      x => x.id === id
+    );
+
+  if(!p)return;
+
+  if(
+    !confirm(
+      `Xoá "${p.name}"?`
+    )
+  )return;
+
+  loading(
+    true,
+    "Đang xoá..."
+  );
+
+  try{
+
+    /*
+     * Xoá quan hệ outfit trước.
+     */
+
+    await db
+      .from(
+        "outfit_products"
+      )
+      .delete()
+      .eq(
+        "product_id",
+        id
+      );
+
+    const {
+      error
+    } =
+      await db
+        .from("products")
+        .delete()
+        .eq(
+          "id",
+          id
+        );
+
+    if(error)
+      throw error;
+
+    await loadProducts();
+    await loadOutfits();
+
+    dashboard();
+
+    toast(
+      "Đã xoá sản phẩm.",
+      "ok"
+    );
+
+  }catch(error){
+
+    toast(
+      error.message ||
+      "Không thể xoá.",
+      "err"
+    );
+
+  }finally{
+
+    loading(false);
+  }
+}
+
+
+/* =========================================================
+   OUTFITS
+========================================================= */
+
+async function loadOutfits(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("outfits")
+      .select("*")
+      .order(
+        "id",
+        {ascending:false}
+      );
+
+  if(error)
+    throw error;
+
+  outfits =
+    data || [];
+
+  renderOutfits();
+}
+
+function renderOutfits(){
+
+  if(!outfits.length){
+
+    $("outfitRows")
+      .innerHTML =
+      `<div class="panel">
+        <div class="empty">
+          Chưa có outfit.
+        </div>
+      </div>`;
+
+    return;
+  }
+
+  $("outfitRows")
+    .innerHTML =
+    outfits.map(
+      o => `
+        <div
+          class="panel"
+          style="margin-bottom:12px"
+        >
+
+          <div class="header" style="margin:0">
+
+            <div>
+              <h2 style="font-family:Georgia,serif;margin:0 0 4px">
+                ${escapeHtml(o.name)}
+              </h2>
+
+              <div class="desc">
+                ${escapeHtml(
+                  o.description || ""
+                )}
+              </div>
+            </div>
+
+            <div class="actions">
+
+              <button
+                class="btn btn-sm"
+                onclick="editOutfit(${o.id})"
+              >Sửa</button>
+
+              <button
+                class="btn btn-red btn-sm"
+                onclick="deleteOutfit(${o.id})"
+              >Xoá</button>
+
+            </div>
+
+          </div>
+
+        </div>
+      `
+    ).join("");
+}
+
+function renderOutfitProducts(
+  selected=[]
+){
+
+  if(!products.length){
+
+    $("outfitProducts")
+      .innerHTML =
+      `<div class="empty">
+        Chưa có sản phẩm.
+      </div>`;
+
+    return;
+  }
+
+  $("outfitProducts")
+    .innerHTML =
+    products
+      .filter(
+        p => p.is_active
+      )
+      .map(
+        p => `
+          <label
+            style="
+              display:flex;
+              align-items:center;
+              gap:8px;
+              padding:8px;
+              border-bottom:1px solid #eee;
+            "
+          >
+
+            <input
+              type="checkbox"
+              value="${p.id}"
+              ${
+                selected.includes(
+                  p.id
+                )
+                ? "checked"
+                : ""
+              }
+            >
+
+            ${
+              p.image_url
+              ? `<img
+                  src="${escapeHtml(
+                    p.image_url
+                  )}"
+                  style="
+                    width:38px;
+                    height:38px;
+                    object-fit:cover;
+                    border-radius:6px;
+                  "
+                >`
+              : ""
+            }
+
+            <span>
+              ${escapeHtml(p.name)}
+            </span>
+
+          </label>
+        `
+      ).join("");
+}
+
+function addOutfit(){
+
+  $("outfitForm")
+    .reset();
+
+  $("outfitId")
+    .value = "";
+
+  $("outfitActive")
+    .checked = true;
+
+  $("outfitModalTitle")
+    .textContent =
+    "Thêm outfit";
+
+  renderOutfitProducts();
+
+  openModal(
+    "outfitModal"
+  );
+}
+
+function editOutfit(id){
+
+  const o =
+    outfits.find(
+      x => x.id === id
+    );
+
+  if(!o)return;
+
+  $("outfitId")
+    .value =
+    o.id;
+
+  $("outfitName")
+    .value =
+    o.name || "";
+
+  $("outfitImage")
+    .value =
+    o.image_url || "";
+
+  $("outfitDescription")
+    .value =
+    o.description || "";
+
+  $("outfitActive")
+    .checked =
+    o.is_active !== false;
+
+  renderOutfitProducts();
+
+  $("outfitModalTitle")
+    .textContent =
+    "Sửa outfit";
+
+  openModal(
+    "outfitModal"
+  );
+}
+
+async function saveOutfit(e){
+
+  e.preventDefault();
+
+  const id =
+    $("outfitId")
+      .value;
+
+  const payload = {
+
+    name:
+      $("outfitName")
+        .value
+        .trim(),
+
+    image_url:
+      $("outfitImage")
+        .value
+        .trim() ||
+      null,
+
+    description:
+      $("outfitDescription")
+        .value
+        .trim() ||
+      null,
+
+    is_active:
+      $("outfitActive")
+        .checked
+
+  };
+
+  if(!payload.name){
+
+    toast(
+      "Nhập tên outfit.",
+      "err"
+    );
+
+    return;
+  }
+
+  loading(
+    true,
+    "Đang lưu outfit..."
+  );
+
+  try{
+
+    let outfitId =
+      id
+        ? Number(id)
+        : null;
+
+    if(outfitId){
+
+      const {
+        error
+      } =
+        await db
+          .from("outfits")
+          .update(payload)
+          .eq(
+            "id",
+            outfitId
+          );
+
+      if(error)
+        throw error;
+
+    }else{
 
       const {
         data,
         error
       } =
-        await supabaseClient
+        await db
           .from("outfits")
-          .select(`
-            id,
-            name,
-            image_url,
-            description,
-            is_active,
-            created_at
-          `)
-          .order(
-            "id",
-            {
-              ascending: false
-            }
-          );
+          .insert(payload)
+          .select("id")
+          .single();
 
-
-      if (error) {
+      if(error)
         throw error;
-      }
 
-
-      outfits =
-        data || [];
-
-
-      if (
-        outfits.length
-      ) {
-
-        const ids =
-          outfits.map(
-            outfit =>
-              outfit.id
-          );
-
-
-        const {
-          data:
-            relations,
-          error:
-            relationError
-        } =
-          await supabaseClient
-            .from(
-              "outfit_products"
-            )
-            .select(`
-              outfit_id,
-              product_id,
-              sort_order
-            `)
-            .in(
-              "outfit_id",
-              ids
-            )
-            .order(
-              "sort_order",
-              {
-                ascending: true
-              }
-            );
-
-
-        if (
-          relationError
-        ) {
-
-          console.warn(
-            relationError
-          );
-
-        } else {
-
-          outfits =
-            outfits.map(
-              outfit => ({
-
-                ...outfit,
-
-                productRelations:
-                  (
-                    relations ||
-                    []
-                  )
-                    .filter(
-                      relation =>
-                        relation.outfit_id ===
-                        outfit.id
-                    )
-
-              })
-            );
-        }
-
-      } else {
-
-        outfits = [];
-      }
-
-
-      renderOutfits();
+      outfitId =
+        data.id;
     }
 
-
-    function renderOutfits() {
-
-      const container =
-        $("outfitsGrid");
-
-
-      if (!outfits.length) {
-
-        container.innerHTML = `
-          <div
-            class="panel"
-            style="grid-column:1/-1;"
-          >
-
-            <div class="empty">
-              Chưa có outfit nào.
-            </div>
-
-          </div>
-        `;
-
-        return;
-      }
-
-
-      container.innerHTML =
-        outfits
-          .map(
-            outfit => {
-
-              const relations =
-                outfit.productRelations ||
-                [];
-
-
-              const productCount =
-                relations.length;
-
-
-              return `
-
-                <div class="outfit-card">
-
-                  ${
-                    outfit.image_url
-
-                      ? `
-                        <img
-                          class="outfit-image"
-                          src="${escapeHtml(
-                            outfit.image_url
-                          )}"
-                          alt=""
-                        >
-                      `
-
-                      : `
-                        <div
-                          class="outfit-image"
-                          style="
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            color:#aaa;
-                          "
-                        >
-                          Chưa có ảnh
-                        </div>
-                      `
-                  }
-
-
-                  <div class="outfit-content">
-
-                    <div class="outfit-name">
-                      ${escapeHtml(
-                        outfit.name
-                      )}
-                    </div>
-
-
-                    <div class="outfit-description">
-                      ${escapeHtml(
-                        outfit.description ||
-                        "Chưa có mô tả."
-                      )}
-                    </div>
-
-
-                    <div class="outfit-products">
-
-                      ${productCount}
-                      sản phẩm
-                      ·
-                      ${
-                        outfit.is_active
-                          ? "Đang hiển thị"
-                          : "Đang ẩn"
-                      }
-
-                    </div>
-
-
-                    <div class="outfit-actions">
-
-                      <button
-                        class="btn btn-small"
-                        type="button"
-                        onclick="editOutfit(${outfit.id})"
-                      >
-                        Sửa
-                      </button>
-
-
-                      <button
-                        class="btn btn-small"
-                        type="button"
-                        onclick="toggleOutfit(${outfit.id})"
-                      >
-                        ${
-                          outfit.is_active
-                            ? "Ẩn"
-                            : "Hiện"
-                        }
-                      </button>
-
-
-                      <button
-                        class="btn btn-danger btn-small"
-                        type="button"
-                        onclick="deleteOutfit(${outfit.id})"
-                      >
-                        Xoá
-                      </button>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              `;
-            }
-          )
-          .join("");
-    }
-
-
-    function renderOutfitProductPicker(
-      selectedIds = []
-    ) {
-
-      const container =
-        $("outfitProductsPicker");
-
-
-      if (!products.length) {
-
-        container.innerHTML = `
-          <div
-            style="
-              color:#999;
-              padding:8px;
-            "
-          >
-            Chưa có sản phẩm.
-          </div>
-        `;
-
-        return;
-      }
-
-
-      container.innerHTML =
-        products
-          .filter(
-            product =>
-              product.is_active
-          )
-          .map(
-            product => {
-
-              const checked =
-                selectedIds.includes(
-                  product.id
-                )
-                  ? "checked"
-                  : "";
-
-
-              return `
-
-                <label
-                  style="
-                    display:flex;
-                    align-items:center;
-                    gap:9px;
-                    padding:9px 5px;
-                    border-bottom:1px solid #eee;
-                    cursor:pointer;
-                  "
-                >
-
-                  <input
-                    type="checkbox"
-                    value="${product.id}"
-                    ${checked}
-                  >
-
-
-                  ${
-                    product.image_url
-
-                      ? `
-                        <img
-                          src="${escapeHtml(
-                            product.image_url
-                          )}"
-                          style="
-                            width:40px;
-                            height:40px;
-                            object-fit:cover;
-                            border-radius:7px;
-                          "
-                        >
-                      `
-
-                      : ""
-                  }
-
-
-                  <span>
-                    ${escapeHtml(
-                      product.name
-                    )}
-                  </span>
-
-                </label>
-
-              `;
-            }
-          )
-          .join("");
-    }
-
-
-    function openAddOutfit() {
-
-      $("outfitForm")
-        .reset();
-
-
-      $("outfitId")
-        .value = "";
-
-
-      $("outfitActive")
-        .checked =
-        true;
-
-
-      $("outfitModalTitle")
-        .textContent =
-        "Thêm outfit";
-
-
-      renderOutfitProductPicker();
-
-
-      openModal(
-        "outfitModal"
-      );
-    }
-
-
-    function editOutfit(
-      id
-    ) {
-
-      const outfit =
-        outfits.find(
-          item =>
-            item.id === id
-        );
-
-
-      if (!outfit) {
-        return;
-      }
-
-
-      $("outfitId")
-        .value =
-        outfit.id;
-
-
-      $("outfitName")
-        .value =
-        outfit.name ||
-        "";
-
-
-      $("outfitImage")
-        .value =
-        outfit.image_url ||
-        "";
-
-
-      $("outfitDescription")
-        .value =
-        outfit.description ||
-        "";
-
-
-      $("outfitActive")
-        .checked =
-        outfit.is_active !==
-        false;
-
-
-      const selected =
-        (
-          outfit.productRelations ||
-          []
-        )
-          .map(
-            relation =>
-              relation.product_id
-          );
-
-
-      renderOutfitProductPicker(
-        selected
-      );
-
-
-      $("outfitModalTitle")
-        .textContent =
-        "Sửa outfit";
-
-
-      openModal(
-        "outfitModal"
-      );
-    }
-
-
-    function getSelectedOutfitProducts() {
-
-      return [
-        ...$("outfitProductsPicker")
+    const ids =
+      [
+        ...$("outfitProducts")
           .querySelectorAll(
-            'input[type="checkbox"]:checked'
+            "input:checked"
           )
-      ]
-        .map(
-          checkbox =>
-            Number(
-              checkbox.value
-            )
-        );
-    }
-
-
-    async function saveOutfit(
-      event
-    ) {
-
-      event.preventDefault();
-
-
-      const id =
-        $("outfitId")
-          .value;
-
-
-      const name =
-        $("outfitName")
-          .value
-          .trim();
-
-
-      const image =
-        $("outfitImage")
-          .value
-          .trim();
-
-
-      const description =
-        $("outfitDescription")
-          .value
-          .trim();
-
-
-      const isActive =
-        $("outfitActive")
-          .checked;
-
-
-      const productIds =
-        getSelectedOutfitProducts();
-
-
-      if (!name) {
-
-        toast(
-          "Vui lòng nhập tên outfit.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      showLoading(
-        "Đang lưu outfit..."
+      ].map(
+        x => Number(x.value)
       );
 
-
-      try {
-
-        const payload = {
-
-          name,
-
-          image_url:
-            image ||
-            null,
-
-          description:
-            description ||
-            null,
-
-          is_active:
-            isActive
-        };
-
-
-        let outfitId =
-          id
-            ? Number(id)
-            : null;
-
-
-        if (outfitId) {
-
-          const {
-            error
-          } =
-            await supabaseClient
-              .from("outfits")
-              .update(
-                payload
-              )
-              .eq(
-                "id",
-                outfitId
-              );
-
-
-          if (error) {
-            throw error;
-          }
-
-        } else {
-
-          const {
-            data,
-            error
-          } =
-            await supabaseClient
-              .from("outfits")
-              .insert(
-                payload
-              )
-              .select(
-                "id"
-              )
-              .single();
-
-
-          if (error) {
-            throw error;
-          }
-
-
-          outfitId =
-            data.id;
-        }
-
-
-        const {
-          error:
-            deleteRelationError
-        } =
-          await supabaseClient
-            .from(
-              "outfit_products"
-            )
-            .delete()
-            .eq(
-              "outfit_id",
-              outfitId
-            );
-
-
-        if (
-          deleteRelationError
-        ) {
-
-          throw deleteRelationError;
-        }
-
-
-        if (
-          productIds.length
-        ) {
-
-          const rows =
-            productIds.map(
-              (
-                productId,
-                index
-              ) => ({
-
-                outfit_id:
-                  outfitId,
-
-                product_id:
-                  productId,
-
-                sort_order:
-                  index
-
-              })
-            );
-
-
-          const {
-            error
-          } =
-            await supabaseClient
-              .from(
-                "outfit_products"
-              )
-              .insert(
-                rows
-              );
-
-
-          if (error) {
-            throw error;
-          }
-        }
-
-
-        toast(
-          id
-            ? "Đã cập nhật outfit."
-            : "Đã thêm outfit.",
-          "success"
-        );
-
-
-        closeModal(
-          "outfitModal"
-        );
-
-
-        await loadOutfits();
-
-        updateDashboard();
-
-
-      } catch (error) {
-
-        console.error(error);
-
-
-        toast(
-          error.message ||
-          "Không thể lưu outfit.",
-          "error"
-        );
-
-
-      } finally {
-
-        hideLoading();
-      }
-    }
-
-
-    async function toggleOutfit(
-      id
-    ) {
-
-      const outfit =
-        outfits.find(
-          item =>
-            item.id === id
-        );
-
-
-      if (!outfit) {
-        return;
-      }
-
-
-      showLoading(
-        "Đang cập nhật..."
+    await db
+      .from("outfit_products")
+      .delete()
+      .eq(
+        "outfit_id",
+        outfitId
       );
 
+    if(ids.length){
 
-      try {
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("outfits")
-            .update({
-              is_active:
-                !outfit.is_active
-            })
-            .eq(
-              "id",
-              id
-            );
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        toast(
-          outfit.is_active
-            ? "Đã ẩn outfit."
-            : "Đã hiển thị outfit.",
-          "success"
+      const rows =
+        ids.map(
+          (
+            product_id,
+            index
+          ) => ({
+            outfit_id:
+              outfitId,
+            product_id,
+            sort_order:
+              index
+          })
         );
 
+      const {
+        error
+      } =
+        await db
+          .from(
+            "outfit_products"
+          )
+          .insert(rows);
 
-        await loadOutfits();
-
-
-      } catch (error) {
-
-        console.error(error);
-
-
-        toast(
-          error.message ||
-          "Không thể cập nhật.",
-          "error"
-        );
-
-
-      } finally {
-
-        hideLoading();
-      }
+      if(error)
+        throw error;
     }
 
+    closeModal(
+      "outfitModal"
+    );
 
-    async function deleteOutfit(
-      id
-    ) {
+    await loadOutfits();
 
-      const outfit =
-        outfits.find(
-          item =>
-            item.id === id
-        );
+    dashboard();
 
+    toast(
+      "Đã lưu outfit.",
+      "ok"
+    );
 
-      if (!outfit) {
-        return;
-      }
+  }catch(error){
 
+    toast(
+      error.message ||
+      "Không thể lưu outfit.",
+      "err"
+    );
 
-      if (
-        !confirm(
-          `Xoá outfit "${outfit.name}"?`
-        )
-      ) {
+  }finally{
 
-        return;
-      }
+    loading(false);
+  }
+}
 
+async function deleteOutfit(id){
 
-      showLoading(
-        "Đang xoá outfit..."
-      );
+  const o =
+    outfits.find(
+      x => x.id === id
+    );
 
+  if(!o)return;
 
-      try {
+  if(
+    !confirm(
+      `Xoá outfit "${o.name}"?`
+    )
+  )return;
 
-        const {
-          error:
-            relationError
-        } =
-          await supabaseClient
-            .from(
-              "outfit_products"
-            )
-            .delete()
-            .eq(
-              "outfit_id",
-              id
-            );
+  loading(
+    true,
+    "Đang xoá..."
+  );
 
+  try{
 
-        if (
-          relationError
-        ) {
-
-          throw relationError;
-        }
-
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("outfits")
-            .delete()
-            .eq(
-              "id",
-              id
-            );
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        toast(
-          "Đã xoá outfit.",
-          "success"
-        );
-
-
-        await loadOutfits();
-
-        updateDashboard();
-
-
-      } catch (error) {
-
-        console.error(error);
-
-
-        toast(
-          error.message ||
-          "Không thể xoá outfit.",
-          "error"
-        );
-
-
-      } finally {
-
-        hideLoading();
-      }
-    }
-
-
-    /* =========================================================
-       DASHBOARD
-    ========================================================== */
-
-    function updateDashboard() {
-
-      $("statProducts")
-        .textContent =
-        products.length;
-
-
-      $("statCategories")
-        .textContent =
-        categories.length;
-
-
-      $("statOutfits")
-        .textContent =
-        outfits.length;
-    }
-
-
-    /* =========================================================
-       DATE
-    ========================================================== */
-
-    function formatDate(
-      value
-    ) {
-
-      if (!value) {
-        return "—";
-      }
-
-
-      try {
-
-        return new Date(
-          value
-        )
-          .toLocaleDateString(
-            "vi-VN",
-            {
-              day:
-                "2-digit",
-
-              month:
-                "2-digit",
-
-              year:
-                "numeric"
-            }
-          );
-
-      } catch {
-
-        return value;
-      }
-    }
-
-
-    /* =========================================================
-       EVENTS
-    ========================================================== */
-
-    $("loginForm")
-      .addEventListener(
-        "submit",
-        handleLogin
-      );
-
-
-    $("logoutButton")
-      .addEventListener(
-        "click",
-        logout
-      );
-
-
-    document
-      .querySelectorAll(
-        ".nav-btn"
+    await db
+      .from(
+        "outfit_products"
       )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            () =>
-              switchPage(
-                button.dataset.page
-              )
-          );
-
-        }
+      .delete()
+      .eq(
+        "outfit_id",
+        id
       );
 
+    const {
+      error
+    } =
+      await db
+        .from("outfits")
+        .delete()
+        .eq(
+          "id",
+          id
+        );
 
-    $("mobileMenuButton")
-      .addEventListener(
+    if(error)
+      throw error;
+
+    await loadOutfits();
+
+    dashboard();
+
+    toast(
+      "Đã xoá outfit.",
+      "ok"
+    );
+
+  }catch(error){
+
+    toast(
+      error.message ||
+      "Không thể xoá.",
+      "err"
+    );
+
+  }finally{
+
+    loading(false);
+  }
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function dashboard(){
+
+  $("statProducts")
+    .textContent =
+    products.length;
+
+  $("statCategories")
+    .textContent =
+    categories.length;
+
+  $("statOutfits")
+    .textContent =
+    outfits.length;
+
+  $("statActive")
+    .textContent =
+    products.filter(
+      p => p.is_active
+    ).length;
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+$("loginForm")
+  .addEventListener(
+    "submit",
+    login
+  );
+
+$("logout")
+  .addEventListener(
+    "click",
+    logout
+  );
+
+document
+  .querySelectorAll(
+    ".nav button"
+  )
+  .forEach(
+    btn =>
+      btn.addEventListener(
         "click",
-        () => {
+        () =>
+          page(
+            btn.dataset.page
+          )
+      )
+  );
 
-          $("sidebar")
-            .classList
-            .toggle(
-              "open"
-            );
+$("mobileMenu")
+  .addEventListener(
+    "click",
+    () =>
+      $("sidebar")
+        .classList
+        .toggle("open")
+  );
 
-        }
-      );
+$("addProduct")
+  .addEventListener(
+    "click",
+    addProduct
+  );
 
+$("addCategory")
+  .addEventListener(
+    "click",
+    addCategory
+  );
 
-    $("addProductButton")
-      .addEventListener(
-        "click",
-        openAddProduct
-      );
+$("addOutfit")
+  .addEventListener(
+    "click",
+    addOutfit
+  );
 
+$("productForm")
+  .addEventListener(
+    "submit",
+    saveProduct
+  );
 
-    $("addCategoryButton")
-      .addEventListener(
-        "click",
-        openAddCategory
-      );
+$("categoryForm")
+  .addEventListener(
+    "submit",
+    saveCategory
+  );
 
+$("outfitForm")
+  .addEventListener(
+    "submit",
+    saveOutfit
+  );
 
-    $("addOutfitButton")
-      .addEventListener(
-        "click",
-        openAddOutfit
-      );
+$("fetchMeta")
+  .addEventListener(
+    "click",
+    fetchMetadata
+  );
 
+$("search")
+  .addEventListener(
+    "input",
+    renderProducts
+  );
 
-    $("productForm")
-      .addEventListener(
-        "submit",
-        saveProduct
-      );
+$("categoryFilter")
+  .addEventListener(
+    "change",
+    renderProducts
+  );
 
+$("statusFilter")
+  .addEventListener(
+    "change",
+    renderProducts
+  );
 
-    $("categoryForm")
-      .addEventListener(
-        "submit",
-        saveCategory
-      );
+$("categoryName")
+  .addEventListener(
+    "input",
+    () => {
 
+      if(
+        !$("categoryId")
+          .value
+      ){
 
-    $("outfitForm")
-      .addEventListener(
-        "submit",
-        saveOutfit
-      );
-
-
-    $("fetchMetadataButton")
-      .addEventListener(
-        "click",
-        fetchProductMetadata
-      );
-
-
-    $("productSearch")
-      .addEventListener(
-        "input",
-        renderProducts
-      );
-
-
-    $("productCategoryFilter")
-      .addEventListener(
-        "change",
-        renderProducts
-      );
-
-
-    $("productStatusFilter")
-      .addEventListener(
-        "change",
-        renderProducts
-      );
-
-
-    /*
-     * Slug tự động.
-     */
-
-    $("categoryName")
-      .addEventListener(
-        "input",
-        () => {
-
-          if (
-            !$("categoryId")
+        $("categorySlug")
+          .value =
+          slugify(
+            $("categoryName")
               .value
-          ) {
-
-            $("categorySlug")
-              .value =
-              slugify(
-                $("categoryName")
-                  .value
-              );
-          }
-
-        }
-      );
-
-
-    /*
-     * Đóng modal.
-     */
-
-    document
-      .querySelectorAll(
-        "[data-close]"
-      )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            () =>
-              closeModal(
-                button.dataset.close
-              )
           );
-
-        }
-      );
-
-
-    /*
-     * Click ra ngoài modal.
-     */
-
-    document
-      .querySelectorAll(
-        ".modal-backdrop"
-      )
-      .forEach(
-        backdrop => {
-
-          backdrop.addEventListener(
-            "click",
-            event => {
-
-              if (
-                event.target ===
-                backdrop
-              ) {
-
-                backdrop.classList
-                  .add("hidden");
-              }
-
-            }
-          );
-
-        }
-      );
+      }
+    }
+  );
 
 
-    /*
-     * ESC.
-     */
+/* =========================================================
+   CLIPBOARD IMAGE
+========================================================= */
 
-    document
-      .addEventListener(
-        "keydown",
-        event => {
+document
+  .addEventListener(
+    "paste",
+    clipboardPaste
+  );
 
-          if (
-            event.key ===
-            "Escape"
-          ) {
+$("imageZone")
+  .addEventListener(
+    "dragover",
+    e => {
 
-            document
-              .querySelectorAll(
-                ".modal-backdrop"
-              )
-              .forEach(
-                modal =>
-                  modal.classList
-                    .add("hidden")
-              );
-          }
+      e.preventDefault();
 
-        }
-      );
+      $("imageZone")
+        .classList
+        .add("drag");
+    }
+  );
+
+$("imageZone")
+  .addEventListener(
+    "dragleave",
+    () =>
+      $("imageZone")
+        .classList
+        .remove("drag")
+  );
+
+$("imageZone")
+  .addEventListener(
+    "drop",
+    imageDrop
+  );
+
+$("imageZone")
+  .addEventListener(
+    "click",
+    () =>
+      $("imageZone")
+        .focus()
+  );
+
+$("removeImage")
+  .addEventListener(
+    "click",
+    e => {
+
+      e.preventDefault();
+
+      e.stopPropagation();
+
+      removeImage();
+    }
+  );
 
 
-    /* =========================================================
-       IMAGE CLIPBOARD EVENTS
-    ========================================================== */
+/* =========================================================
+   CLOSE MODALS
+========================================================= */
 
-    /*
-     * Khi click vào vùng ảnh:
-     *
-     * Không mở File Explorer.
-     *
-     * Chỉ focus vào vùng paste.
-     */
-
-    $("imagePasteArea")
-      .addEventListener(
+document
+  .querySelectorAll(
+    "[data-close]"
+  )
+  .forEach(
+    btn =>
+      btn.addEventListener(
         "click",
-        () => {
+        () =>
+          closeModal(
+            btn.dataset.close
+          )
+      )
+  );
 
-          $("imagePasteArea")
-            .focus();
-
-          toast(
-            "Bây giờ nhấn Ctrl + V để dán ảnh.",
-            ""
-          );
-        }
-      );
-
-
-    /*
-     * Ctrl + V toàn trang cũng nhận ảnh.
-     *
-     * Điều này giúp bạn không cần click
-     * chính xác vào ô.
-     */
-
-    document
-      .addEventListener(
-        "paste",
-        handleClipboardPaste
-      );
-
-
-    /*
-     * Drag & Drop.
-     */
-
-    $("imagePasteArea")
-      .addEventListener(
-        "dragover",
-        event => {
-
-          event.preventDefault();
-
-          $("imagePasteArea")
-            .classList
-            .add("dragover");
-
-        }
-      );
-
-
-    $("imagePasteArea")
-      .addEventListener(
-        "dragleave",
-        () => {
-
-          $("imagePasteArea")
-            .classList
-            .remove(
-              "dragover"
-            );
-
-        }
-      );
-
-
-    $("imagePasteArea")
-      .addEventListener(
-        "drop",
-        handleImageDrop
-      );
-
-
-    /*
-     * Nút xoá ảnh.
-     */
-
-    $("removeImageButton")
-      .addEventListener(
+document
+  .querySelectorAll(
+    ".modal-bg"
+  )
+  .forEach(
+    bg =>
+      bg.addEventListener(
         "click",
-        event => {
+        e => {
 
-          event.preventDefault();
+          if(
+            e.target === bg
+          ){
 
-          event.stopPropagation();
-
-          removeCurrentImage();
-
+            bg.classList
+              .add("hidden");
+          }
         }
+      )
+  );
+
+document
+  .addEventListener(
+    "keydown",
+    e => {
+
+      if(
+        e.key ===
+        "Escape"
+      ){
+
+        document
+          .querySelectorAll(
+            ".modal-bg"
+          )
+          .forEach(
+            x =>
+              x.classList
+                .add("hidden")
+          );
+      }
+    }
+  );
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+async function init(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await db.auth
+        .getSession();
+
+    if(error)
+      throw error;
+
+    if(
+      !data.session?.user
+    ){
+
+      await showLogin();
+
+      return;
+    }
+
+    const admin =
+      await isAdmin(
+        data.session.user
       );
 
+    if(!admin){
 
-    /* =========================================================
-       SESSION INIT
-    ========================================================== */
+      await db.auth
+        .signOut();
 
-    async function initialize() {
+      showLoginError(
+        "Tài khoản này chưa được cấp quyền Admin."
+      );
 
-      try {
+      return;
+    }
 
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .auth
-            .getSession();
+    await showApp(
+      data.session.user
+    );
 
+  }catch(error){
 
-        if (error) {
-          throw error;
-        }
+    console.error(error);
 
+    await showLogin();
 
-        const session =
-          data.session;
+    showLoginError(
+      error.message ||
+      "Không thể khởi tạo Admin."
+    );
+  }
+}
 
+db.auth
+  .onAuthStateChange(
+    async (
+      event
+    ) => {
 
-        if (
-          !session?.user
-        ) {
-
-          await showLogin();
-
-          return;
-        }
-
-
-        const isAdmin =
-          await checkAdmin(
-            session.user
-          );
-
-
-        if (!isAdmin) {
-
-          await supabaseClient
-            .auth
-            .signOut();
-
-
-          showLoginAlert(
-            "Tài khoản này chưa được cấp quyền Admin."
-          );
-
-          return;
-        }
-
-
-        await showAdminApp(
-          session.user
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "Initialize error:",
-          error
-        );
-
+      if(
+        event ===
+        "SIGNED_OUT"
+      ){
 
         await showLogin();
-
-
-        showLoginAlert(
-          "Không thể kiểm tra phiên đăng nhập. Hãy tải lại trang."
-        );
       }
     }
+  );
 
-
-    /* =========================================================
-       AUTH STATE
-    ========================================================== */
-
-    supabaseClient.auth
-      .onAuthStateChange(
-        async (
-          event,
-          session
-        ) => {
-
-          if (
-            event ===
-            "SIGNED_OUT"
-          ) {
-
-            await showLogin();
-          }
-
-        }
-      );
-
-
-    /* =========================================================
-       START
-    ========================================================== */
-
-    initialize();
-
-  </script>
+init();
+</script>
 
 </body>
 </html>
