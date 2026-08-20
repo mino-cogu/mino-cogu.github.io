@@ -4,22 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Mặc Gì Đây? - Admin</title>
+<title>Mặc Gì Đây? — Admin</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    min-height:100vh;
     background:#f7f5f0;
     color:#171717;
-    font-family:Arial,sans-serif;
+    font-family:Arial, sans-serif;
 }
 
-.wrap{
+button,
+input,
+select{
+    font:inherit;
+}
+
+/* LOGIN */
+
+#loginPage{
     min-height:100vh;
     display:flex;
     align-items:center;
@@ -27,25 +37,25 @@ body{
     padding:20px;
 }
 
-.box{
+.login-box{
     width:100%;
     max-width:420px;
     background:white;
     border:1px solid #ddd8cf;
     border-radius:20px;
-    padding:35px;
+    padding:36px;
     box-shadow:0 15px 50px rgba(0,0,0,.06);
 }
 
-h1{
-    margin:0 0 8px;
+.logo{
     font-family:Georgia,serif;
-    font-size:36px;
+    font-size:38px;
+    margin-bottom:8px;
 }
 
-p{
+.subtitle{
     color:#777;
-    margin:0 0 30px;
+    margin-bottom:30px;
 }
 
 label{
@@ -55,32 +65,280 @@ label{
     margin-bottom:7px;
 }
 
-input{
+input,
+select{
     width:100%;
-    padding:13px;
+    padding:13px 14px;
     border:1px solid #d8d2c8;
     border-radius:10px;
-    margin-bottom:18px;
+    background:white;
     outline:none;
 }
 
-button{
-    width:100%;
-    border:0;
-    background:#171717;
-    color:white;
-    padding:14px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:15px;
+input:focus,
+select:focus{
+    border-color:#111;
 }
 
-.status{
-    margin-top:20px;
-    padding:12px;
+.form-group{
+    margin-bottom:18px;
+}
+
+.btn{
+    width:100%;
+    padding:14px;
+    border:0;
     border-radius:10px;
-    background:#f0ede7;
+    background:#171717;
+    color:white;
+    cursor:pointer;
+}
+
+.btn:hover{
+    opacity:.9;
+}
+
+.message{
+    margin-top:18px;
+    padding:12px 14px;
+    border-radius:10px;
+    font-size:14px;
+}
+
+.error{
+    background:#fff0f0;
+    color:#c62828;
+    border:1px solid #ffcaca;
+}
+
+.success{
+    background:#edf9f0;
+    color:#16803c;
+    border:1px solid #c7ebd0;
+}
+
+/* ADMIN */
+
+#adminPage{
+    display:none;
+    min-height:100vh;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:240px;
+    background:#171717;
+    color:white;
+    padding:28px 18px;
+}
+
+.sidebar-logo{
+    font-family:Georgia,serif;
+    font-size:25px;
+    padding:0 12px 30px;
+}
+
+.nav-title{
+    color:#777;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:0 12px 10px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.nav button{
+    text-align:left;
+    background:none;
+    border:0;
+    color:#bbb;
+    padding:12px;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+.nav button:hover,
+.nav button.active{
+    background:#292929;
+    color:white;
+}
+
+.logout{
+    position:absolute;
+    bottom:25px;
+    left:18px;
+    right:18px;
+}
+
+.logout button{
+    width:100%;
+    padding:11px;
+    background:#292929;
+    color:#ddd;
+    border:0;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+.main{
+    margin-left:240px;
+    padding:35px;
+    max-width:1400px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+}
+
+.topbar h1{
+    font-family:Georgia,serif;
+    font-size:38px;
+    margin:0;
+}
+
+.user{
+    color:#777;
+    font-size:14px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.stat{
+    background:white;
+    border:1px solid #ddd8cf;
+    border-radius:16px;
+    padding:22px;
+}
+
+.stat-label{
+    color:#777;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.stat-number{
+    font-size:32px;
+    font-weight:bold;
+}
+
+.panel{
+    background:white;
+    border:1px solid #ddd8cf;
+    border-radius:16px;
+    padding:25px;
+    margin-bottom:25px;
+}
+
+.panel-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.panel-header h2{
+    margin:0;
+    font-family:Georgia,serif;
+}
+
+.add-btn{
+    background:#171717;
+    color:white;
+    border:0;
+    padding:11px 16px;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+.empty{
+    padding:50px 20px;
+    text-align:center;
+    color:#999;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:14px 10px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+}
+
+th{
+    color:#777;
     font-size:13px;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    background:#f0ede7;
+    font-size:12px;
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        width:70px;
+        padding:20px 8px;
+    }
+
+    .sidebar-logo{
+        font-size:0;
+        text-align:center;
+    }
+
+    .sidebar-logo:first-letter{
+        font-size:25px;
+    }
+
+    .nav-title{
+        display:none;
+    }
+
+    .nav button{
+        font-size:0;
+        text-align:center;
+    }
+
+    .main{
+        margin-left:70px;
+        padding:20px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:500px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
 }
 
 </style>
@@ -88,64 +346,779 @@ button{
 
 <body>
 
-<div class="wrap">
 
-    <div class="box">
+<!-- ================= LOGIN ================= -->
 
-        <h1>Mặc Gì Đây?</h1>
+<div id="loginPage">
 
-        <p>Admin Dashboard</p>
+    <div class="login-box">
 
-        <label>Email</label>
-
-        <input
-            id="email"
-            type="email"
-            placeholder="Email của bạn"
-        >
-
-        <label>Mật khẩu</label>
-
-        <input
-            id="password"
-            type="password"
-            placeholder="Mật khẩu"
-        >
-
-        <button onclick="test()">
-            Đăng nhập
-        </button>
-
-        <div id="status" class="status">
-            ✅ Admin HTML đang hoạt động.
+        <div class="logo">
+            Mặc Gì Đây?
         </div>
+
+        <div class="subtitle">
+            Admin Dashboard
+        </div>
+
+        <div id="loginMessage"></div>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label>Email</label>
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="Email của bạn"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Mật khẩu</label>
+
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="Mật khẩu"
+                    required
+                >
+
+            </div>
+
+            <button
+                class="btn"
+                id="loginButton"
+                type="submit"
+            >
+                Đăng nhập
+            </button>
+
+        </form>
 
     </div>
 
 </div>
 
+
+
+<!-- ================= ADMIN ================= -->
+
+<div id="adminPage">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            Mặc Gì Đây?
+        </div>
+
+        <div class="nav-title">
+            Quản lý
+        </div>
+
+        <div class="nav">
+
+            <button
+                class="active"
+                onclick="showSection('dashboard',this)"
+            >
+                📊 Dashboard
+            </button>
+
+            <button
+                onclick="showSection('products',this)"
+            >
+                🛍️ Sản phẩm
+            </button>
+
+            <button
+                onclick="showSection('categories',this)"
+            >
+                🗂️ Danh mục
+            </button>
+
+            <button
+                onclick="showSection('outfits',this)"
+            >
+                👗 Outfit
+            </button>
+
+        </div>
+
+        <div class="logout">
+
+            <button onclick="logout()">
+                Đăng xuất
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+            </div>
+
+            <div
+                class="user"
+                id="userEmail"
+            ></div>
+
+        </div>
+
+
+        <!-- DASHBOARD -->
+
+        <section id="dashboardSection">
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <div class="stat-label">
+                        Sản phẩm
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="productCount"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+                        Danh mục
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="categoryCount"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+                        Outfit
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        id="outfitCount"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+                        Trạng thái
+                    </div>
+
+                    <div
+                        class="stat-number"
+                        style="font-size:20px"
+                    >
+                        Online
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Chào mừng đến Admin
+                    </h2>
+
+                </div>
+
+                <p style="color:#777">
+
+                    Từ đây bạn có thể quản lý sản phẩm,
+                    danh mục và outfit của Mặc Gì Đây?
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- PRODUCTS -->
+
+        <section
+            id="productsSection"
+            style="display:none"
+        >
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Sản phẩm
+                    </h2>
+
+                    <button
+                        class="add-btn"
+                        onclick="alert('Phần thêm sản phẩm sẽ làm ở bước tiếp theo.')"
+                    >
+                        + Thêm sản phẩm
+                    </button>
+
+                </div>
+
+                <div id="productsContent">
+
+                    <div class="empty">
+                        Đang tải sản phẩm...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CATEGORIES -->
+
+        <section
+            id="categoriesSection"
+            style="display:none"
+        >
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Danh mục
+                    </h2>
+
+                    <button
+                        class="add-btn"
+                        onclick="alert('Phần thêm danh mục sẽ làm ở bước tiếp theo.')"
+                    >
+                        + Thêm danh mục
+                    </button>
+
+                </div>
+
+                <div id="categoriesContent">
+
+                    <div class="empty">
+                        Đang tải danh mục...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- OUTFITS -->
+
+        <section
+            id="outfitsSection"
+            style="display:none"
+        >
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>
+                        Outfit
+                    </h2>
+
+                    <button
+                        class="add-btn"
+                        onclick="alert('Phần thêm outfit sẽ làm ở bước tiếp theo.')"
+                    >
+                        + Thêm outfit
+                    </button>
+
+                </div>
+
+                <div id="outfitsContent">
+
+                    <div class="empty">
+                        Đang tải outfit...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
 <script>
 
-function test(){
+/* =====================================================
+   SUPABASE
+===================================================== */
 
-    const email =
-        document.getElementById("email").value;
+const SUPABASE_URL =
+    "https://rxeqynitxruylvcybrca.supabase.co";
 
-    const password =
-        document.getElementById("password").value;
+const SUPABASE_KEY =
+    "sb_publishable_DCZRB5bpOCQUGwEWWevizg_lAp2YvIm";
 
-    if(!email || !password){
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
-        document.getElementById("status").textContent =
-            "⚠️ Hãy nhập email và mật khẩu.";
 
-        return;
-    }
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-    document.getElementById("status").textContent =
-        "✅ HTML + JavaScript hoạt động bình thường.";
+const loginPage =
+    document.getElementById("loginPage");
+
+const adminPage =
+    document.getElementById("adminPage");
+
+const loginMessage =
+    document.getElementById("loginMessage");
+
+
+/* =====================================================
+   SHOW MESSAGE
+===================================================== */
+
+function showLoginMessage(message, type="error"){
+
+    loginMessage.innerHTML = `
+        <div class="message ${type}">
+            ${message}
+        </div>
+    `;
 
 }
+
+
+/* =====================================================
+   CHECK ADMIN
+===================================================== */
+
+async function checkAdmin(user){
+
+    const { data, error } =
+        await supabaseClient
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+
+    if(error){
+
+        console.error(error);
+
+        throw new Error(
+            "Không thể kiểm tra quyền Admin: "
+            + error.message
+        );
+
+    }
+
+
+    if(!data){
+
+        throw new Error(
+            "Tài khoản này chưa được cấp quyền Admin."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+document
+.getElementById("loginForm")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+
+    const email =
+        document
+        .getElementById("email")
+        .value
+        .trim();
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+
+    const button =
+        document
+        .getElementById("loginButton");
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Đang đăng nhập...";
+
+
+    loginMessage.innerHTML = "";
+
+
+    try{
+
+        const { data, error } =
+            await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+            });
+
+
+        if(error){
+
+            throw new Error(
+                "Email hoặc mật khẩu không đúng."
+            );
+
+        }
+
+
+        if(!data.user){
+
+            throw new Error(
+                "Không tìm thấy tài khoản."
+            );
+
+        }
+
+
+        await checkAdmin(data.user);
+
+
+        showAdmin(data.user);
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showLoginMessage(
+            error.message,
+            "error"
+        );
+
+    }
+
+
+    button.disabled = false;
+
+    button.textContent =
+        "Đăng nhập";
+
+});
+
+
+/* =====================================================
+   SHOW ADMIN
+===================================================== */
+
+function showAdmin(user){
+
+    loginPage.style.display =
+        "none";
+
+    adminPage.style.display =
+        "block";
+
+
+    document
+    .getElementById("userEmail")
+    .textContent =
+        user.email;
+
+
+    loadCounts();
+
+}
+
+
+/* =====================================================
+   LOAD COUNTS
+===================================================== */
+
+async function loadCounts(){
+
+    try{
+
+        const products =
+            await supabaseClient
+            .from("products")
+            .select("*", {
+                count:"exact",
+                head:true
+            });
+
+
+        const categories =
+            await supabaseClient
+            .from("categories")
+            .select("*", {
+                count:"exact",
+                head:true
+            });
+
+
+        const outfits =
+            await supabaseClient
+            .from("outfits")
+            .select("*", {
+                count:"exact",
+                head:true
+            });
+
+
+        document
+        .getElementById("productCount")
+        .textContent =
+            products.count ?? 0;
+
+
+        document
+        .getElementById("categoryCount")
+        .textContent =
+            categories.count ?? 0;
+
+
+        document
+        .getElementById("outfitCount")
+        .textContent =
+            outfits.count ?? 0;
+
+
+    }catch(error){
+
+        console.error(
+            "Không thể tải thống kê:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function showSection(section, button){
+
+    document
+    .getElementById("dashboardSection")
+    .style.display =
+        section === "dashboard"
+        ? "block"
+        : "none";
+
+
+    document
+    .getElementById("productsSection")
+    .style.display =
+        section === "products"
+        ? "block"
+        : "none";
+
+
+    document
+    .getElementById("categoriesSection")
+    .style.display =
+        section === "categories"
+        ? "block"
+        : "none";
+
+
+    document
+    .getElementById("outfitsSection")
+    .style.display =
+        section === "outfits"
+        ? "block"
+        : "none";
+
+
+    document
+    .querySelectorAll(".nav button")
+    .forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+
+    button.classList.add("active");
+
+
+    const titles = {
+
+        dashboard:
+            "Dashboard",
+
+        products:
+            "Sản phẩm",
+
+        categories:
+            "Danh mục",
+
+        outfits:
+            "Outfit"
+
+    };
+
+
+    document
+    .getElementById("pageTitle")
+    .textContent =
+        titles[section];
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+async function logout(){
+
+    await supabaseClient.auth.signOut();
+
+    adminPage.style.display =
+        "none";
+
+    loginPage.style.display =
+        "flex";
+
+}
+
+
+/* =====================================================
+   AUTO LOGIN
+===================================================== */
+
+async function checkExistingSession(){
+
+    const {
+        data
+    } =
+        await supabaseClient
+        .auth
+        .getSession();
+
+
+    if(
+        data &&
+        data.session &&
+        data.session.user
+    ){
+
+        try{
+
+            await checkAdmin(
+                data.session.user
+            );
+
+            showAdmin(
+                data.session.user
+            );
+
+        }catch(error){
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+            showLoginMessage(
+                error.message
+            );
+
+        }
+
+    }
+
+}
+
+
+checkExistingSession();
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+supabaseClient
+.auth
+.onAuthStateChange(
+    async (event, session) => {
+
+        if(
+            event === "SIGNED_OUT"
+        ){
+
+            adminPage.style.display =
+                "none";
+
+            loginPage.style.display =
+                "flex";
+
+        }
+
+    }
+);
 
 </script>
 
